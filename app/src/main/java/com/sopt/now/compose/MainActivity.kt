@@ -17,6 +17,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -85,14 +86,20 @@ fun MainScreen(user: User) {
         }
 
         Text(
-            text = "제 MBTI는 ${user.mbti}입니다!!",
+            text = stringResource(id = R.string.main_mbti_introduction, user.mbti),
             fontSize = 20.sp,
             fontWeight = FontWeight.Bold,
             modifier = Modifier.padding(top = 20.dp))
 
 
-        TitleAndContentTextComposable(title = "ID", content = user.id, modifier = Modifier.padding(top = 70.dp))
-        TitleAndContentTextComposable(title = "비밀번호", content = user.pw,modifier = Modifier.padding(top = 70.dp))
+        TitleAndContentTextComposable(
+            title = stringResource(id = R.string.title_pw),
+            content = user.id,
+            modifier = Modifier.padding(top = 70.dp))
+        TitleAndContentTextComposable(
+            title = stringResource(id = R.string.title_pw),
+            content = user.pw,
+            modifier = Modifier.padding(top = 70.dp))
     }
 }
 

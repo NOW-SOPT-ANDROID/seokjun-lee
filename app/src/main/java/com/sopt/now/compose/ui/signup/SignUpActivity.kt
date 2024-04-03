@@ -25,10 +25,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.sopt.now.compose.R
 import com.sopt.now.compose.models.User
 import com.sopt.now.compose.ui.composables.ButtonComposable
 import com.sopt.now.compose.ui.composables.TextFieldWithTitleComposable
@@ -36,6 +38,7 @@ import com.sopt.now.compose.ui.login.SIGNUP_KEY
 import com.sopt.now.compose.ui.theme.NOWSOPTAndroidTheme
 
 private const val TAG = "SignUpActivity"
+
 class SignUpActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -49,7 +52,7 @@ class SignUpActivity : ComponentActivity() {
                     color = MaterialTheme.colorScheme.background
                 ) {
                     SignUpScreen(
-                        onClick = {id, pw, nickname, mbti->
+                        onClick = { id, pw, nickname, mbti ->
                             onClickLoginButton(id = id, pw = pw, nickname = nickname, mbti = mbti)
                         }
                     )
@@ -58,9 +61,9 @@ class SignUpActivity : ComponentActivity() {
         }
     }
 
-    private fun onClickLoginButton(id: String, pw:String, nickname: String, mbti: String){
+    private fun onClickLoginButton(id: String, pw: String, nickname: String, mbti: String) {
         val userData = User(id = id, pw = pw, nickName = nickname, mbti = mbti)
-        if(checkSignUp(userData = userData)) {
+        if (checkSignUp(userData = userData)) {
             val intent = Intent()
             intent.putExtra(SIGNUP_KEY, userData)
             setResult(Activity.RESULT_OK, intent)
@@ -68,38 +71,49 @@ class SignUpActivity : ComponentActivity() {
         }
     }
 
-    private fun checkSignUp(userData: User): Boolean = when {
-        userData.id.length !in 6..10 -> {
-            Toast.makeText(this, "ID는 6~10 글자", Toast.LENGTH_SHORT).show()
-            false
+    private fun checkSignUp(userData: User): Boolean {
+        var toastStringRes: Int? = null
+        val isPossible = when {
+            userData.id.length !in 6..10 -> {
+                toastStringRes = R.string.signup_toast_id
+                false
+            }
+
+            userData.pw.length !in 8..12 -> {
+                toastStringRes = R.string.signup_toast_pw
+                false
+            }
+
+            userData.nickName.isBlank() -> {
+                toastStringRes = R.string.signup_toast_nickname
+                false
+            }
+
+            userData.mbti.isBlank() -> {
+                toastStringRes = R.string.signup_toast_mbti
+                false
+            }
+
+            else -> {
+                true
+            }
         }
-        userData.pw.length !in 8..12 ->{
-            Toast.makeText(this, "비밀번호는 8~12 글자", Toast.LENGTH_SHORT).show()
-            false
+        if(toastStringRes != null) {
+            Toast.makeText(this, getString(toastStringRes), Toast.LENGTH_SHORT).show()
         }
-        userData.nickName.isBlank() -> {
-            Toast.makeText(this, "닉네임은 한 글자 이상, 공백 불가", Toast.LENGTH_SHORT).show()
-            false
-        }
-        userData.mbti.isBlank() -> {
-            Toast.makeText(this, "MBTI 공백 불가", Toast.LENGTH_SHORT).show()
-            false
-        }
-        else -> {
-            true
-        }
+        return isPossible
     }
 }
 
 @Composable
 fun SignUpScreen(
     modifier: Modifier = Modifier,
-    onClick:(String, String, String, String) -> Unit
+    onClick: (String, String, String, String) -> Unit
 ) {
-    var id by remember {mutableStateOf("")}
-    var pw by remember {mutableStateOf("")}
-    var nickname by remember {mutableStateOf("")}
-    var mbti by remember {mutableStateOf("")}
+    var id by remember { mutableStateOf("") }
+    var pw by remember { mutableStateOf("") }
+    var nickname by remember { mutableStateOf("") }
+    var mbti by remember { mutableStateOf("") }
 
     Column(
         modifier = modifier.fillMaxSize(),
@@ -116,42 +130,42 @@ fun SignUpScreen(
 
         TextFieldWithTitleComposable(
             modifier = commonModifier,
-            title = "ID",
+            title = stringResource(id = R.string.title_id),
             fontSize = commonFontSize,
-            label = "아이디를 입력해주세요",
+            label = stringResource(id = R.string.signup_label_id),
             textFieldText = id,
-            onValueChange = {newValue ->
+            onValueChange = { newValue ->
                 id = newValue
             })
 
         TextFieldWithTitleComposable(
             modifier = commonModifier,
-            title = "비밀번호",
+            title = stringResource(id = R.string.title_pw),
             fontSize = commonFontSize,
-            label = "비밀번호를 입력해주세요",
+            label = stringResource(id = R.string.signup_label_pw),
             textFieldText = pw,
-            onValueChange = {newValue ->
+            onValueChange = { newValue ->
                 pw = newValue
             })
 
         TextFieldWithTitleComposable(
             modifier = Modifier.padding(top = 30.dp),
-            title = "닉네임",
+            title = stringResource(id = R.string.title_nickname),
             fontSize = commonFontSize,
-            label = "닉네임을 입력해주세요",
+            label = stringResource(id = R.string.signup_label_nickname),
             textFieldText = nickname,
-            onValueChange = {newValue ->
+            onValueChange = { newValue ->
                 nickname = newValue
             })
 
         TextFieldWithTitleComposable(
             modifier = Modifier.padding(top = 30.dp),
-            title = "MBTI",
+            title = stringResource(id = R.string.title_nickname),
             fontSize = commonFontSize,
-            label = "MBTI를 입력해주세요",
+            label = stringResource(id = R.string.signup_label_mbti),
             textFieldText = mbti,
             imeAction = ImeAction.Done,
-            onValueChange = {newValue ->
+            onValueChange = { newValue ->
                 mbti = newValue
             })
 
@@ -160,7 +174,7 @@ fun SignUpScreen(
             contentAlignment = Alignment.BottomCenter
         ) {
             ButtonComposable(
-                text = "회원가입하기",
+                text = stringResource(id = R.string.signup_btn_signup),
                 onClick = { onClick(id, pw, nickname, mbti) })
         }
     }
@@ -169,5 +183,5 @@ fun SignUpScreen(
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
 fun SignUpPreview() {
-    SignUpScreen(onClick = { id, pw, nickname, mbti->})
+    SignUpScreen(onClick = { id, pw, nickname, mbti -> })
 }

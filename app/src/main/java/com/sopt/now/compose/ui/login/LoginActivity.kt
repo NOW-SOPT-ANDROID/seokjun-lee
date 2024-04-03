@@ -25,6 +25,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
@@ -32,6 +33,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.sopt.now.compose.MainActivity
+import com.sopt.now.compose.R
 import com.sopt.now.compose.models.User
 import com.sopt.now.compose.ui.composables.ButtonComposable
 import com.sopt.now.compose.ui.composables.TextFieldWithTitleComposable
@@ -54,7 +56,7 @@ class LoginActivity : ComponentActivity() {
                 result.data?.getSerializableExtra(SIGNUP_KEY)
             }
             userData?.let { users.add(it as User) }
-            Toast.makeText(this, "회원가입이 완료되었습니다.}", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, getString(R.string.login_toast_success_signup), Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -87,28 +89,28 @@ class LoginActivity : ComponentActivity() {
 
     private fun checkIdAndPw(id: String, pw: String): Int? {
         var answer: Int? = null
-        var toastMessage = ""
+        var toastMessageResId:Int = R.string.login_toast_blank_id
         when{
-            id.isBlank() -> {toastMessage = "아이디를 입력해주세요"}
-            pw.isBlank() -> {toastMessage = "비밀번호를 입력해주세요"}
+            id.isBlank() -> {toastMessageResId = R.string.login_toast_blank_id}
+            pw.isBlank() -> {toastMessageResId = R.string.login_toast_blank_pw}
             else -> {
                 for (index in users.indices) {
                     if (users[index].id == id) {
                         if (users[index].pw == pw) {
                             answer = index
-                            toastMessage = "로그인에 성공했습니다."
+                            toastMessageResId = R.string.login_toast_success_login
                             break
                         } else {
-                            toastMessage = "비밀번호를 다시 확인하세요"
+                            toastMessageResId = R.string.login_toast_check_pw
                         }
                     } else {
-                        toastMessage = "아이디를 다시 확인하세요"
+                        toastMessageResId = R.string.login_toast_check_id
                     }
                 }
             }
         }
 
-        Toast.makeText(this, toastMessage, Toast.LENGTH_SHORT).show()
+        Toast.makeText(this, getString(toastMessageResId), Toast.LENGTH_SHORT).show()
         return answer
     }
 }
@@ -129,22 +131,22 @@ fun LoginScreen(
         verticalArrangement = Arrangement.SpaceBetween
     ) {
         Text(
-            text = "Welcome to SOPT",
+            text = stringResource(id = R.string.login_title),
             fontSize = 30.sp
         )
 
         Column {
             TextFieldWithTitleComposable(
-                title = "ID",
-                label = "사용자 이름 입력",
+                title = stringResource(id = R.string.title_id),
+                label = stringResource(id = R.string.login_label_id),
                 textFieldText = id,
                 onValueChange = { newValue ->
                     id = newValue
                 })
             Spacer(modifier = Modifier.height(20.dp))
             TextFieldWithTitleComposable(
-                title = "비밀번호",
-                label = "비밀번호 입력",
+                title = stringResource(id = R.string.title_pw),
+                label = stringResource(id = R.string.login_label_pw),
                 textFieldText = pw,
                 onValueChange = { newValue ->
                     pw = newValue
@@ -156,11 +158,13 @@ fun LoginScreen(
         }
         Column {
             ButtonComposable(
-                text = "로그인",
+                text = stringResource(id = R.string.login_btn_login),
                 onClick = { onClickLogin(id, pw) },
-                color = Color.Unspecified
-            )
-            ButtonComposable(text = "회원가입", onClick = onClickSignUp, color = Color.Gray)
+                color = Color.Unspecified)
+            ButtonComposable(
+                text = stringResource(id = R.string.login_btn_signup),
+                onClick = onClickSignUp,
+                color = Color.Gray)
         }
     }
 }
