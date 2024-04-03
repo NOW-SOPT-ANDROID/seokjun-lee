@@ -31,7 +31,6 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.sopt.now.compose.Greeting
 import com.sopt.now.compose.MainActivity
 import com.sopt.now.compose.models.User
 import com.sopt.now.compose.ui.composables.ButtonComposable
