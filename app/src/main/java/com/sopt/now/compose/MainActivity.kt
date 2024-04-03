@@ -5,6 +5,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -32,7 +33,9 @@ class MainActivity : ComponentActivity() {
             NOWSOPTAndroidTheme {
                 // A surface container using the 'background' color from the theme
                 Surface(
-                    modifier = Modifier.fillMaxSize(),
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(horizontal = 30.dp, vertical = 60.dp),
                     color = MaterialTheme.colorScheme.background
                 ) {
                     val data = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
@@ -58,12 +61,20 @@ fun MainScreen(user: User) {
         Row(
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Image(
-                painter = painterResource(id = R.drawable.ic_launcher_background),
-                contentDescription = null,
-                modifier = Modifier.weight(1f),
-                alignment = Alignment.CenterStart
-            )
+            Box(
+                modifier = Modifier.weight(1f)
+            ) {
+                Image(
+                    painter = painterResource(id = R.drawable.ic_launcher_background),
+                    contentDescription = null,
+                    alignment = Alignment.CenterStart
+                )
+                Image(
+                    painter = painterResource(id = R.drawable.ic_launcher_foreground),
+                    contentDescription = null,
+                    alignment = Alignment.CenterStart
+                )
+            }
             Text(
                 text = user.nickName,
                 fontSize = 20.sp,
