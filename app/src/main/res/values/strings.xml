@@ -14,7 +14,7 @@
 
     <!--Button Texts-->
     <string name="login_btn_login">로그인</string>
-    <string name="login_btn_signup">로그인</string>
+    <string name="login_btn_signup">회원가입</string>
     <string name="signup_btn_signup">회원가입하기</string>
 
     <!--LoginActivity TextField Labels-->

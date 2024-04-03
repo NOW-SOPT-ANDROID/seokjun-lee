@@ -130,9 +130,9 @@ fun SignUpScreen(
 
         TextFieldWithTitleComposable(
             modifier = commonModifier,
-            title = stringResource(id = R.string.title_id),
-            fontSize = commonFontSize,
-            label = stringResource(id = R.string.signup_label_id),
+            title = R.string.title_id,
+            titleFontSize = commonFontSize,
+            label = R.string.signup_label_id,
             textFieldText = id,
             onValueChange = { newValue ->
                 id = newValue
@@ -140,9 +140,9 @@ fun SignUpScreen(
 
         TextFieldWithTitleComposable(
             modifier = commonModifier,
-            title = stringResource(id = R.string.title_pw),
-            fontSize = commonFontSize,
-            label = stringResource(id = R.string.signup_label_pw),
+            title = R.string.title_pw,
+            titleFontSize = commonFontSize,
+            label = R.string.signup_label_pw,
             textFieldText = pw,
             onValueChange = { newValue ->
                 pw = newValue
@@ -150,9 +150,9 @@ fun SignUpScreen(
 
         TextFieldWithTitleComposable(
             modifier = Modifier.padding(top = 30.dp),
-            title = stringResource(id = R.string.title_nickname),
-            fontSize = commonFontSize,
-            label = stringResource(id = R.string.signup_label_nickname),
+            title = R.string.title_nickname,
+            titleFontSize = commonFontSize,
+            label = R.string.signup_label_nickname,
             textFieldText = nickname,
             onValueChange = { newValue ->
                 nickname = newValue
@@ -160,9 +160,9 @@ fun SignUpScreen(
 
         TextFieldWithTitleComposable(
             modifier = Modifier.padding(top = 30.dp),
-            title = stringResource(id = R.string.title_nickname),
-            fontSize = commonFontSize,
-            label = stringResource(id = R.string.signup_label_mbti),
+            title = R.string.title_nickname,
+            titleFontSize = commonFontSize,
+            label = R.string.signup_label_mbti,
             textFieldText = mbti,
             imeAction = ImeAction.Done,
             onValueChange = { newValue ->
@@ -174,7 +174,7 @@ fun SignUpScreen(
             contentAlignment = Alignment.BottomCenter
         ) {
             ButtonComposable(
-                text = stringResource(id = R.string.signup_btn_signup),
+                text = R.string.signup_btn_signup,
                 onClick = { onClick(id, pw, nickname, mbti) })
         }
     }

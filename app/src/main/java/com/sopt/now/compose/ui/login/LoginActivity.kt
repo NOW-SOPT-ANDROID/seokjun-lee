@@ -137,16 +137,16 @@ fun LoginScreen(
 
         Column {
             TextFieldWithTitleComposable(
-                title = stringResource(id = R.string.title_id),
-                label = stringResource(id = R.string.login_label_id),
+                title = R.string.title_id,
+                label = R.string.login_label_id,
                 textFieldText = id,
                 onValueChange = { newValue ->
                     id = newValue
                 })
             Spacer(modifier = Modifier.height(20.dp))
             TextFieldWithTitleComposable(
-                title = stringResource(id = R.string.title_pw),
-                label = stringResource(id = R.string.login_label_pw),
+                title = R.string.title_pw,
+                label = R.string.login_label_pw,
                 textFieldText = pw,
                 onValueChange = { newValue ->
                     pw = newValue
@@ -158,11 +158,12 @@ fun LoginScreen(
         }
         Column {
             ButtonComposable(
-                text = stringResource(id = R.string.login_btn_login),
+                text = R.string.login_btn_login,
                 onClick = { onClickLogin(id, pw) },
                 color = Color.Unspecified)
+
             ButtonComposable(
-                text = stringResource(id = R.string.login_btn_signup),
+                text = R.string.login_btn_signup,
                 onClick = onClickSignUp,
                 color = Color.Gray)
         }

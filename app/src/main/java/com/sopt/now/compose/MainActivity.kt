@@ -93,11 +93,11 @@ fun MainScreen(user: User) {
 
 
         TitleAndContentTextComposable(
-            title = stringResource(id = R.string.title_pw),
+            title = R.string.title_pw,
             content = user.id,
             modifier = Modifier.padding(top = 70.dp))
         TitleAndContentTextComposable(
-            title = stringResource(id = R.string.title_pw),
+            title = R.string.title_pw,
             content = user.pw,
             modifier = Modifier.padding(top = 70.dp))
     }
