@@ -1,8 +1,13 @@
 package com.sopt.now.compose.ui.login
 
+import android.app.Activity
+import android.content.Intent
+import android.os.Build
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -27,13 +32,31 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.sopt.now.compose.Greeting
+import com.sopt.now.compose.models.User
 import com.sopt.now.compose.ui.composables.ButtonComposable
 import com.sopt.now.compose.ui.composables.TextFieldWithTitleComposable
+import com.sopt.now.compose.ui.signup.SignUpActivity
 import com.sopt.now.compose.ui.theme.NOWSOPTAndroidTheme
 
 const val SIGNUP_KEY = "user"
 
 class LoginActivity : ComponentActivity() {
+    private val users: MutableList<User> = mutableListOf()
+
+    private val getSignUpResult = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()
+    ) { result ->
+        if (result.resultCode == Activity.RESULT_OK) {
+            val userData = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                result.data?.getSerializableExtra(SIGNUP_KEY, User::class.java)
+            } else {
+                result.data?.getSerializableExtra(SIGNUP_KEY)
+            }
+            userData?.let { users.add(it as User) }
+            Toast.makeText(this, "회원가입이 완료되었습니다.}", Toast.LENGTH_SHORT).show()
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -43,7 +66,14 @@ class LoginActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    Greeting("Android")
+                    LoginScreen(
+                        onClickLogin = {id, pw ->
+
+                        },
+                        onClickSignUp = {
+                            val intent = Intent(this, SignUpActivity::class.java)
+                            getSignUpResult.launch(intent)
+                        })
                 }
             }
         }
