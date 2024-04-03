@@ -32,6 +32,7 @@ import androidx.compose.ui.unit.sp
 import com.sopt.now.compose.models.User
 import com.sopt.now.compose.ui.composables.ButtonComposable
 import com.sopt.now.compose.ui.composables.TextFieldWithTitleComposable
+import com.sopt.now.compose.ui.login.SIGNUP_KEY
 import com.sopt.now.compose.ui.theme.NOWSOPTAndroidTheme
 
 private const val TAG = "SignUpActivity"
@@ -49,11 +50,43 @@ class SignUpActivity : ComponentActivity() {
                 ) {
                     SignUpScreen(
                         onClick = {id, pw, nickname, mbti->
-
+                            onClickLoginButton(id = id, pw = pw, nickname = nickname, mbti = mbti)
                         }
                     )
                 }
             }
+        }
+    }
+
+    private fun onClickLoginButton(id: String, pw:String, nickname: String, mbti: String){
+        val userData = User(id = id, pw = pw, nickName = nickname, mbti = mbti)
+        if(checkSignUp(userData = userData)) {
+            val intent = Intent()
+            intent.putExtra(SIGNUP_KEY, userData)
+            setResult(Activity.RESULT_OK, intent)
+            finish()
+        }
+    }
+
+    private fun checkSignUp(userData: User): Boolean = when {
+        userData.id.length !in 6..10 -> {
+            Toast.makeText(this, "ID는 6~10 글자", Toast.LENGTH_SHORT).show()
+            false
+        }
+        userData.pw.length !in 8..12 ->{
+            Toast.makeText(this, "비밀번호는 8~12 글자", Toast.LENGTH_SHORT).show()
+            false
+        }
+        userData.nickName.isBlank() -> {
+            Toast.makeText(this, "닉네임은 한 글자 이상, 공백 불가", Toast.LENGTH_SHORT).show()
+            false
+        }
+        userData.mbti.isBlank() -> {
+            Toast.makeText(this, "MBTI 공백 불가", Toast.LENGTH_SHORT).show()
+            false
+        }
+        else -> {
+            true
         }
     }
 }

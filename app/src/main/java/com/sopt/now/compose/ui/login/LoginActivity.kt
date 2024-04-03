@@ -31,6 +31,8 @@ import com.sopt.now.compose.ui.composables.ButtonComposable
 import com.sopt.now.compose.ui.composables.TextFieldWithTitleComposable
 import com.sopt.now.compose.ui.theme.NOWSOPTAndroidTheme
 
+const val SIGNUP_KEY = "user"
+
 class LoginActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
