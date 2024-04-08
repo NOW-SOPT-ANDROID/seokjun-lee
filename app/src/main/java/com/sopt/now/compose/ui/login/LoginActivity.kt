@@ -69,7 +69,7 @@ class LoginActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    LoginScreen(
+                    LoginScreens(
                         onClickLogin = {id, pw ->
                             val index = checkIdAndPw(id, pw)
                             if (index != null) {
@@ -116,7 +116,7 @@ class LoginActivity : ComponentActivity() {
 }
 
 @Composable
-fun LoginScreen(
+fun LoginScreens(
     onClickLogin: (String, String) -> Unit,
     onClickSignUp: () -> Unit = {}
 ) {
@@ -168,10 +168,4 @@ fun LoginScreen(
                 color = Color.Gray)
         }
     }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun LoginScreenPreview() {
-    LoginScreen(onClickLogin = {_, _ ->})
 }

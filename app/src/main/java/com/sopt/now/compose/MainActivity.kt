@@ -23,6 +23,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.sopt.now.compose.models.User
+import com.sopt.now.compose.ui.SoptApp
 import com.sopt.now.compose.ui.composables.TitleAndContentTextComposable
 import com.sopt.now.compose.ui.login.LOGIN_KEY
 import com.sopt.now.compose.ui.theme.NOWSOPTAndroidTheme
@@ -34,12 +35,10 @@ class MainActivity : ComponentActivity() {
             NOWSOPTAndroidTheme {
                 // A surface container using the 'background' color from the theme
                 Surface(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(horizontal = 30.dp, vertical = 60.dp),
+                    modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    val data = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                    /*val data = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
                         intent.getSerializableExtra(LOGIN_KEY, User::class.java)
                     } else {
                         intent.getSerializableExtra(LOGIN_KEY)
@@ -47,7 +46,9 @@ class MainActivity : ComponentActivity() {
                     val user = if (data != null) {
                         data as User
                     } else User()
-                    MainScreen(user = user)
+                    MainScreen(user = user)*/
+
+                    SoptApp()
                 }
             }
         }
