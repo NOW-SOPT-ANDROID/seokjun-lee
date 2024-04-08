@@ -44,8 +44,8 @@ fun LoginScreen(
 ) {
     val context = LocalContext.current
     val uiState = viewModel.uiState.collectAsState()
-    val result = navController.getDataFromCurrentBackStackEntry<User>(SIGNUP_KEY)
-    result?.value?.let { newUser ->
+
+    navController.getDataFromCurrentBackStackEntry<User>(SIGNUP_KEY)?.value?.let { newUser ->
         viewModel.addUsers(newUser)
     }
 
@@ -73,8 +73,8 @@ fun LoginScreen(
                 printToastMessage(context = context, viewModel.getToastMessageByCheckingIdAndPw())
                 if (viewModel.isLoginPossible()) {
                     navController.putDataAtCurrentStackEntry(LOGIN_KEY, viewModel.getUser())
-                    viewModel.updateUiState(id = "", pw = "", userIndex = -1)
                     navController.navigate(ProfileDestination.route)
+                    viewModel.initializeUiState()
                 }
             },
             onClickSignUpButton = {

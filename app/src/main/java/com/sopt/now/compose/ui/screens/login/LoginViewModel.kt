@@ -16,6 +16,10 @@ class LoginViewModel: ViewModel() {
         User("test", "test1234", "test", "TEST")
     )
 
+    fun initializeUiState() {
+        updateUiState(id = "", pw = "", userIndex = -1)
+    }
+
     fun updateUiState(
         id: String = _uiState.value.id,
         pw: String = _uiState.value.pw,
