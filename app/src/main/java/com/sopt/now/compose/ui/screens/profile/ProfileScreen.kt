@@ -64,7 +64,7 @@ private fun ProfileScreen(
 ) {
     Column(
         horizontalAlignment = Alignment.Start,
-        modifier = modifier
+        modifier = modifier.padding(20.dp)
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically
