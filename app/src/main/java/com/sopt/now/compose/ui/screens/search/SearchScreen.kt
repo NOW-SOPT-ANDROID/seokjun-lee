@@ -1,4 +1,4 @@
-package com.sopt.now.compose.ui.search
+package com.sopt.now.compose.ui.screens.search
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding

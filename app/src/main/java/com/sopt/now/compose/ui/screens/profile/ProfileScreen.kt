@@ -1,5 +1,6 @@
-package com.sopt.now.compose.ui.profile
+package com.sopt.now.compose.ui.screens.profile
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -19,11 +20,15 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
+import com.sopt.now.compose.MainActivity.Companion.LOGIN_KEY
 import com.sopt.now.compose.R
 import com.sopt.now.compose.models.User
 import com.sopt.now.compose.ui.SoptBottomNavigation
 import com.sopt.now.compose.ui.composables.TitleAndContentTextComposable
 import com.sopt.now.compose.ui.navigation.NavigationDestination
+import com.sopt.now.compose.ui.navigation.getDataFromPreviousBackStackEntry
+
+private const val TAG = "ProfileScreen"
 
 object ProfileDestination: NavigationDestination{
     override val route: String = "profile"
@@ -33,9 +38,10 @@ object ProfileDestination: NavigationDestination{
 
 @Composable
 fun ProfileScreen(
-    navController: NavHostController,
-    user: User = User("hello", "hello")
+    navController: NavHostController
 ) {
+    val user = navController.getDataFromPreviousBackStackEntry<User>(LOGIN_KEY)!!
+    Log.d(TAG, "${user.value?.id}")
     Scaffold(
         bottomBar = { SoptBottomNavigation(navController = navController) }
     ) {paddingValue ->
@@ -61,7 +67,7 @@ fun ProfileScreen(
                     )
                 }
                 Text(
-                    text = user.nickName,
+                    text = user.value!!.nickName,
                     fontSize = 20.sp,
                     fontWeight = FontWeight.Bold,
                     modifier = Modifier
@@ -71,7 +77,7 @@ fun ProfileScreen(
             }
 
             Text(
-                text = stringResource(id = R.string.main_mbti_introduction, user.mbti),
+                text = stringResource(id = R.string.main_mbti_introduction, user.value!!.mbti),
                 fontSize = 20.sp,
                 fontWeight = FontWeight.Bold,
                 modifier = Modifier.padding(top = 20.dp)
@@ -80,12 +86,12 @@ fun ProfileScreen(
 
             TitleAndContentTextComposable(
                 title = R.string.title_pw,
-                content = user.id,
+                content = user.value!!.id,
                 modifier = Modifier.padding(top = 70.dp)
             )
             TitleAndContentTextComposable(
                 title = R.string.title_pw,
-                content = user.pw,
+                content = user.value!!.pw,
                 modifier = Modifier.padding(top = 70.dp)
             )
         }

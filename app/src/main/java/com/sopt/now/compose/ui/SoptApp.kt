@@ -1,5 +1,7 @@
 package com.sopt.now.compose.ui
 
+import android.content.Context
+import android.widget.Toast
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
@@ -20,36 +22,14 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.sopt.now.compose.ui.home.HomeDestination
+import com.sopt.now.compose.ui.screens.home.HomeDestination
 import com.sopt.now.compose.ui.navigation.ApplicationNavHost
 import com.sopt.now.compose.ui.navigation.NavigationDestination
-import com.sopt.now.compose.ui.profile.ProfileDestination
-import com.sopt.now.compose.ui.search.SearchDestination
+import com.sopt.now.compose.ui.screens.profile.ProfileDestination
+import com.sopt.now.compose.ui.screens.search.SearchDestination
 
 @Composable
-fun SoptApp(
-    navController: NavHostController = rememberNavController()
-) {
-    /*Scaffold(
-        bottomBar = {
-            SoptBottomNavigation(
-                items = listOf(HomeDestination),
-                navController = navController,
-                onItemClick = {
-                    navController.navigate(it.route){
-                        popUpTo(navController.currentBackStackEntry?.destination?.route!!)
-                        { inclusive = true }
-                    }
-                }
-            )
-        }
-    ) {
-        ApplicationNavHost(
-            navController = rememberNavController(),
-            modifier = Modifier.padding(it)
-        )
-    }*/
-
+fun SoptApp() {
     Surface {
         ApplicationNavHost(
             navController = rememberNavController(),
