@@ -20,10 +20,11 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.sopt.now.compose.MainActivity.Companion.SIGNUP_KEY
+import com.sopt.now.compose.MainActivity.Companion.printToastMessage
 import com.sopt.now.compose.R
 import com.sopt.now.compose.ui.composables.ButtonComposable
 import com.sopt.now.compose.ui.composables.TextFieldWithTitleComposable
-import com.sopt.now.compose.ui.navigation.putDataAtPreviousBackStackEntry
+import com.sopt.now.compose.ext.putDataAtPreviousBackStackEntry
 
 @Composable
 fun SignUpScreen(
@@ -89,6 +90,9 @@ fun SignUpScreen(
                 onClick = {
                     if (viewModel.checkSignUp(context = context)) {
                         navController.putDataAtPreviousBackStackEntry(SIGNUP_KEY, uiState.value)
+                        printToastMessage(
+                            context = context,
+                            messageRes = R.string.login_toast_success_signup)
                         navController.navigateUp()
                     }
                 })

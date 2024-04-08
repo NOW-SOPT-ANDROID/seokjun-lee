@@ -1,22 +1,16 @@
 package com.sopt.now.compose.ui.screens.profile
 
-import android.util.Log
-import androidx.annotation.DrawableRes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Person
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -31,8 +25,7 @@ import com.sopt.now.compose.models.User
 import com.sopt.now.compose.ui.SoptBottomNavigation
 import com.sopt.now.compose.ui.composables.ScreenWithImage
 import com.sopt.now.compose.ui.composables.TitleAndContentTextComposable
-import com.sopt.now.compose.ui.navigation.NavigationDestination
-import com.sopt.now.compose.ui.navigation.getDataFromPreviousBackStackEntry
+import com.sopt.now.compose.ext.getDataFromPreviousBackStackEntry
 
 private const val TAG = "ProfileScreen"
 

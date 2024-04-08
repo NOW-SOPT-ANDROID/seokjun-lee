@@ -2,15 +2,12 @@ package com.sopt.now.compose.ui.screens.home
 
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.aspectRatio
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Scaffold
@@ -32,7 +29,7 @@ import com.sopt.now.compose.models.Friend
 import com.sopt.now.compose.models.User
 import com.sopt.now.compose.ui.SoptBottomNavigation
 import com.sopt.now.compose.ui.composables.ScreenWithImage
-import com.sopt.now.compose.ui.navigation.getDataFromPreviousBackStackEntry
+import com.sopt.now.compose.ext.getDataFromPreviousBackStackEntry
 
 @Composable
 fun HomeScreen(

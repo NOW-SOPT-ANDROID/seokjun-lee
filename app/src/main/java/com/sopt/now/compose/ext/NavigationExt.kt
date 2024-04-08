@@ -1,4 +1,4 @@
-package com.sopt.now.compose.ui.navigation
+package com.sopt.now.compose.ext
 
 import androidx.lifecycle.MutableLiveData
 import androidx.navigation.NavHostController

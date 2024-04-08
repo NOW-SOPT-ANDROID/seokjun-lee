@@ -12,7 +12,6 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
@@ -32,11 +31,9 @@ import com.sopt.now.compose.models.User
 import com.sopt.now.compose.ui.composables.ButtonComposable
 import com.sopt.now.compose.ui.composables.TextFieldWithTitleComposable
 import com.sopt.now.compose.ui.navigation.HomeDestination
-import com.sopt.now.compose.ui.navigation.NavigationDestination
-import com.sopt.now.compose.ui.navigation.ProfileDestination
 import com.sopt.now.compose.ui.navigation.SignUpDestination
-import com.sopt.now.compose.ui.navigation.getDataFromCurrentBackStackEntry
-import com.sopt.now.compose.ui.navigation.putDataAtCurrentStackEntry
+import com.sopt.now.compose.ext.getDataFromCurrentBackStackEntry
+import com.sopt.now.compose.ext.putDataAtCurrentStackEntry
 
 @Composable
 fun LoginScreen(

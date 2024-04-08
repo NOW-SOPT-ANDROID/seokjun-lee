@@ -54,7 +54,7 @@ class LoginViewModel: ViewModel() {
                             toastMessageResId = R.string.login_toast_success_login
                             return@forEach
                         }
-                        user.id == _uiState.value.id -> {
+                        user.id != _uiState.value.id -> {
                             toastMessageResId = R.string.login_toast_check_id
                         }
                         user.pw != _uiState.value.pw -> {
