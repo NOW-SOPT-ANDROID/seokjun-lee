@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">NOW SOPT Android</string>
     <string name="login_title">Welcome To SOPT</string>
+    <string name="signup_title">회원가입</string>
 
     <!--Intent Key-->
     <string name="intent_key_login_signup">signup</string>
