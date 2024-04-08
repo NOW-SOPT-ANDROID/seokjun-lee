@@ -29,6 +29,7 @@ import com.sopt.now.compose.MainActivity.Companion.LOGIN_KEY
 import com.sopt.now.compose.R
 import com.sopt.now.compose.models.User
 import com.sopt.now.compose.ui.SoptBottomNavigation
+import com.sopt.now.compose.ui.composables.ScreenWithImage
 import com.sopt.now.compose.ui.composables.TitleAndContentTextComposable
 import com.sopt.now.compose.ui.navigation.NavigationDestination
 import com.sopt.now.compose.ui.navigation.getDataFromPreviousBackStackEntry
@@ -49,7 +50,7 @@ fun ProfileScreen(
     ) { paddingValue ->
         when (val uiState = viewModel.uiState.collectAsState().value) {
             is ProfileUiState.Success -> {
-                ProfileSuccessScreen(user = uiState.user, modifier = Modifier.padding(paddingValue))
+                ProfileScreen(user = uiState.user, modifier = Modifier.padding(paddingValue))
             }
 
             is ProfileUiState.Loading -> {
@@ -64,7 +65,7 @@ fun ProfileScreen(
 }
 
 @Composable
-private fun ProfileSuccessScreen(
+private fun ProfileScreen(
     modifier: Modifier = Modifier,
     user: User
 ) {
@@ -117,17 +118,5 @@ private fun ProfileSuccessScreen(
             content = user.pw,
             modifier = Modifier.padding(top = 70.dp)
         )
-    }
-}
-
-@Composable
-fun ScreenWithImage(
-    modifier: Modifier = Modifier,
-    @DrawableRes
-    imageRes: Int,
-    contentDescription: String,
-) {
-    Box(modifier = modifier.fillMaxSize()){
-        Image(painter = painterResource(id = imageRes), contentDescription = contentDescription)
     }
 }

@@ -31,6 +31,7 @@ import com.sopt.now.compose.R
 import com.sopt.now.compose.models.User
 import com.sopt.now.compose.ui.composables.ButtonComposable
 import com.sopt.now.compose.ui.composables.TextFieldWithTitleComposable
+import com.sopt.now.compose.ui.navigation.HomeDestination
 import com.sopt.now.compose.ui.navigation.NavigationDestination
 import com.sopt.now.compose.ui.navigation.ProfileDestination
 import com.sopt.now.compose.ui.navigation.SignUpDestination
@@ -73,7 +74,7 @@ fun LoginScreen(
                 printToastMessage(context = context, viewModel.getToastMessageByCheckingIdAndPw())
                 if (viewModel.isLoginPossible()) {
                     navController.putDataAtCurrentStackEntry(LOGIN_KEY, viewModel.getUser())
-                    navController.navigate(ProfileDestination.route)
+                    navController.navigate(HomeDestination.route)
                     viewModel.initializeUiState()
                 }
             },
