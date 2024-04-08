@@ -6,7 +6,6 @@ import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModel
 import com.sopt.now.compose.R
 import com.sopt.now.compose.models.User
-import com.sopt.now.compose.ui.screens.login.LoginUiState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
