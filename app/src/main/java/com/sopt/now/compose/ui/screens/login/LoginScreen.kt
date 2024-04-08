@@ -43,8 +43,8 @@ fun LoginScreen(
     val context = LocalContext.current
     val uiState = viewModel.uiState.collectAsState()
 
-    navController.getDataFromCurrentBackStackEntry<User>(SIGNUP_KEY)?.value?.let { newUser ->
-        viewModel.addUsers(newUser)
+    navController.getDataFromCurrentBackStackEntry<User>(SIGNUP_KEY)?.value?.run {
+        viewModel.addUsers(this)
     }
 
     Column(

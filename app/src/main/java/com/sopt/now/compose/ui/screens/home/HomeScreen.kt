@@ -2,22 +2,35 @@ package com.sopt.now.compose.ui.screens.home
 
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -36,8 +49,8 @@ fun HomeScreen(
     navController: NavHostController = rememberNavController(),
     viewModel: HomeViewModel = viewModel()
 ) {
-    navController.getDataFromPreviousBackStackEntry<User>(MainActivity.LOGIN_KEY)?.value?.let { user ->
-        viewModel.updateUiState(user)
+    navController.getDataFromPreviousBackStackEntry<User>(MainActivity.LOGIN_KEY)?.value?.run {
+        viewModel.updateUiState(this)
     }
 
     Scaffold(
@@ -45,7 +58,11 @@ fun HomeScreen(
     ) { paddingValue ->
         when (val uiState = viewModel.uiState.collectAsState().value) {
             is HomeUiState.Success -> {
-                HomeScreen(uiState = uiState, friendList = viewModel.mockFriendList, modifier = Modifier.padding(paddingValue))
+                HomeScreen(
+                    uiState = uiState,
+                    friendList = viewModel.mockFriendList,
+                    modifier = Modifier.padding(paddingValue)
+                )
             }
 
             is HomeUiState.Loading -> {
@@ -66,10 +83,31 @@ fun HomeScreen(
     friendList: List<Friend>
 ) {
     LazyColumn(
-        modifier = modifier
+        modifier = modifier.padding(horizontal = 20.dp)
     ) {
-        items(friendList) {friend ->
-            FriendItemComposable(
+        item {
+            ItemComposable(
+                modifier = Modifier.fillMaxWidth().padding(top = 10.dp),
+                imageRes = R.drawable.ic_launcher_background,
+                contentDescription = "",
+                imageSize = 80.dp,
+                name = uiState.user.nickName,
+                selfDescription = uiState.user.mbti,
+                nameFontSize = 20.sp,
+                selfDescriptionFontSize = 15.sp
+            )
+
+            Spacer(
+                modifier = Modifier
+                    .height(21.dp)
+                    .fillMaxWidth()
+                    .padding(vertical = 10.dp)
+                    .background(color = Color.LightGray)
+            )
+        }
+        items(friendList) { friend ->
+            ItemComposable(
+                modifier = Modifier.padding(bottom = 10.dp).fillMaxWidth(),
                 imageRes = R.drawable.ic_launcher_background,
                 contentDescription = "",
                 name = friend.name,
@@ -80,52 +118,45 @@ fun HomeScreen(
 }
 
 @Composable
-fun FriendItemComposable(
+fun ItemComposable(
+    modifier: Modifier,
     @DrawableRes
     imageRes: Int,
     contentDescription: String,
+    imageSize: Dp = 60.dp,
     name: String,
-    selfDescription: String
-
+    nameFontSize: TextUnit = 15.sp,
+    selfDescription: String,
+    selfDescriptionFontSize: TextUnit = 12.sp
 ) {
     Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(10.dp),
+        modifier = modifier,
         verticalAlignment = Alignment.CenterVertically
     ) {
         Image(
             modifier = Modifier
-                .width(70.dp)
-                .aspectRatio(1f),
+                .width(imageSize)
+                .aspectRatio(1f)
+                .clip(shape = RoundedCornerShape(10.dp)),
             painter = painterResource(id = imageRes),
             contentDescription = contentDescription
         )
         Column(
             modifier = Modifier.padding(start = 10.dp)
-        ){
+        ) {
             Text(
                 text = name,
-                fontSize = 15.sp,
+                fontSize = nameFontSize,
+                fontWeight = FontWeight.Bold,
                 maxLines = 1
             )
             Text(
                 text = selfDescription,
-                fontSize = 12.sp,
+                fontSize = selfDescriptionFontSize,
                 maxLines = 1
             )
         }
     }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun FriendItemPreview() {
-    FriendItemComposable(
-        imageRes = R.drawable.ic_launcher_background,
-        contentDescription = "",
-        name = "aaaa",
-        selfDescription = "bbbb")
 }
 
 

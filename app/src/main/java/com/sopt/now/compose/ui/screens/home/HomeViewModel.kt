@@ -52,6 +52,21 @@ class HomeViewModel: ViewModel() {
             profileImage = R.drawable.ic_launcher_foreground,
             name = "배찬우",
             selfDescription = "마지막 20대를 불태워 보겠어..",
+        ),
+        Friend(
+            profileImage = R.drawable.ic_launcher_foreground,
+            name = "송혜음",
+            selfDescription = "소주잔 3조 화이팅!!",
+        ),
+        Friend(
+            profileImage = R.drawable.ic_launcher_foreground,
+            name = "박유진",
+            selfDescription = "코리조는 3조가 최고~",
+        ),
+        Friend(
+            profileImage = R.drawable.ic_launcher_foreground,
+            name = "이석준",
+            selfDescription = "내가 제일 잘나가ㅏ",
         )
     )
 

@@ -34,8 +34,8 @@ fun ProfileScreen(
     navController: NavHostController = rememberNavController(),
     viewModel: ProfileViewModel = viewModel()
 ) {
-    navController.getDataFromPreviousBackStackEntry<User>(LOGIN_KEY)?.value?.let { user ->
-        viewModel.updateUiState(user)
+    navController.getDataFromPreviousBackStackEntry<User>(LOGIN_KEY)?.value?.run {
+        viewModel.updateUiState(this)
     }
 
     Scaffold(
