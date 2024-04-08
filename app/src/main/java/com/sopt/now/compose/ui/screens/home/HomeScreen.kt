@@ -16,11 +16,6 @@ import com.sopt.now.compose.ui.SoptBottomNavigation
 import com.sopt.now.compose.ui.navigation.NavigationDestination
 
 
-object HomeDestination : NavigationDestination {
-    override val route: String = "home"
-    override val titleRes: Int = R.string.destination_title_home
-    override val iconVector: ImageVector = Icons.Filled.Home
-}
 
 @Composable
 fun HomeScreen(

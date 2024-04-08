@@ -30,11 +30,7 @@ import com.sopt.now.compose.ui.navigation.getDataFromPreviousBackStackEntry
 
 private const val TAG = "ProfileScreen"
 
-object ProfileDestination: NavigationDestination{
-    override val route: String = "profile"
-    override val titleRes: Int = R.string.destination_route_profile
-    override val iconVector: ImageVector = Icons.Filled.Person
-}
+
 
 @Composable
 fun ProfileScreen(

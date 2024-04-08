@@ -16,11 +16,7 @@ import com.sopt.now.compose.R
 import com.sopt.now.compose.ui.SoptBottomNavigation
 import com.sopt.now.compose.ui.navigation.NavigationDestination
 
-object SearchDestination: NavigationDestination {
-    override val route: String = "search"
-    override val titleRes: Int = R.string.destination_route_search
-    override val iconVector: ImageVector = Icons.Filled.Search
-}
+
 
 @Composable
 fun SearchScreen(

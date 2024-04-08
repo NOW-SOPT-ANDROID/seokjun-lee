@@ -30,11 +30,7 @@ import com.sopt.now.compose.ui.composables.TextFieldWithTitleComposable
 import com.sopt.now.compose.ui.navigation.NavigationDestination
 import com.sopt.now.compose.ui.navigation.putDataAtPreviousBackStackEntry
 
-object SignUpDestination: NavigationDestination {
-    override val route: String = "signup"
-    override val titleRes: Int =  R.string.destination_title_signup
-    override val iconVector: ImageVector? = null
-}
+
 
 @Composable
 fun SignUpScreen(

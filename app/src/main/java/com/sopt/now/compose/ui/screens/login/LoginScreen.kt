@@ -32,16 +32,10 @@ import com.sopt.now.compose.models.User
 import com.sopt.now.compose.ui.composables.ButtonComposable
 import com.sopt.now.compose.ui.composables.TextFieldWithTitleComposable
 import com.sopt.now.compose.ui.navigation.NavigationDestination
+import com.sopt.now.compose.ui.navigation.ProfileDestination
+import com.sopt.now.compose.ui.navigation.SignUpDestination
 import com.sopt.now.compose.ui.navigation.getDataFromCurrentBackStackEntry
 import com.sopt.now.compose.ui.navigation.putDataAtCurrentStackEntry
-import com.sopt.now.compose.ui.screens.profile.ProfileDestination
-import com.sopt.now.compose.ui.screens.signup.SignUpDestination
-
-object LoginDestination: NavigationDestination {
-    override val route: String = "login"
-    override val titleRes: Int = R.string.destination_title_login
-    override val iconVector: ImageVector? = null
-}
 
 @Composable
 fun LoginScreen(
@@ -51,7 +45,7 @@ fun LoginScreen(
     val context = LocalContext.current
     val uiState = viewModel.uiState.collectAsState()
     val result = navController.getDataFromCurrentBackStackEntry<User>(SIGNUP_KEY)
-    result?.value?.let {newUser ->
+    result?.value?.let { newUser ->
         viewModel.addUsers(newUser)
     }
 
@@ -70,18 +64,19 @@ fun LoginScreen(
         LoginTextFields(
             id = uiState.value.id,
             pw = uiState.value.pw,
-            onIdChanged = {viewModel.updateUiState(id = it)},
-            onPwChanged = {viewModel.updateUiState(pw = it)}
+            onIdChanged = { viewModel.updateUiState(id = it) },
+            onPwChanged = { viewModel.updateUiState(pw = it) }
         )
 
         LoginButtons(
             onClickLoginButton = {
                 printToastMessage(context = context, viewModel.getToastMessageByCheckingIdAndPw())
-                if(viewModel.isLoginPossible()) {
+                if (viewModel.isLoginPossible()) {
                     navController.putDataAtCurrentStackEntry(LOGIN_KEY, viewModel.getUser())
                     viewModel.updateUiState(id = "", pw = "", userIndex = -1)
                     navController.navigate(ProfileDestination.route)
-                } } ,
+                }
+            },
             onClickSignUpButton = {
                 navController.navigate(SignUpDestination.route)
             })
@@ -92,8 +87,8 @@ fun LoginScreen(
 fun LoginTextFields(
     id: String,
     pw: String,
-    onIdChanged:(String) -> Unit,
-    onPwChanged:(String) -> Unit,
+    onIdChanged: (String) -> Unit,
+    onPwChanged: (String) -> Unit,
 ) {
     Column {
         TextFieldWithTitleComposable(
@@ -117,8 +112,8 @@ fun LoginTextFields(
 
 @Composable
 fun LoginButtons(
-    onClickLoginButton:() -> Unit,
-    onClickSignUpButton:() -> Unit
+    onClickLoginButton: () -> Unit,
+    onClickSignUpButton: () -> Unit
 ) {
     Column {
         ButtonComposable(

@@ -5,15 +5,10 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import com.sopt.now.compose.ui.screens.home.HomeDestination
 import com.sopt.now.compose.ui.screens.home.HomeScreen
-import com.sopt.now.compose.ui.screens.login.LoginDestination
 import com.sopt.now.compose.ui.screens.login.LoginScreen
-import com.sopt.now.compose.ui.screens.profile.ProfileDestination
 import com.sopt.now.compose.ui.screens.profile.ProfileScreen
-import com.sopt.now.compose.ui.screens.search.SearchDestination
 import com.sopt.now.compose.ui.screens.search.SearchScreen
-import com.sopt.now.compose.ui.screens.signup.SignUpDestination
 import com.sopt.now.compose.ui.screens.signup.SignUpScreen
 
 @Composable
