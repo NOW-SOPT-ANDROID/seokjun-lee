@@ -21,4 +21,14 @@
     <string name="signup_et_hint_nickname">닉네임을 입력해주세요.</string>
     <string name="signup_et_hint_mbti">본인의 MBTI를 입력해주세요</string>
     <string name="signup_btn_signup">회원가입 하기</string>
+
+    <!--Bottom Navigation Strings-->
+    <string name="bottom_nav_title_home">홈</string>
+    <string name="bottom_nav_title_search">검색</string>
+    <string name="bottom_nav_title_mypage">마이페이지</string>
+
+    <!--MyPage Strings-->
+    <string name="mypage_iv_profile">profile</string>
+    <string name="mypage_tv_title_id">ID</string>
+    <string name="mypage_tv_title_pw">비밀번호</string>
 </resources>

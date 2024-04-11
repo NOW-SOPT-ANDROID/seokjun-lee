@@ -71,9 +71,12 @@ class HomeFragment: Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setFriendAdapter()
+    }
 
+    private fun setFriendAdapter() {
         val friendAdapter = FriendAdapter()
-        binding.rvHomeFriends.run {
+        binding.homeRvFriends.run {
             adapter = friendAdapter
             layoutManager = LinearLayoutManager(requireContext())
         }
@@ -84,4 +87,6 @@ class HomeFragment: Fragment() {
         super.onDestroyView()
         _binding = null
     }
+
+
 }

@@ -18,10 +18,10 @@ class MainActivity :AppCompatActivity() {
 
         val user = getUserInfoFromIntent()
 
-        val currentFragment = supportFragmentManager.findFragmentById(binding.fcvHome.id)
+        val currentFragment = supportFragmentManager.findFragmentById(binding.mainFcvHome.id)
         if (currentFragment == null) {
             supportFragmentManager.beginTransaction()
-                .add(binding.fcvHome.id, HomeFragment())
+                .add(binding.mainFcvHome.id, HomeFragment())
                 .commit()
         }
 
@@ -29,7 +29,7 @@ class MainActivity :AppCompatActivity() {
     }
 
     private fun clickBottomNavigation(user: User) {
-        binding.bnvHome.setOnItemSelectedListener{
+        binding.mainBnvHome.setOnItemSelectedListener{
             when (it.itemId) {
                 R.id.menu_home-> {
                     replaceFragment(HomeFragment())
@@ -52,7 +52,7 @@ class MainActivity :AppCompatActivity() {
     // 트렌젝션을 시작하고 replace 메서드를 통해 Fragment를 교체합니다.
     private fun replaceFragment(fragment: Fragment) {
         supportFragmentManager.beginTransaction()
-            .replace(R.id.fcv_home, fragment)
+            .replace(R.id.main_fcv_home, fragment)
             .commit()
     }
 
