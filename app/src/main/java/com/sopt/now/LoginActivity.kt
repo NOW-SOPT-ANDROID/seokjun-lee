@@ -14,22 +14,22 @@ import com.sopt.now.models.User
 import java.io.Serializable
 
 class LoginActivity : AppCompatActivity() {
-    private lateinit var binding: ActivityLoginBinding
-    private var users: MutableList<User> = mutableListOf()
-
     companion object{
         const val SIGNUP_KEY = "user"
         const val LOGIN_KEY = "login"
     }
 
-
+    private lateinit var binding: ActivityLoginBinding
+    private var users: MutableList<User> = mutableListOf()
     private val getSignUpResult = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()
     ) { result ->
         if (result.resultCode == Activity.RESULT_OK) {
             val userData = result.data?.serializable<User>(SIGNUP_KEY)
-            userData?.let { users.add(it as User) }
-            Toast.makeText(this, "회원가입이 완료되었습니다.}", Toast.LENGTH_SHORT).show()
+            if(userData != null) {
+                users.add(userData)
+                Toast.makeText(this, "회원가입이 완료되었습니다.}", Toast.LENGTH_SHORT).show()
+            }
         }
     }
 

@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.sopt.now.LoginActivity.Companion.SIGNUP_KEY
 import com.sopt.now.databinding.ActivitySignUpBinding
 import com.sopt.now.models.User
 
@@ -16,26 +17,40 @@ class SignUpActivity : AppCompatActivity() {
         binding = ActivitySignUpBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        initButton()
+    }
+
+    private fun initButton() {
         binding.apply {
-            btnSignup.setOnClickListener {
-                val id = etId.text.toString()
-                val pw = etPw.text.toString()
-                val nickname = signEtNickname.text.toString()
-                val mbti = etMbti.text.toString()
+            signupBtnSignup.setOnClickListener {
+                val id = signupEtId.text.toString()
+                val pw = signupEtPw.text.toString()
+                val nickname = signupEtNickname.text.toString()
+                val mbti = signupEtMbti.text.toString()
+
                 if (isSignUpPossible(id, pw, nickname, mbti)) {
-                    val userData = User(id = id, pw = pw, nickName = nickname, mbti = mbti)
-                    val intent = Intent()
-                    intent.putExtra(SIGNUP_KEY, userData)
-                    setResult(Activity.RESULT_OK, intent)
-                    finish()
+                    sendUserDataToLogin(
+                        User(
+                            id = id,
+                            pw = pw,
+                            nickName = nickname,
+                            mbti = mbti)
+                    )
                 }
             }
         }
     }
 
+    private fun sendUserDataToLogin(userData: User) {
+        val intent = Intent()
+        intent.putExtra(SIGNUP_KEY, userData)
+        setResult(Activity.RESULT_OK, intent)
+        finish()
+    }
+
     private fun isSignUpPossible(id: String, pw: String, nickname: String, mbti: String): Boolean{
         var isPossible = false
-        val toast = when {
+        val toastMessage = when {
             id.length !in 6..10 -> "ID는 6~10 글자"
             pw.length !in 8..12 -> "비밀번호는 8~12 글자"
             nickname.isBlank() -> "닉네임은 한 글자 이상, 공백 불가"
@@ -46,7 +61,7 @@ class SignUpActivity : AppCompatActivity() {
             }
         }
 
-        Toast.makeText(this, toast, Toast.LENGTH_SHORT).show()
+        Toast.makeText(this, toastMessage, Toast.LENGTH_SHORT).show()
         return isPossible
     }
 }
