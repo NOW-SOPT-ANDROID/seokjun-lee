@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import com.sopt.now.R
 import com.sopt.now.databinding.FragmentMyPageBinding
 import com.sopt.now.models.User
 
@@ -40,7 +41,7 @@ class MyPageFragment(
     private fun initTextViews() {
         binding.apply {
             myPageTvNickname.text = user.nickName
-            myPageTvIntro.text = "제 MBTI는 ${user.mbti} 입니다!!"
+            myPageTvIntro.text = getString(R.string.mypage_tv_mbti, user.mbti)
             myPageTvId.text = user.id
             myPageTvPw.text = user.pw
         }

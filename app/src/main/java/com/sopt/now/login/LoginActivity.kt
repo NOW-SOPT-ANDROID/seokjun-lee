@@ -7,6 +7,7 @@ import android.widget.EditText
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import com.sopt.now.R
 import com.sopt.now.signup.SignUpActivity
 import com.sopt.now.databinding.ActivityLoginBinding
 import com.sopt.now.ext.serializable
@@ -43,7 +44,7 @@ class LoginActivity : AppCompatActivity() {
     private fun registerUser(userData: User?) {
         if(userData != null) {
             users.add(userData)
-            Toast.makeText(this, "회원가입이 완료되었습니다.}", Toast.LENGTH_SHORT).show()
+            //Toast.makeText(this, getString(R.string.toast_signup_success), Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -59,12 +60,11 @@ class LoginActivity : AppCompatActivity() {
             loginBtnLogin.setOnClickListener {
                 val id = loginEtId.text.toString()
                 val pw = loginEtPw.text.toString()
-                val index = checkIdAndPw(id, pw)
-                if (index != null) {
-                    initEditText(binding.loginEtId)
-                    initEditText(binding.loginEtPw)
+                val user = findUserByIdAndPw(id, pw)
+                if (user != null) {
+                    initEditTexts()
                     val intent = Intent(this@LoginActivity, MainActivity::class.java)
-                    intent.putExtra(LOGIN_KEY, users[index])
+                    intent.putExtra(LOGIN_KEY, user)
                     getIntentResult.launch(intent)
                 }
             }
@@ -77,37 +77,41 @@ class LoginActivity : AppCompatActivity() {
     }
 
 
-    private fun initEditText(editText: EditText) {
-        editText.apply {
+    private fun initEditTexts() {
+        binding.loginEtId.apply {
+            setText("")
+            clearFocus()
+        }
+        binding.loginEtPw.apply {
             setText("")
             clearFocus()
         }
     }
 
-    private fun checkIdAndPw(id: String, pw: String): Int? {
-        var answer: Int? = null
-        var toastMessage = ""
+    private fun findUserByIdAndPw(id: String, pw: String): User? {
+        var userData: User? = null
+        var toastMessage = 0
         when{
-            id.isBlank() -> {toastMessage = "아이디를 입력해주세요"}
-            pw.isBlank() -> {toastMessage = "비밀번호를 입력해주세요"}
+            id.isBlank() -> {toastMessage = R.string.toast_login_fail_blank_id}
+            pw.isBlank() -> {toastMessage = R.string.toast_login_fail_blank_pw}
             else -> {
-                for (index in users.indices) {
-                    if (users[index].id == id) {
-                        if (users[index].pw == pw) {
-                            answer = index
-                            toastMessage = "로그인에 성공했습니다."
-                            break
+                users.forEach {user ->
+                    if(user.id == id) {
+                        if(user.pw == pw) {
+                            userData = user
+                            toastMessage = R.string.toast_login_success
+                            return@forEach
                         } else {
-                            toastMessage = "비밀번호를 다시 확인하세요"
+                            toastMessage = R.string.toast_login_fail_wrong_pw
                         }
                     } else {
-                        toastMessage = "아이디를 다시 확인하세요"
+                        toastMessage = R.string.toast_login_fail_wrong_id
                     }
                 }
             }
         }
 
         Toast.makeText(this, toastMessage, Toast.LENGTH_SHORT).show()
-        return answer
+        return userData
     }
 }

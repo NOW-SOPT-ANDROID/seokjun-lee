@@ -29,7 +29,22 @@
 
     <!--MyPage Strings-->
     <string name="mypage_iv_profile">profile</string>
+    <string name="mypage_tv_mbti">제 MBTI는 %s입니다!</string>
     <string name="mypage_tv_title_id">ID</string>
     <string name="mypage_tv_title_pw">비밀번호</string>
     <string name="mypage_btn_logout">로그아웃</string>
+
+    <!--Toast Messages-->
+    <string name="toast_login_success">로그인에 성공했습니다.</string>
+    <string name="toast_login_fail_blank_id">아이디를 입력해주세요</string>
+    <string name="toast_login_fail_blank_pw">비밀번호를 입력해주세요</string>
+    <string name="toast_login_fail_wrong_id">아이디를 확인해주세요</string>
+    <string name="toast_login_fail_wrong_pw">비밀번호를 확인해주세요</string>
+
+    <string name="toast_signup_success">회원가입에 성공하였습니다.</string>
+    <string name="toast_signup_check_id">아이디는 6~10 글자</string>
+    <string name="toast_signup_check_pw">비밀번호는 8~12 글자</string>
+    <string name="toast_signup_check_nickname">닉네임 한 글자 이상</string>
+    <string name="toast_signup_check_mbti">MBTI 공백 불가</string>
+
 </resources>

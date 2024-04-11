@@ -27,16 +27,9 @@ class FriendAdapter() : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             TYPE_HEADER -> UserViewHolder(ItemUserBinding.inflate(inflater, parent, false))
             else -> FriendViewHolder(ItemFriendBinding.inflate(inflater, parent, false))
         }
-
-        /*val inflater = LayoutInflater.from(parent.context)
-        val binding = ItemFriendBinding.inflate(inflater, parent, false)
-        return FriendViewHolder(binding)*/
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        //FriendViewHolder의 onBind() 메서드
-        //holder.onBind(friendList[position])
-
         if (holder is FriendViewHolder && position > 0) {
             holder.onBind(friendList[position])
         } else if(holder is UserViewHolder) {

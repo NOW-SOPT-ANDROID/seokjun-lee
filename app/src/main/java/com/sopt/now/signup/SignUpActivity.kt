@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.sopt.now.R
 import com.sopt.now.login.LoginActivity.Companion.SIGNUP_KEY
 import com.sopt.now.databinding.ActivitySignUpBinding
 import com.sopt.now.models.User
@@ -50,13 +51,13 @@ class SignUpActivity : AppCompatActivity() {
     private fun isSignUpPossible(id: String, pw: String, nickname: String, mbti: String): Boolean{
         var isPossible = false
         val toastMessage = when {
-            id.length !in 6..10 -> "ID는 6~10 글자"
-            pw.length !in 8..12 -> "비밀번호는 8~12 글자"
-            nickname.isBlank() -> "닉네임은 한 글자 이상, 공백 불가"
-            mbti.isBlank() -> "MBTI를 입력해주세요"
+            id.length !in 6..10 -> R.string.toast_signup_check_id
+            pw.length !in 8..12 -> R.string.toast_signup_check_pw
+            nickname.isBlank() -> R.string.toast_signup_check_nickname
+            mbti.isBlank() -> R.string.toast_signup_check_mbti
             else -> {
                 isPossible = true
-                "회원가입에 성공하였습니다."
+                R.string.toast_signup_success
             }
         }
 
