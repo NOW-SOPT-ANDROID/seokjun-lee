@@ -4,28 +4,30 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
+import android.view.View
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import com.sopt.now.databinding.ActivityLoginBinding
+import com.sopt.now.ext.serializable
 import com.sopt.now.models.User
-
-const val SIGNUP_KEY = "user"
-const val LOGIN_KEY = "login"
+import java.io.Serializable
 
 class LoginActivity : AppCompatActivity() {
     private lateinit var binding: ActivityLoginBinding
     private var users: MutableList<User> = mutableListOf()
 
+    companion object{
+        const val SIGNUP_KEY = "user"
+        const val LOGIN_KEY = "login"
+    }
+
+
     private val getSignUpResult = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()
     ) { result ->
         if (result.resultCode == Activity.RESULT_OK) {
-            val userData = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                result.data?.getSerializableExtra(SIGNUP_KEY, User::class.java)
-            } else {
-                result.data?.getSerializableExtra(SIGNUP_KEY)
-            }
+            val userData = result.data?.serializable<User>(SIGNUP_KEY)
             userData?.let { users.add(it as User) }
             Toast.makeText(this, "회원가입이 완료되었습니다.}", Toast.LENGTH_SHORT).show()
         }
@@ -35,21 +37,26 @@ class LoginActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        initButtons()
+    }
 
-        binding.btnLogin.setOnClickListener {
-            val id = binding.etId.text.toString()
-            val pw = binding.etPw.text.toString()
-            val index = checkIdAndPw(id, pw)
-            if (index != null) {
-                val intent = Intent(this, MainActivity::class.java)
-                intent.putExtra(LOGIN_KEY, users[index])
-                startActivity(intent)
+    private fun initButtons() {
+        binding.apply {
+            loginBtnLogin.setOnClickListener {
+                val id = loginEtId.text.toString()
+                val pw = loginEtPw.text.toString()
+                val index = checkIdAndPw(id, pw)
+                if (index != null) {
+                    val intent = Intent(this@LoginActivity, MainActivity::class.java)
+                    intent.putExtra(LOGIN_KEY, users[index])
+                    startActivity(intent)
+                }
             }
-        }
 
-        binding.btnSignup.setOnClickListener {
-            val intent = Intent(this, SignUpActivity::class.java)
-            getSignUpResult.launch(intent)
+            loginBtnSignup.setOnClickListener {
+                val intent = Intent(this@LoginActivity, SignUpActivity::class.java)
+                getSignUpResult.launch(intent)
+            }
         }
     }
 
