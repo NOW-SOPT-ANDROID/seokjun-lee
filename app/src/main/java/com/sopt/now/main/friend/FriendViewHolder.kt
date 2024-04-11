@@ -1,4 +1,4 @@
-package com.sopt.week02.friend
+package com.sopt.now.main.friend
 
 import androidx.recyclerview.widget.RecyclerView
 import com.sopt.now.databinding.ItemFriendBinding

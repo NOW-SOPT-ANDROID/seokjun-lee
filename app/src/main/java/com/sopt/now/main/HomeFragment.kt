@@ -8,8 +8,8 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.sopt.now.R
 import com.sopt.now.databinding.FragmentHomeBinding
-import com.sopt.week02.friend.Friend
-import com.sopt.week02.friend.FriendAdapter
+import com.sopt.now.main.friend.Friend
+import com.sopt.now.main.friend.FriendAdapter
 
 class HomeFragment: Fragment() {
     private var _binding: FragmentHomeBinding? = null
