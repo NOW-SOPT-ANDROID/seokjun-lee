@@ -3,6 +3,7 @@ package com.sopt.now.login
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.widget.EditText
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
@@ -16,21 +17,33 @@ class LoginActivity : AppCompatActivity() {
     companion object{
         const val SIGNUP_KEY = "user"
         const val LOGIN_KEY = "login"
+
+        const val LOGOUT_RESULT_CODE = 100
+        const val BACK_PRESSED_RESULT_CODE = 101
     }
 
     private lateinit var binding: ActivityLoginBinding
     private var users: MutableList<User> = mutableListOf(
         User("test", "1234","관리자", "TEST")
     )
-    private val getSignUpResult = registerForActivityResult(
+    private val getIntentResult = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()
     ) { result ->
-        if (result.resultCode == Activity.RESULT_OK) {
-            val userData = result.data?.serializable<User>(SIGNUP_KEY)
-            if(userData != null) {
-                users.add(userData)
-                Toast.makeText(this, "회원가입이 완료되었습니다.}", Toast.LENGTH_SHORT).show()
+        when(result.resultCode) {
+            Activity.RESULT_OK -> {
+                registerUser(result.data?.serializable<User>(SIGNUP_KEY))
             }
+            BACK_PRESSED_RESULT_CODE -> {
+                this@LoginActivity.finish()
+            }
+            LOGOUT_RESULT_CODE -> {}
+        }
+    }
+
+    private fun registerUser(userData: User?) {
+        if(userData != null) {
+            users.add(userData)
+            Toast.makeText(this, "회원가입이 완료되었습니다.}", Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -48,16 +61,26 @@ class LoginActivity : AppCompatActivity() {
                 val pw = loginEtPw.text.toString()
                 val index = checkIdAndPw(id, pw)
                 if (index != null) {
+                    initEditText(binding.loginEtId)
+                    initEditText(binding.loginEtPw)
                     val intent = Intent(this@LoginActivity, MainActivity::class.java)
                     intent.putExtra(LOGIN_KEY, users[index])
-                    startActivity(intent)
+                    getIntentResult.launch(intent)
                 }
             }
 
             loginBtnSignup.setOnClickListener {
                 val intent = Intent(this@LoginActivity, SignUpActivity::class.java)
-                getSignUpResult.launch(intent)
+                getIntentResult.launch(intent)
             }
+        }
+    }
+
+
+    private fun initEditText(editText: EditText) {
+        editText.apply {
+            setText("")
+            clearFocus()
         }
     }
 

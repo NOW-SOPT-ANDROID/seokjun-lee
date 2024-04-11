@@ -1,12 +1,16 @@
 package com.sopt.now.main
 
 import android.os.Bundle
+import android.view.View
+import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.sopt.now.R
 import com.sopt.now.login.LoginActivity.Companion.LOGIN_KEY
 import com.sopt.now.databinding.ActivityMainBinding
 import com.sopt.now.ext.serializable
+import com.sopt.now.login.LoginActivity.Companion.BACK_PRESSED_RESULT_CODE
+import com.sopt.now.login.LoginActivity.Companion.LOGOUT_RESULT_CODE
 import com.sopt.now.models.User
 
 class MainActivity :AppCompatActivity() {
@@ -15,6 +19,7 @@ class MainActivity :AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        addOnBackPressedCallback()
 
         val user = getUserInfoFromIntent()
 
@@ -39,7 +44,7 @@ class MainActivity :AppCompatActivity() {
                     true
                 }
                 R.id.menu_mypage-> {
-                    replaceFragment(MyPageFragment(user))
+                    replaceFragment(MyPageFragment(user, OnClickLogoutButton()))
                     true
                 }
                 else -> false
@@ -57,5 +62,23 @@ class MainActivity :AppCompatActivity() {
 
     private fun getUserInfoFromIntent(): User {
         return intent.serializable<User>(LOGIN_KEY) ?: User()
+    }
+
+    private fun addOnBackPressedCallback() {
+        val callback = object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                setResult(BACK_PRESSED_RESULT_CODE)
+                finish()
+            }
+        }
+        this.onBackPressedDispatcher.addCallback(this, callback)
+    }
+
+    inner class OnClickLogoutButton: View.OnClickListener{
+        override fun onClick(v: View?) {
+            setResult(LOGOUT_RESULT_CODE)
+            finish()
+        }
+
     }
 }

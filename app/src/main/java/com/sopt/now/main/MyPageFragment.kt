@@ -8,7 +8,9 @@ import androidx.fragment.app.Fragment
 import com.sopt.now.databinding.FragmentMyPageBinding
 import com.sopt.now.models.User
 
-class MyPageFragment(private val user: User): Fragment() {
+class MyPageFragment(
+    private val user: User,
+    val onClickLogoutButton: MainActivity.OnClickLogoutButton): Fragment() {
     private var _binding: FragmentMyPageBinding? = null
     private val binding: FragmentMyPageBinding
         get() = requireNotNull(_binding) {"초기화 좀 시켜보시오"}
@@ -26,6 +28,7 @@ class MyPageFragment(private val user: User): Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initTextViews()
+        initButton()
     }
 
     override fun onDestroyView() {
@@ -41,6 +44,10 @@ class MyPageFragment(private val user: User): Fragment() {
             myPageTvId.text = user.id
             myPageTvPw.text = user.pw
         }
+    }
+
+    private fun initButton() {
+        binding.myPageBtnLogout.setOnClickListener(onClickLogoutButton)
     }
 
 }

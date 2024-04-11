@@ -31,4 +31,5 @@
     <string name="mypage_iv_profile">profile</string>
     <string name="mypage_tv_title_id">ID</string>
     <string name="mypage_tv_title_pw">비밀번호</string>
+    <string name="mypage_btn_logout">로그아웃</string>
 </resources>
