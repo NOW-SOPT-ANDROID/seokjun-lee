@@ -1,17 +1,16 @@
-package com.sopt.now
+package com.sopt.now.login
 
 import android.app.Activity
 import android.content.Intent
-import android.os.Build
 import android.os.Bundle
-import android.view.View
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import com.sopt.now.signup.SignUpActivity
 import com.sopt.now.databinding.ActivityLoginBinding
 import com.sopt.now.ext.serializable
+import com.sopt.now.main.MainActivity
 import com.sopt.now.models.User
-import java.io.Serializable
 
 class LoginActivity : AppCompatActivity() {
     companion object{

@@ -1,12 +1,11 @@
-package com.sopt.now
+package com.sopt.now.signup
 
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.sopt.now.LoginActivity.Companion.SIGNUP_KEY
+import com.sopt.now.login.LoginActivity.Companion.SIGNUP_KEY
 import com.sopt.now.databinding.ActivitySignUpBinding
 import com.sopt.now.models.User
 
