@@ -21,10 +21,9 @@ class MainActivity :AppCompatActivity() {
         val currentFragment = supportFragmentManager.findFragmentById(binding.mainFcvHome.id)
         if (currentFragment == null) {
             supportFragmentManager.beginTransaction()
-                .add(binding.mainFcvHome.id, HomeFragment())
+                .add(binding.mainFcvHome.id, HomeFragment(user))
                 .commit()
         }
-
         clickBottomNavigation(user = user)
     }
 
@@ -32,7 +31,7 @@ class MainActivity :AppCompatActivity() {
         binding.mainBnvHome.setOnItemSelectedListener{
             when (it.itemId) {
                 R.id.menu_home-> {
-                    replaceFragment(HomeFragment())
+                    replaceFragment(HomeFragment(user))
                     true
                 }
                 R.id.menu_search-> {

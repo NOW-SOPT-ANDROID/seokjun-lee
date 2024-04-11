@@ -36,10 +36,10 @@ class MyPageFragment(private val user: User): Fragment() {
 
     private fun initTextViews() {
         binding.apply {
-            tvNickname.text = user.nickName
-            tvIntro.text = "제 MBTI는 ${user.mbti} 입니다!!"
-            tvId.text = user.id
-            tvPw.text = user.pw
+            myPageTvNickname.text = user.nickName
+            myPageTvIntro.text = "제 MBTI는 ${user.mbti} 입니다!!"
+            myPageTvId.text = user.id
+            myPageTvPw.text = user.pw
         }
     }
 

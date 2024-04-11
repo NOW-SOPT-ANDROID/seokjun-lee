@@ -10,8 +10,11 @@ import com.sopt.now.R
 import com.sopt.now.databinding.FragmentHomeBinding
 import com.sopt.now.main.friend.Friend
 import com.sopt.now.main.friend.FriendAdapter
+import com.sopt.now.models.User
 
-class HomeFragment: Fragment() {
+class HomeFragment(
+    private val user: User
+): Fragment() {
     private var _binding: FragmentHomeBinding? = null
     private val binding: FragmentHomeBinding
         get() = requireNotNull(_binding) {"초기화 좀 시켜보시오"}
@@ -81,6 +84,7 @@ class HomeFragment: Fragment() {
             layoutManager = LinearLayoutManager(requireContext())
         }
         friendAdapter.setFriendList(mockFriendList)
+        friendAdapter.setUser(user)
     }
 
     override fun onDestroyView() {

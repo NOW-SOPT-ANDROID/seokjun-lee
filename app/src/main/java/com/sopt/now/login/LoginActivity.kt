@@ -19,7 +19,9 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private lateinit var binding: ActivityLoginBinding
-    private var users: MutableList<User> = mutableListOf()
+    private var users: MutableList<User> = mutableListOf(
+        User("test", "1234","관리자", "TEST")
+    )
     private val getSignUpResult = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()
     ) { result ->
