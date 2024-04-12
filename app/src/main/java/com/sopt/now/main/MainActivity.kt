@@ -15,6 +15,13 @@ import com.sopt.now.models.User
 
 class MainActivity :AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
+    inner class OnClickLogoutButton: View.OnClickListener{
+        override fun onClick(v: View?) {
+            setResult(LOGOUT_RESULT_CODE)
+            finish()
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
@@ -74,11 +81,5 @@ class MainActivity :AppCompatActivity() {
         this.onBackPressedDispatcher.addCallback(this, callback)
     }
 
-    inner class OnClickLogoutButton: View.OnClickListener{
-        override fun onClick(v: View?) {
-            setResult(LOGOUT_RESULT_CODE)
-            finish()
-        }
 
-    }
 }

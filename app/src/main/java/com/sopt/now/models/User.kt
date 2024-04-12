@@ -7,4 +7,4 @@ data class User(
     var pw: String = "",
     var nickName: String = "",
     var mbti: String = ""
-): Serializable
+): Serializable{}

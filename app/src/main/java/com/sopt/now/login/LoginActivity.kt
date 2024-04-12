@@ -32,19 +32,15 @@ class LoginActivity : AppCompatActivity() {
     ) { result ->
         when(result.resultCode) {
             Activity.RESULT_OK -> {
-                registerUser(result.data?.serializable<User>(SIGNUP_KEY))
+                val userData = result.data?.serializable<User>(SIGNUP_KEY)
+                if(userData != null) {
+                    users.add(userData)
+                }
             }
             BACK_PRESSED_RESULT_CODE -> {
                 this@LoginActivity.finish()
             }
-            LOGOUT_RESULT_CODE -> {}
-        }
-    }
-
-    private fun registerUser(userData: User?) {
-        if(userData != null) {
-            users.add(userData)
-            //Toast.makeText(this, getString(R.string.toast_signup_success), Toast.LENGTH_SHORT).show()
+            LOGOUT_RESULT_CODE -> {/*simply returns to LoginActivity*/}
         }
     }
 
