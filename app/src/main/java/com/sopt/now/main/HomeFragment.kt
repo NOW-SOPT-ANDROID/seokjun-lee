@@ -23,7 +23,7 @@ class HomeFragment(
     private val binding: FragmentHomeBinding
         get() = requireNotNull(_binding) { "초기화 좀 시켜보시오" }
 
-    private val mockFriendList = listOf(
+    private val mockFriendList = mutableListOf(
 
         CommonItem(
             viewType = CommonViewType.FRIEND_VIEW.name,
@@ -110,8 +110,9 @@ class HomeFragment(
                 image = R.drawable.ic_launcher_foreground
             )
         )
+        mockFriendList.add(0, userItem)
 
-        val commonListAdapter = CommonListAdapter(userItem, mockFriendList)
+        val commonListAdapter = CommonListAdapter(mockFriendList)
         binding.homeRvFriends.run {
             adapter = commonListAdapter
             layoutManager = LinearLayoutManager(requireContext())
