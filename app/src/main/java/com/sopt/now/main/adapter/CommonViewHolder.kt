@@ -17,7 +17,7 @@ sealed class CommonViewHolder(
     ): CommonViewHolder(binding) {
         override fun bind(item: CommonItem) {
             val viewObject = item.viewObject as ViewObject.UserViewObject
-            binding.itemUserIvProfile.setImageDrawable(viewObject.image.toDrawable())
+            binding.itemUserIvProfile.setImageResource(viewObject.image)
             binding.itemUserTvName.text = viewObject.name
             binding.itemUserTvSelfDescription.text = viewObject.description
         }
@@ -28,7 +28,7 @@ sealed class CommonViewHolder(
     ): CommonViewHolder(binding) {
         override fun bind(item: CommonItem) {
             val viewObject = item.viewObject as ViewObject.FriendViewObject
-            binding.ivProfile.setImageDrawable(viewObject.profileImage.toDrawable())
+            binding.ivProfile.setImageResource(viewObject.profileImage)
             binding.tvName.text = viewObject.name
             binding.tvSelfDescription.text = viewObject.selfDescription
         }

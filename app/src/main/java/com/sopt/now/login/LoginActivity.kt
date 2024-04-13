@@ -59,7 +59,7 @@ class LoginActivity : AppCompatActivity() {
         preferenceManager = PreferenceManager(this)
         val user = preferenceManager.getProfile()
         if(user != null){
-            users[0] = user
+            users.add(user)
         }
     }
 
