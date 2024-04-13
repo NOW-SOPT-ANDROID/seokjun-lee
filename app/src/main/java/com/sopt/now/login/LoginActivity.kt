@@ -51,14 +51,15 @@ class LoginActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        setSharedPreference()
         initButtons()
+
+        setSharedPreference()
     }
 
     private fun setSharedPreference() {
         preferenceManager = PreferenceManager(this)
         val user = preferenceManager.getProfile()
-        if(user != null){
+        if(user != null) {
             users.add(user)
         }
     }
@@ -71,15 +72,11 @@ class LoginActivity : AppCompatActivity() {
                 val user = findUserByIdAndPw(id, pw)
                 if (user != null) {
                     initEditTexts()
-                    val intent = Intent(this@LoginActivity, MainActivity::class.java)
-                    intent.putExtra(LOGIN_KEY, user)
-                    getIntentResult.launch(intent)
+                    moveToMainActivity(user)
                 }
             }
-
             loginBtnSignup.setOnClickListener {
-                val intent = Intent(this@LoginActivity, SignUpActivity::class.java)
-                getIntentResult.launch(intent)
+                moveToSignUpActivity()
             }
         }
     }
@@ -121,5 +118,18 @@ class LoginActivity : AppCompatActivity() {
 
         Toast.makeText(this, toastMessage, Toast.LENGTH_SHORT).show()
         return userData
+    }
+
+
+
+    private fun moveToMainActivity(user: User) {
+        val intent = Intent(this@LoginActivity, MainActivity::class.java)
+        intent.putExtra(LOGIN_KEY, user)
+        getIntentResult.launch(intent)
+    }
+
+    private fun moveToSignUpActivity() {
+        val intent = Intent(this@LoginActivity, SignUpActivity::class.java)
+        getIntentResult.launch(intent)
     }
 }
