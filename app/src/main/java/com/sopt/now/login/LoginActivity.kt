@@ -3,6 +3,7 @@ package com.sopt.now.login
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.widget.EditText
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
@@ -11,6 +12,7 @@ import com.sopt.now.R
 import com.sopt.now.signup.SignUpActivity
 import com.sopt.now.databinding.ActivityLoginBinding
 import com.sopt.now.ext.serializable
+import com.sopt.now.feat.PreferenceManager
 import com.sopt.now.main.MainActivity
 import com.sopt.now.models.User
 
@@ -24,9 +26,9 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private lateinit var binding: ActivityLoginBinding
-    private var users: MutableList<User> = mutableListOf(
-        User("test", "1234","관리자", "TEST")
-    )
+    private lateinit var preferenceManager: PreferenceManager
+
+    private var users: MutableList<User> = mutableListOf()
     private val getIntentResult = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()
     ) { result ->
@@ -34,6 +36,7 @@ class LoginActivity : AppCompatActivity() {
             Activity.RESULT_OK -> {
                 val userData = result.data?.serializable<User>(SIGNUP_KEY)
                 if(userData != null) {
+                    preferenceManager.setProfile(userData)
                     users.add(userData)
                 }
             }
@@ -48,7 +51,16 @@ class LoginActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        setSharedPreference()
         initButtons()
+    }
+
+    private fun setSharedPreference() {
+        preferenceManager = PreferenceManager(this)
+        val user = preferenceManager.getProfile()
+        if(user != null){
+            users[0] = user
+        }
     }
 
     private fun initButtons() {
