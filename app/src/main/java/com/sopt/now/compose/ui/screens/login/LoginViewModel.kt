@@ -1,14 +1,24 @@
 package com.sopt.now.compose.ui.screens.login
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.Companion.APPLICATION_KEY
+import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.viewmodel.initializer
+import androidx.lifecycle.viewmodel.viewModelFactory
 import com.sopt.now.compose.R
+import com.sopt.now.compose.SoptApplication
+import com.sopt.now.compose.container.PreferenceUserRepository
 import com.sopt.now.compose.models.User
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 
-class LoginViewModel: ViewModel() {
+class LoginViewModel(
+    val userRepository: PreferenceUserRepository
+): ViewModel() {
     private val _uiState = MutableStateFlow(LoginUiState("", "", -1))
     val uiState: StateFlow<LoginUiState> = _uiState.asStateFlow()
 
@@ -16,7 +26,11 @@ class LoginViewModel: ViewModel() {
         User("test", "test1234", "test", "TEST")
     )
 
-    fun initializeUiState() {
+    init {
+        fetchUserFromRepository()
+    }
+
+    fun clearUiState() {
         updateUiState(id = "", pw = "", userIndex = -1)
     }
 
@@ -37,7 +51,16 @@ class LoginViewModel: ViewModel() {
     fun getUser(): User = userList[_uiState.value.userIndex]
     fun addUsers(newUser: User){
         userList.add(newUser)
+        viewModelScope.launch {
+            userRepository.setUserProfile(newUser)
+        }
     }
+    private fun fetchUserFromRepository() = viewModelScope.launch {
+            val user = userRepository.getUserProfile()
+            if(user.id.isNotBlank()){
+                userList.add(user)
+            }
+        }
 
     fun isLoginPossible(): Boolean = (_uiState.value.userIndex != -1)
 
@@ -65,5 +88,15 @@ class LoginViewModel: ViewModel() {
             }
         }
         return toastMessageResId
+    }
+
+    companion object {
+        val Factory: ViewModelProvider.Factory = viewModelFactory {
+            initializer {
+                val application = (this[APPLICATION_KEY] as SoptApplication)
+                val userRepository = application.appContainer.userRepository
+                LoginViewModel(userRepository = userRepository)
+            }
+        }
     }
 }

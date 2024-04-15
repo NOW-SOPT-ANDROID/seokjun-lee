@@ -38,7 +38,7 @@ import com.sopt.now.compose.ext.putDataAtCurrentStackEntry
 @Composable
 fun LoginScreen(
     navController: NavHostController = rememberNavController(),
-    viewModel: LoginViewModel = viewModel(),
+    viewModel: LoginViewModel = viewModel(factory = LoginViewModel.Factory),
 ) {
     val context = LocalContext.current
     val uiState = viewModel.uiState.collectAsState()
@@ -72,7 +72,7 @@ fun LoginScreen(
                 if (viewModel.isLoginPossible()) {
                     navController.putDataAtCurrentStackEntry(LOGIN_KEY, viewModel.getUser())
                     navController.navigate(HomeDestination.route)
-                    viewModel.initializeUiState()
+                    viewModel.clearUiState()
                 }
             },
             onClickSignUpButton = {

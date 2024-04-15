@@ -17,7 +17,7 @@ fun ButtonComposable(
     @StringRes
     text: Int,
     color: Color = Color.Unspecified,
-    onClick: () -> Unit = {}
+    onClick: () -> Unit = {},
 ) {
     Button(
         modifier = Modifier.fillMaxWidth(),
