@@ -4,6 +4,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -19,6 +20,7 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import com.sopt.now.compose.MainActivity
 import com.sopt.now.compose.MainActivity.Companion.LOGIN_KEY
 import com.sopt.now.compose.R
 import com.sopt.now.compose.models.User
@@ -26,6 +28,9 @@ import com.sopt.now.compose.ui.SoptBottomNavigation
 import com.sopt.now.compose.ui.composables.ScreenWithImage
 import com.sopt.now.compose.ui.composables.TitleAndContentTextComposable
 import com.sopt.now.compose.ext.getDataFromPreviousBackStackEntry
+import com.sopt.now.compose.ext.putDataAtPreviousBackStackEntry
+import com.sopt.now.compose.ui.composables.ButtonComposable
+import com.sopt.now.compose.ui.navigation.LoginDestination
 
 private const val TAG = "ProfileScreen"
 
@@ -43,7 +48,7 @@ fun ProfileScreen(
     ) { paddingValue ->
         when (val uiState = viewModel.uiState.collectAsState().value) {
             is ProfileUiState.Success -> {
-                ProfileScreen(user = uiState.user, modifier = Modifier.padding(paddingValue))
+                ProfileScreen(navController = navController, user = uiState.user, modifier = Modifier.padding(paddingValue))
             }
 
             is ProfileUiState.Loading -> {
@@ -59,6 +64,7 @@ fun ProfileScreen(
 
 @Composable
 private fun ProfileScreen(
+    navController: NavHostController,
     modifier: Modifier = Modifier,
     user: User
 ) {
@@ -111,5 +117,19 @@ private fun ProfileScreen(
             content = user.pw,
             modifier = Modifier.padding(top = 70.dp)
         )
+
+        Box(
+            modifier = Modifier.fillMaxSize(),
+            contentAlignment = Alignment.BottomCenter
+        ) {
+            ButtonComposable(
+                text = R.string.profile_btn_logout,
+                onClick = {
+                    navController.navigate(LoginDestination.route) {
+                        popUpTo(navController.currentBackStackEntry?.destination?.route!!)
+                        { inclusive = true }
+                    }
+                })
+        }
     }
 }

@@ -57,4 +57,7 @@
 
     <!--MainActivity MBTI Introduction-->
     <string name="main_mbti_introduction">제 MBTI는 %s입니다!!</string>
+
+    <!--Profile String-->
+    <string name="profile_btn_logout">로그아웃</string>
 </resources>

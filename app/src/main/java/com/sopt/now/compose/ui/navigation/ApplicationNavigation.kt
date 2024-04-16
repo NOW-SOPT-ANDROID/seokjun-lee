@@ -2,11 +2,13 @@ package com.sopt.now.compose.ui.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.sopt.now.compose.ui.screens.home.HomeScreen
 import com.sopt.now.compose.ui.screens.login.LoginScreen
+import com.sopt.now.compose.ui.screens.login.LoginViewModel
 import com.sopt.now.compose.ui.screens.profile.ProfileScreen
 import com.sopt.now.compose.ui.screens.search.SearchScreen
 import com.sopt.now.compose.ui.screens.signup.SignUpScreen
@@ -25,7 +27,7 @@ fun ApplicationNavHost(
             route = LoginDestination.route,
         ) {
             LoginScreen(
-                navController = navController,
+                navController = navController
             )
         }
         composable(
