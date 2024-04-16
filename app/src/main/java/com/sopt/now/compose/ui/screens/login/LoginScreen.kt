@@ -1,6 +1,7 @@
 package com.sopt.now.compose.ui.screens.login
 
 import android.app.Activity
+import android.content.Context
 import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -25,10 +26,11 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
-import com.sopt.now.compose.MainActivity.Companion.LOGIN_KEY
-import com.sopt.now.compose.MainActivity.Companion.SIGNUP_KEY
 import com.sopt.now.compose.MainActivity.Companion.printToastMessage
 import com.sopt.now.compose.R
+import com.sopt.now.compose.SoptApplication.Companion.NAVIGATE_BACK_PRESSED_KEY
+import com.sopt.now.compose.SoptApplication.Companion.NAVIGATE_LOGIN_KEY
+import com.sopt.now.compose.SoptApplication.Companion.NAVIGATE_SIGNUP_KEY
 import com.sopt.now.compose.models.User
 import com.sopt.now.compose.ui.composables.ButtonComposable
 import com.sopt.now.compose.ui.composables.TextFieldWithTitleComposable
@@ -47,16 +49,13 @@ fun LoginScreen(
 
 
     navController.run {
-        getDataFromCurrentBackStackEntry<User>(SIGNUP_KEY)?.value?.run {
+        getDataFromCurrentBackStackEntry<User>(NAVIGATE_SIGNUP_KEY)?.value?.run {
             viewModel.addUsers(this)
         }
 
-        getDataFromCurrentBackStackEntry<String>("back")?.value.run {
-            if(this == "back") {
-                val contexts = LocalContext.current
-                if (contexts is Activity) {
-                    contexts.finish()
-                }
+        getDataFromCurrentBackStackEntry<String>(NAVIGATE_BACK_PRESSED_KEY)?.value.run {
+            if(this == NAVIGATE_BACK_PRESSED_KEY) {
+                endApplication(LocalContext.current)
             }
         }
     }
@@ -84,7 +83,7 @@ fun LoginScreen(
             onClickLoginButton = {
                 printToastMessage(context = context, viewModel.getToastMessageByCheckingIdAndPw())
                 if (viewModel.isLoginPossible()) {
-                    navController.putDataAtCurrentStackEntry(LOGIN_KEY, viewModel.getUser())
+                    navController.putDataAtCurrentStackEntry(NAVIGATE_LOGIN_KEY, viewModel.getUser())
                     navController.navigate(HomeDestination.route)
                     viewModel.clearUiState()
                 }
@@ -139,6 +138,12 @@ fun LoginButtons(
             onClick = onClickSignUpButton,
             color = Color.Gray
         )
+    }
+}
+
+private fun endApplication(context: Context) {
+    if (context is Activity) {
+        context.finish()
     }
 }
 

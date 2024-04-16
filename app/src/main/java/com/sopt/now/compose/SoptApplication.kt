@@ -11,4 +11,12 @@ class SoptApplication: Application() {
         super.onCreate()
         appContainer = SoptAppContainer(applicationContext)
     }
+
+    companion object{
+        const val NAVIGATE_SIGNUP_KEY = "user"
+        const val NAVIGATE_LOGIN_KEY = "login"
+
+        const val NAVIGATE_BACK_PRESSED_KEY = "back"
+
+    }
 }

@@ -18,6 +18,7 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import com.sopt.now.compose.R
+import com.sopt.now.compose.SoptApplication.Companion.NAVIGATE_BACK_PRESSED_KEY
 import com.sopt.now.compose.ext.putDataAtPreviousBackStackEntry
 import com.sopt.now.compose.ext.removePreviousBackStacks
 import com.sopt.now.compose.ui.SoptBottomNavigation
@@ -43,7 +44,7 @@ fun SearchScreen(
     }
 
     BackHandler {
-        navController.putDataAtPreviousBackStackEntry("back", "back")
+        navController.putDataAtPreviousBackStackEntry(NAVIGATE_BACK_PRESSED_KEY, NAVIGATE_BACK_PRESSED_KEY)
         navController.navigateUp()
     }
 }

@@ -1,7 +1,6 @@
 package com.sopt.now.compose.ui.screens.profile
 
 import androidx.activity.compose.BackHandler
-import androidx.activity.compose.LocalOnBackPressedDispatcherOwner
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -14,26 +13,21 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
-import com.sopt.now.compose.MainActivity.Companion.LOGIN_KEY
 import com.sopt.now.compose.R
-import com.sopt.now.compose.ext.getDataFromPreviousBackStackEntry
 import com.sopt.now.compose.ext.putDataAtPreviousBackStackEntry
 import com.sopt.now.compose.models.User
 import com.sopt.now.compose.ui.SoptBottomNavigation
 import com.sopt.now.compose.ui.composables.ButtonComposable
 import com.sopt.now.compose.ui.composables.ScreenWithImage
 import com.sopt.now.compose.ui.composables.TitleAndContentTextComposable
-import com.sopt.now.compose.ui.navigation.LoginDestination
 
 private const val TAG = "ProfileScreen"
 
@@ -42,9 +36,7 @@ fun ProfileScreen(
     navController: NavHostController = rememberNavController(),
     viewModel: ProfileViewModel = viewModel(),
 ) {
-    navController.getDataFromPreviousBackStackEntry<User>(LOGIN_KEY)?.value?.run {
-        viewModel.updateUiState(this)
-    }
+    viewModel.getUserLoggedIn(navController)
 
     Scaffold(
         bottomBar = { SoptBottomNavigation(navController = navController) }
@@ -64,10 +56,7 @@ fun ProfileScreen(
         }
     }
 
-    BackHandler {
-        navController.putDataAtPreviousBackStackEntry("back", "back")
-        navController.navigateUp()
-    }
+    BackHandler { viewModel.onBackPressed(navController) }
 }
 
 @Composable
@@ -138,3 +127,4 @@ private fun ProfileScreen(
         }
     }
 }
+
