@@ -19,24 +19,23 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
-import com.sopt.now.compose.MainActivity.Companion.NAVIGATE_SIGNUP_KEY
-import com.sopt.now.compose.MainActivity.Companion.printToastMessage
 import com.sopt.now.compose.R
 import com.sopt.now.compose.ui.composables.ButtonComposable
 import com.sopt.now.compose.ui.composables.TextFieldWithTitleComposable
-import com.sopt.now.compose.ext.putDataAtPreviousBackStackEntry
 
 @Composable
 fun SignUpScreen(
     modifier: Modifier = Modifier,
     navController: NavHostController = rememberNavController(),
-    viewModel:SignUpViewModel = viewModel()
+    viewModel: SignUpViewModel = viewModel()
 ) {
     val uiState = viewModel.uiState.collectAsState()
     val context = LocalContext.current
 
     Column(
-        modifier = modifier.fillMaxSize().padding(horizontal = 30.dp, vertical = 50.dp),
+        modifier = modifier
+            .fillMaxSize()
+            .padding(horizontal = 30.dp, vertical = 50.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         val commonFontSize = 30.sp
@@ -54,7 +53,7 @@ fun SignUpScreen(
             titleFontSize = commonFontSize,
             label = R.string.signup_label_id,
             textFieldText = uiState.value.id,
-            onValueChange = {viewModel.updateUiState(id = it)})
+            onValueChange = { viewModel.updateUiState(id = it) })
 
         TextFieldWithTitleComposable(
             modifier = commonModifier,
@@ -62,7 +61,7 @@ fun SignUpScreen(
             titleFontSize = commonFontSize,
             label = R.string.signup_label_pw,
             textFieldText = uiState.value.pw,
-            onValueChange = {viewModel.updateUiState(pw = it)})
+            onValueChange = { viewModel.updateUiState(pw = it) })
 
         TextFieldWithTitleComposable(
             modifier = Modifier.padding(top = 30.dp),
@@ -70,7 +69,7 @@ fun SignUpScreen(
             titleFontSize = commonFontSize,
             label = R.string.signup_label_nickname,
             textFieldText = uiState.value.nickName,
-            onValueChange = { viewModel.updateUiState(nickName = it)})
+            onValueChange = { viewModel.updateUiState(nickName = it) })
 
         TextFieldWithTitleComposable(
             modifier = Modifier.padding(top = 30.dp),
@@ -79,7 +78,7 @@ fun SignUpScreen(
             label = R.string.signup_label_mbti,
             imeAction = ImeAction.Done,
             textFieldText = uiState.value.mbti,
-            onValueChange = {viewModel.updateUiState(mbti = it)})
+            onValueChange = { viewModel.updateUiState(mbti = it) })
 
         Box(
             modifier = Modifier.fillMaxSize(),
@@ -87,15 +86,7 @@ fun SignUpScreen(
         ) {
             ButtonComposable(
                 text = R.string.signup_btn_signup,
-                onClick = {
-                    if (viewModel.checkSignUp(context = context)) {
-                        navController.putDataAtPreviousBackStackEntry(NAVIGATE_SIGNUP_KEY, uiState.value)
-                        printToastMessage(
-                            context = context,
-                            messageRes = R.string.login_toast_success_signup)
-                        navController.navigateUp()
-                    }
-                })
+                onClick = {viewModel.onSignUpButtonClicked(context, navController)})
         }
     }
 }

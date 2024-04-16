@@ -77,6 +77,7 @@ class LoginViewModel(
                         }
                         user.id == _uiState.value.id && user.pw != _uiState.value.pw -> {
                             toastMessageResId = R.string.login_toast_check_pw
+                            return@forEach
                         }
                     }
                 }
@@ -89,6 +90,7 @@ class LoginViewModel(
         navController.currentBackStackEntry?.savedStateHandle?.run {
             getLiveData<User>(NAVIGATE_SIGNUP_KEY).value?.run{
                 setUserInPreferenceRepository(this)
+                userList.add(this)
             }
 
             getLiveData<String>(NAVIGATE_BACK_PRESSED_KEY).value?.run{

@@ -4,6 +4,9 @@ import android.content.Context
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModel
+import androidx.navigation.NavHostController
+import com.sopt.now.compose.MainActivity
+import com.sopt.now.compose.MainActivity.Companion.printToastMessage
 import com.sopt.now.compose.R
 import com.sopt.now.compose.models.User
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -26,19 +29,21 @@ class SignUpViewModel: ViewModel() {
         }
     }
 
-    fun checkSignUp(context: Context): Boolean {
-        val toastStringRes: Int? = getToastMessageByCheckingSignup(context)
-        return if(toastStringRes != null) {
-            Toast.makeText(
-                context,
-                ContextCompat.getString(context, toastStringRes),
-                Toast.LENGTH_SHORT
-            ).show()
-            false
-        } else true
+    fun onSignUpButtonClicked(context: Context, navController: NavHostController) {
+        val toastStringRes = getToastMessageByCheckingSignup()
+        printToastMessage(context, toastStringRes)
+        if(toastStringRes == R.string.login_toast_success_signup) {
+            navController.run {
+                previousBackStackEntry?.savedStateHandle?.set(
+                    MainActivity.NAVIGATE_SIGNUP_KEY,
+                    _uiState.value
+                )
+                navigateUp()
+            }
+        }
     }
 
-    fun getToastMessageByCheckingSignup(context: Context): Int? {
+    fun getToastMessageByCheckingSignup(): Int {
         return when {
             _uiState.value.id.length !in ID_MIN_LEN..ID_MAX_LEN -> {
                 R.string.signup_toast_id
@@ -56,7 +61,7 @@ class SignUpViewModel: ViewModel() {
                 R.string.signup_toast_mbti
             }
             else -> {
-                null
+                R.string.login_toast_success_signup
             }
         }
     }
