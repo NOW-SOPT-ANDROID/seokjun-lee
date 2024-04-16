@@ -25,14 +25,13 @@ import com.sopt.now.compose.ui.navigation.LoginDestination
 import com.sopt.now.compose.ui.navigation.NavigationDestination
 
 
-
+/**
+ * 구현 예정
+ */
 @Composable
 fun SearchScreen(
     navController: NavHostController
 ) {
-    val dispatcherOwner = LocalOnBackPressedDispatcherOwner.current
-    val lifecycleOwner: LifecycleOwner = LocalLifecycleOwner.current
-
     Scaffold(
         bottomBar = {SoptBottomNavigation(navController = navController)}
     ) {

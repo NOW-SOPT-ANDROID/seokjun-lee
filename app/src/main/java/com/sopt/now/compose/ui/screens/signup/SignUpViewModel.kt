@@ -27,35 +27,45 @@ class SignUpViewModel: ViewModel() {
     }
 
     fun checkSignUp(context: Context): Boolean {
-        var toastStringRes: Int? = null
-        val isPossible = when {
-            _uiState.value.id.length !in 6..10 -> {
-                toastStringRes = R.string.signup_toast_id
-                false
+        val toastStringRes: Int? = getToastMessageByCheckingSignup(context)
+        return if(toastStringRes != null) {
+            Toast.makeText(
+                context,
+                ContextCompat.getString(context, toastStringRes),
+                Toast.LENGTH_SHORT
+            ).show()
+            false
+        } else true
+    }
+
+    fun getToastMessageByCheckingSignup(context: Context): Int? {
+        return when {
+            _uiState.value.id.length !in ID_MIN_LEN..ID_MAX_LEN -> {
+                R.string.signup_toast_id
             }
 
-            _uiState.value.pw.length !in 8..12 -> {
-                toastStringRes = R.string.signup_toast_pw
-                false
+            _uiState.value.pw.length !in PW_MIN_LEN..PW_MAX_LEN -> {
+                R.string.signup_toast_pw
             }
 
             _uiState.value.nickName.isBlank() -> {
-                toastStringRes = R.string.signup_toast_nickname
-                false
+                R.string.signup_toast_nickname
             }
 
             _uiState.value.mbti.isBlank() -> {
-                toastStringRes = R.string.signup_toast_mbti
-                false
+                R.string.signup_toast_mbti
             }
             else -> {
-                true
+                null
             }
         }
-        if(toastStringRes != null) {
-            Toast.makeText(context, ContextCompat.getString(context, toastStringRes), Toast.LENGTH_SHORT).show()
-        }
-        return isPossible
+    }
+
+    companion object{
+        const val ID_MAX_LEN = 10
+        const val ID_MIN_LEN = 6
+        const val PW_MAX_LEN = 12
+        const val PW_MIN_LEN = 8
     }
 
 }
