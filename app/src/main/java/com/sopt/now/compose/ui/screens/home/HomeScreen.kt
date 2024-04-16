@@ -1,8 +1,6 @@
 package com.sopt.now.compose.ui.screens.home
 
-import android.util.Log
 import androidx.activity.compose.BackHandler
-import androidx.activity.compose.LocalOnBackPressedDispatcherOwner
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -25,7 +23,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -33,17 +30,11 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
-import com.sopt.now.compose.MainActivity
 import com.sopt.now.compose.R
-import com.sopt.now.compose.SoptApplication.Companion.NAVIGATE_LOGIN_KEY
-import com.sopt.now.compose.ext.getDataFromPreviousBackStackEntry
-import com.sopt.now.compose.ext.putDataAtPreviousBackStackEntry
 import com.sopt.now.compose.models.Friend
-import com.sopt.now.compose.models.User
 import com.sopt.now.compose.ui.SoptBottomNavigation
 import com.sopt.now.compose.ui.composables.ScreenWithImage
 
@@ -56,6 +47,7 @@ fun HomeScreen(
 ) {
 
     viewModel.fetchUserLoggedIn(navController)
+    BackHandler { viewModel.onBackPressed(navController) }
 
     Scaffold(
         bottomBar = { SoptBottomNavigation(navController = navController) }
@@ -78,7 +70,6 @@ fun HomeScreen(
             }
         }
 
-        BackHandler { viewModel.onBackPressed(navController) }
     }
 }
 

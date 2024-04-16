@@ -2,8 +2,9 @@ package com.sopt.now.compose.ui.screens.home
 
 import androidx.lifecycle.ViewModel
 import androidx.navigation.NavHostController
+import com.sopt.now.compose.MainActivity.Companion.NAVIGATE_BACK_PRESSED_KEY
+import com.sopt.now.compose.MainActivity.Companion.NAVIGATE_LOGIN_KEY
 import com.sopt.now.compose.R
-import com.sopt.now.compose.SoptApplication
 import com.sopt.now.compose.ext.getDataFromPreviousBackStackEntry
 import com.sopt.now.compose.ext.putDataAtPreviousBackStackEntry
 import com.sopt.now.compose.models.Friend
@@ -83,14 +84,14 @@ class HomeViewModel: ViewModel() {
     }
 
     fun fetchUserLoggedIn(navController: NavHostController) {
-        navController.getDataFromPreviousBackStackEntry<User>(SoptApplication.NAVIGATE_LOGIN_KEY)?.value?.run {
+        navController.getDataFromPreviousBackStackEntry<User>(NAVIGATE_LOGIN_KEY)?.value?.run {
             updateUiState(this)
         }
     }
     fun onBackPressed(navController: NavHostController){
         navController.putDataAtPreviousBackStackEntry(
-            SoptApplication.NAVIGATE_BACK_PRESSED_KEY,
-            SoptApplication.NAVIGATE_BACK_PRESSED_KEY
+            NAVIGATE_BACK_PRESSED_KEY,
+            NAVIGATE_BACK_PRESSED_KEY
         )
         navController.navigateUp()
     }

@@ -36,14 +36,18 @@ fun ProfileScreen(
     navController: NavHostController = rememberNavController(),
     viewModel: ProfileViewModel = viewModel(),
 ) {
-    viewModel.getUserLoggedIn(navController)
+    viewModel.fetchUserLoggedIn(navController)
+    BackHandler { viewModel.onBackPressed(navController) }
 
     Scaffold(
         bottomBar = { SoptBottomNavigation(navController = navController) }
     ) { paddingValue ->
         when (val uiState = viewModel.uiState.collectAsState().value) {
             is ProfileUiState.Success -> {
-                ProfileScreen(navController = navController, user = uiState.user, modifier = Modifier.padding(paddingValue))
+                ProfileScreen(
+                    user = uiState.user,
+                    onLogoutButtonPressed = {viewModel.onLogoutButtonPressed(navController)},
+                    modifier = Modifier.padding(paddingValue))
             }
 
             is ProfileUiState.Loading -> {
@@ -55,15 +59,13 @@ fun ProfileScreen(
             }
         }
     }
-
-    BackHandler { viewModel.onBackPressed(navController) }
 }
 
 @Composable
 private fun ProfileScreen(
-    navController: NavHostController,
     modifier: Modifier = Modifier,
-    user: User
+    user: User,
+    onLogoutButtonPressed:() -> Unit,
 ) {
     Column(
         horizontalAlignment = Alignment.Start,
@@ -121,9 +123,7 @@ private fun ProfileScreen(
         ) {
             ButtonComposable(
                 text = R.string.profile_btn_logout,
-                onClick = {
-                    navController.navigateUp()
-                })
+                onClick = onLogoutButtonPressed)
         }
     }
 }

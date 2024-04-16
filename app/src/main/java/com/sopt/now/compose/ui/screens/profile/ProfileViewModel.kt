@@ -2,8 +2,8 @@ package com.sopt.now.compose.ui.screens.profile
 
 import androidx.lifecycle.ViewModel
 import androidx.navigation.NavHostController
-import com.sopt.now.compose.SoptApplication
-import com.sopt.now.compose.SoptApplication.Companion.NAVIGATE_BACK_PRESSED_KEY
+import com.sopt.now.compose.MainActivity.Companion.NAVIGATE_BACK_PRESSED_KEY
+import com.sopt.now.compose.MainActivity.Companion.NAVIGATE_LOGIN_KEY
 import com.sopt.now.compose.ext.getDataFromPreviousBackStackEntry
 import com.sopt.now.compose.ext.putDataAtPreviousBackStackEntry
 import com.sopt.now.compose.models.User
@@ -22,11 +22,16 @@ class ProfileViewModel: ViewModel() {
             _uiState.value = ProfileUiState.Error
         }
     }
-    fun getUserLoggedIn(navController: NavHostController) {
-        navController.getDataFromPreviousBackStackEntry<User>(SoptApplication.NAVIGATE_LOGIN_KEY)?.value?.run {
+    fun fetchUserLoggedIn(navController: NavHostController) {
+        navController.getDataFromPreviousBackStackEntry<User>(NAVIGATE_LOGIN_KEY)?.value?.run {
             updateUiState(this)
         }
     }
+
+    fun onLogoutButtonPressed(navController: NavHostController) {
+        navController.navigateUp()
+    }
+
     fun onBackPressed(navController: NavHostController){
         navController.putDataAtPreviousBackStackEntry(NAVIGATE_BACK_PRESSED_KEY, NAVIGATE_BACK_PRESSED_KEY)
         navController.navigateUp()
