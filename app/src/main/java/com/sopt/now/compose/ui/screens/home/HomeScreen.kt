@@ -39,6 +39,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.sopt.now.compose.MainActivity
 import com.sopt.now.compose.R
+import com.sopt.now.compose.SoptApplication.Companion.NAVIGATE_LOGIN_KEY
 import com.sopt.now.compose.ext.getDataFromPreviousBackStackEntry
 import com.sopt.now.compose.ext.putDataAtPreviousBackStackEntry
 import com.sopt.now.compose.models.Friend
@@ -53,9 +54,8 @@ fun HomeScreen(
     navController: NavHostController = rememberNavController(),
     viewModel: HomeViewModel = viewModel(),
 ) {
-    navController.getDataFromPreviousBackStackEntry<User>(MainActivity.LOGIN_KEY)?.value?.run {
-        viewModel.updateUiState(this)
-    }
+
+    viewModel.fetchUserLoggedIn(navController)
 
     Scaffold(
         bottomBar = { SoptBottomNavigation(navController = navController) }
@@ -78,10 +78,7 @@ fun HomeScreen(
             }
         }
 
-        BackHandler {
-            navController.putDataAtPreviousBackStackEntry("back", "back")
-            navController.navigateUp()
-        }
+        BackHandler { viewModel.onBackPressed(navController) }
     }
 }
 
