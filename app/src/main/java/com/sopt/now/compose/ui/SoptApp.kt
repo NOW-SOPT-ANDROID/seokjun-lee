@@ -14,6 +14,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.sopt.now.compose.ext.removePreviousBackStacks
 import com.sopt.now.compose.ui.navigation.ApplicationNavHost
 import com.sopt.now.compose.ui.navigation.HomeDestination
 import com.sopt.now.compose.ui.navigation.NavigationDestination
@@ -33,7 +34,7 @@ fun SoptApp() {
 @Composable
 fun SoptBottomNavigation(
     items: List<NavigationDestination> = listOf(HomeDestination, SearchDestination, ProfileDestination),
-    navController: NavHostController
+    navController: NavHostController,
 ) {
     val backStackEntry = navController.currentBackStackEntryAsState()
     NavigationBar(
@@ -47,8 +48,7 @@ fun SoptBottomNavigation(
                 selected = selected,
                 onClick = {
                     navController.navigate(item.route) {
-                        popUpTo(navController.currentBackStackEntry?.destination?.route!!)
-                        { inclusive = true }
+                        removePreviousBackStacks(navController)
                     }
                 },
                 icon = {

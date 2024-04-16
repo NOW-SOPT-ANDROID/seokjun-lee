@@ -1,5 +1,7 @@
 package com.sopt.now.compose.ui.screens.login
 
+import android.app.Activity
+import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -43,8 +45,20 @@ fun LoginScreen(
     val context = LocalContext.current
     val uiState = viewModel.uiState.collectAsState()
 
-    navController.getDataFromCurrentBackStackEntry<User>(SIGNUP_KEY)?.value?.run {
-        viewModel.addUsers(this)
+
+    navController.run {
+        getDataFromCurrentBackStackEntry<User>(SIGNUP_KEY)?.value?.run {
+            viewModel.addUsers(this)
+        }
+
+        getDataFromCurrentBackStackEntry<String>("back")?.value.run {
+            if(this == "back") {
+                val contexts = LocalContext.current
+                if (contexts is Activity) {
+                    contexts.finish()
+                }
+            }
+        }
     }
 
     Column(

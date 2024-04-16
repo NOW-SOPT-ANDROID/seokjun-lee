@@ -1,5 +1,8 @@
 package com.sopt.now.compose.ui.screens.home
 
+import android.util.Log
+import androidx.activity.compose.BackHandler
+import androidx.activity.compose.LocalOnBackPressedDispatcherOwner
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -22,6 +25,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -29,21 +33,25 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.sopt.now.compose.MainActivity
 import com.sopt.now.compose.R
 import com.sopt.now.compose.ext.getDataFromPreviousBackStackEntry
+import com.sopt.now.compose.ext.putDataAtPreviousBackStackEntry
 import com.sopt.now.compose.models.Friend
 import com.sopt.now.compose.models.User
 import com.sopt.now.compose.ui.SoptBottomNavigation
 import com.sopt.now.compose.ui.composables.ScreenWithImage
 
+private const val TAG = "HomeScreen"
+
 @Composable
 fun HomeScreen(
     navController: NavHostController = rememberNavController(),
-    viewModel: HomeViewModel = viewModel()
+    viewModel: HomeViewModel = viewModel(),
 ) {
     navController.getDataFromPreviousBackStackEntry<User>(MainActivity.LOGIN_KEY)?.value?.run {
         viewModel.updateUiState(this)
@@ -69,6 +77,11 @@ fun HomeScreen(
                 ScreenWithImage(imageRes = R.drawable.ic_broken_image, contentDescription = "Error")
             }
         }
+
+        BackHandler {
+            navController.putDataAtPreviousBackStackEntry("back", "back")
+            navController.navigateUp()
+        }
     }
 }
 
@@ -83,7 +96,9 @@ fun HomeScreen(
     ) {
         item {
             ItemComposable(
-                modifier = Modifier.fillMaxWidth().padding(top = 10.dp),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 10.dp),
                 imageRes = R.drawable.ic_launcher_background,
                 contentDescription = "",
                 imageSize = 80.dp,
@@ -103,7 +118,9 @@ fun HomeScreen(
         }
         items(friendList) { friend ->
             ItemComposable(
-                modifier = Modifier.padding(bottom = 10.dp).fillMaxWidth(),
+                modifier = Modifier
+                    .padding(bottom = 10.dp)
+                    .fillMaxWidth(),
                 imageRes = R.drawable.ic_launcher_background,
                 contentDescription = "",
                 name = friend.name,

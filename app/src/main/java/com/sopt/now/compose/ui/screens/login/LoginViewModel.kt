@@ -28,6 +28,8 @@ class LoginViewModel(
 
     init {
         fetchUserFromRepository()
+        _uiState.value.id = userList[0].id
+        _uiState.value.pw = userList[0].pw
     }
 
     fun clearUiState() {

@@ -48,8 +48,13 @@ class MainActivity : ComponentActivity() {
         const val SIGNUP_KEY = "user"
         const val LOGIN_KEY = "login"
 
+        const val INDEX_ID = 0
+        const val INDEX_PW = 1
+        const val INDEX_NICKNAME = 2
+        const val INDEX_MBTI = 3
         fun printToastMessage(context: Context, messageRes: Int) {
             Toast.makeText(context, messageRes, Toast.LENGTH_SHORT).show()
         }
+
     }
 }
