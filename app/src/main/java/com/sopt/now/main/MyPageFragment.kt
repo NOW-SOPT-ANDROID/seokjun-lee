@@ -11,7 +11,8 @@ import com.sopt.now.models.User
 
 class MyPageFragment(
     private val user: User,
-    val onClickLogoutButton: MainActivity.OnClickLogoutButton): Fragment() {
+    private val onClickLogoutButton: MainActivity.OnClickLogoutButton
+): Fragment() {
     private var _binding: FragmentMyPageBinding? = null
     private val binding: FragmentMyPageBinding
         get() = requireNotNull(_binding) {"초기화 좀 시켜보시오"}
@@ -39,7 +40,7 @@ class MyPageFragment(
 
 
     private fun initTextViews() {
-        binding.apply {
+        with(binding){
             myPageTvNickname.text = user.nickName
             myPageTvIntro.text = getString(R.string.mypage_tv_mbti, user.mbti)
             myPageTvId.text = user.id

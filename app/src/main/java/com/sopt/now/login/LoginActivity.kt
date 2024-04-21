@@ -65,7 +65,7 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun initButtons() {
-        binding.apply {
+        with(binding) {
             loginBtnLogin.setOnClickListener {
                 val id = loginEtId.text.toString()
                 val pw = loginEtPw.text.toString()
@@ -83,11 +83,11 @@ class LoginActivity : AppCompatActivity() {
 
 
     private fun initEditTexts() {
-        binding.loginEtId.apply {
+        with(binding.loginEtId) {
             setText("")
             clearFocus()
         }
-        binding.loginEtPw.apply {
+        with(binding.loginEtPw) {
             setText("")
             clearFocus()
         }
@@ -123,13 +123,15 @@ class LoginActivity : AppCompatActivity() {
 
 
     private fun moveToMainActivity(user: User) {
-        val intent = Intent(this@LoginActivity, MainActivity::class.java)
-        intent.putExtra(LOGIN_KEY, user)
-        getIntentResult.launch(intent)
+        with(Intent(this@LoginActivity, MainActivity::class.java)) {
+            putExtra(LOGIN_KEY, user)
+            getIntentResult.launch(this)
+        }
     }
 
     private fun moveToSignUpActivity() {
-        val intent = Intent(this@LoginActivity, SignUpActivity::class.java)
-        getIntentResult.launch(intent)
+        with(Intent(this@LoginActivity, SignUpActivity::class.java)) {
+            getIntentResult.launch(this)
+        }
     }
 }

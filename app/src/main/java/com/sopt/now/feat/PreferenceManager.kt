@@ -14,29 +14,32 @@ class PreferenceManager(context: Context) {
         const val MBTI_PREF_KEY = "MBTI"
     }
     private var sharedPreferences: SharedPreferences
-    private lateinit var preferenceEditor: Editor
 
     init {
         sharedPreferences = context.getSharedPreferences(DATABASE_PREF_KEY, Context.MODE_PRIVATE)
     }
 
     fun setProfile(user: User) {
-        preferenceEditor = sharedPreferences.edit()
-        preferenceEditor.putString(ID_PREF_KEY, user.id)
-        preferenceEditor.putString(PW_PREF_KEY, user.pw)
-        preferenceEditor.putString(NICKNAME_PREF_KEY, user.nickName)
-        preferenceEditor.putString(MBTI_PREF_KEY, user.mbti)
-        preferenceEditor.commit()
+        with(sharedPreferences.edit()) {
+            putString(ID_PREF_KEY, user.id)
+            putString(PW_PREF_KEY, user.pw)
+            putString(NICKNAME_PREF_KEY, user.nickName)
+            putString(MBTI_PREF_KEY, user.mbti)
+            commit()
+        }
     }
 
     fun getProfile(): User? {
         return if(sharedPreferences.contains(ID_PREF_KEY) && sharedPreferences.contains(PW_PREF_KEY)) {
+            with(sharedPreferences){
                 User(
-                    id = sharedPreferences.getString(ID_PREF_KEY, null)?:"",
-                    pw = sharedPreferences.getString(PW_PREF_KEY, null)?:"",
-                    nickName = sharedPreferences.getString(NICKNAME_PREF_KEY, null)?:"",
-                    mbti = sharedPreferences.getString(MBTI_PREF_KEY, null)?:"",
+                    id = getString(ID_PREF_KEY, null)?:"",
+                    pw = getString(PW_PREF_KEY, null)?:"",
+                    nickName = getString(NICKNAME_PREF_KEY, null)?:"",
+                    mbti = getString(MBTI_PREF_KEY, null)?:"",
                 )
+            }
+
         } else null
     }
 }

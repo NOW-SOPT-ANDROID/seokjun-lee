@@ -22,7 +22,7 @@ class SignUpActivity : AppCompatActivity() {
     }
 
     private fun initButton() {
-        binding.apply {
+        with(binding) {
             signupBtnSignup.setOnClickListener {
                 val id = signupEtId.text.toString()
                 val pw = signupEtPw.text.toString()
@@ -43,17 +43,18 @@ class SignUpActivity : AppCompatActivity() {
     }
 
     private fun sendUserDataToLogin(userData: User) {
-        val intent = Intent()
-        intent.putExtra(SIGNUP_KEY, userData)
-        setResult(Activity.RESULT_OK, intent)
+        with(Intent()) {
+            putExtra(SIGNUP_KEY, userData)
+            setResult(Activity.RESULT_OK, this)
+        }
         finish()
     }
 
     private fun isSignUpPossible(id: String, pw: String, nickname: String, mbti: String): Boolean{
         var isPossible = false
         val toastMessage = when {
-            id.length !in 6..10 -> R.string.toast_signup_check_id
-            pw.length !in 8..12 -> R.string.toast_signup_check_pw
+            id.length !in ID_MIN_LEN..ID_MAX_LEN -> R.string.toast_signup_check_id
+            pw.length !in PW_MIN_LEN..PW_MAX_LEN -> R.string.toast_signup_check_pw
             nickname.isBlank() -> R.string.toast_signup_check_nickname
             mbti.isBlank() -> R.string.toast_signup_check_mbti
             else -> {
@@ -64,5 +65,13 @@ class SignUpActivity : AppCompatActivity() {
 
         Toast.makeText(this, toastMessage, Toast.LENGTH_SHORT).show()
         return isPossible
+    }
+
+    companion object{
+        const val ID_MAX_LEN = 10
+        const val ID_MIN_LEN = 6
+
+        const val PW_MAX_LEN = 12
+        const val PW_MIN_LEN = 8
     }
 }

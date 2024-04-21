@@ -38,6 +38,7 @@
         android:layout_marginEnd="20dp"
         android:layout_marginStart="20dp"
         android:maxLines="1"
+        android:ellipsize="end"
         android:text="안녕 나는 안드로이드 YB이야 잘부탁해"
         app:layout_constraintBottom_toBottomOf="@id/iv_profile"
         app:layout_constraintEnd_toEndOf="parent"
