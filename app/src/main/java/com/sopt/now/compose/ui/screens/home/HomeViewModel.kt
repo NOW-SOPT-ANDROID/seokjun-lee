@@ -15,7 +15,7 @@ class HomeViewModel: ViewModel() {
     private val _uiState = MutableStateFlow<HomeUiState>(HomeUiState.Loading)
     val uiState: StateFlow<HomeUiState> = _uiState.asStateFlow()
 
-    val mockFriendList = listOf<Friend>(
+    val mockFriendList = listOf(
         Friend(
             profileImage = R.drawable.ic_launcher_foreground,
             name = "이의경",

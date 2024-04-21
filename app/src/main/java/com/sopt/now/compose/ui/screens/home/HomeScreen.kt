@@ -18,6 +18,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -45,8 +46,10 @@ fun HomeScreen(
     navController: NavHostController = rememberNavController(),
     viewModel: HomeViewModel = viewModel(),
 ) {
+    LaunchedEffect(navController){
+        viewModel.fetchUserLoggedIn(navController)
+    }
 
-    viewModel.fetchUserLoggedIn(navController)
     BackHandler { viewModel.onBackPressed(navController) }
 
     Scaffold(

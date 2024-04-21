@@ -63,7 +63,7 @@ class LoginViewModel(
     }
 
     fun getToastMessageByCheckingIdAndPw(): Int {
-        var toastMessageResId:Int = R.string.login_toast_check_id
+        var toastMessageResId:Int = R.string.login_toast_success_login
         when{
             _uiState.value.id.isBlank() -> {toastMessageResId = R.string.login_toast_blank_id}
             _uiState.value.pw.isBlank() -> {toastMessageResId = R.string.login_toast_blank_pw}
@@ -72,15 +72,18 @@ class LoginViewModel(
                     when{
                         user.id == _uiState.value.id && user.pw == _uiState.value.pw -> {
                             _uiState.value.userIndex = userList.indexOf(user)
-                            toastMessageResId = R.string.login_toast_success_login
                             return@forEach
                         }
                         user.id == _uiState.value.id && user.pw != _uiState.value.pw -> {
                             toastMessageResId = R.string.login_toast_check_pw
                             return@forEach
                         }
+                        userList.indexOf(user) == userList.size-1 -> {
+                            toastMessageResId = R.string.login_toast_check_id
+                        }
                     }
                 }
+
             }
         }
         return toastMessageResId
