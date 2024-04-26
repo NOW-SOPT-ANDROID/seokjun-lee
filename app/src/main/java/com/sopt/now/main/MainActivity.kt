@@ -32,10 +32,10 @@ class MainActivity :AppCompatActivity() {
 
         viewModel.setUserData(getUserInfoFromIntent())
         setFragmentManager(HomeFragment())
-        clickBottomNavigation(user = viewModel.userData)
+        clickBottomNavigation()
     }
 
-    private fun clickBottomNavigation(user: User) {
+    private fun clickBottomNavigation() {
         binding.mainBnvHome.setOnItemSelectedListener{
             when (it.itemId) {
                 R.id.menu_home-> {
