@@ -1,21 +1,25 @@
 package com.sopt.now.main
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import com.sopt.now.R
 import com.sopt.now.databinding.FragmentMyPageBinding
+import com.sopt.now.login.LoginActivity
 import com.sopt.now.models.User
 
 class MyPageFragment(
-    private val user: User,
     private val onClickLogoutButton: MainActivity.OnClickLogoutButton
 ): Fragment() {
     private var _binding: FragmentMyPageBinding? = null
     private val binding: FragmentMyPageBinding
         get() = requireNotNull(_binding) {"초기화 좀 시켜보시오"}
+
+    private val sharedViewModel by activityViewModels<MainViewModel>()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -29,7 +33,7 @@ class MyPageFragment(
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        initTextViews()
+        initTextViews(sharedViewModel.userData)
         initButton()
     }
 
@@ -39,7 +43,7 @@ class MyPageFragment(
     }
 
 
-    private fun initTextViews() {
+    private fun initTextViews(user: User) {
         with(binding){
             myPageTvNickname.text = user.nickName
             myPageTvIntro.text = getString(R.string.mypage_tv_mbti, user.mbti)

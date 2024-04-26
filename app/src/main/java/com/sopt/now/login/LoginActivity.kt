@@ -11,7 +11,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.sopt.now.R
 import com.sopt.now.signup.SignUpActivity
 import com.sopt.now.databinding.ActivityLoginBinding
-import com.sopt.now.ext.serializable
+import com.sopt.now.ext.parcelable
 import com.sopt.now.feat.PreferenceManager
 import com.sopt.now.main.MainActivity
 import com.sopt.now.models.User
@@ -34,7 +34,7 @@ class LoginActivity : AppCompatActivity() {
     ) { result ->
         when(result.resultCode) {
             Activity.RESULT_OK -> {
-                val userData = result.data?.serializable<User>(SIGNUP_KEY)
+                val userData = result.data?.parcelable<User>(SIGNUP_KEY)
                 if(userData != null) {
                     preferenceManager.setProfile(userData)
                     users.add(userData)

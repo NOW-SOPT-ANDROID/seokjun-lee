@@ -3,22 +3,24 @@ package com.sopt.now.main
 import android.os.Bundle
 import android.view.View
 import androidx.activity.OnBackPressedCallback
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.sopt.now.R
 import com.sopt.now.login.LoginActivity.Companion.LOGIN_KEY
 import com.sopt.now.databinding.ActivityMainBinding
-import com.sopt.now.ext.serializable
+import com.sopt.now.ext.parcelable
 import com.sopt.now.login.LoginActivity.Companion.BACK_PRESSED_RESULT_CODE
 import com.sopt.now.login.LoginActivity.Companion.LOGOUT_RESULT_CODE
 import com.sopt.now.models.User
 
 class MainActivity :AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
+    private val viewModel by viewModels<MainViewModel>()
     inner class OnClickLogoutButton: View.OnClickListener{
         override fun onClick(v: View?) {
             setResult(LOGOUT_RESULT_CODE)
-            finish()
+            this@MainActivity.finish()
         }
     }
 
@@ -28,22 +30,16 @@ class MainActivity :AppCompatActivity() {
         setContentView(binding.root)
         addOnBackPressedCallback()
 
-        val user = getUserInfoFromIntent()
-
-        val currentFragment = supportFragmentManager.findFragmentById(binding.mainFcvHome.id)
-        if (currentFragment == null) {
-            supportFragmentManager.beginTransaction()
-                .add(binding.mainFcvHome.id, HomeFragment(user))
-                .commit()
-        }
-        clickBottomNavigation(user = user)
+        viewModel.setUserData(getUserInfoFromIntent())
+        setFragmentManager(HomeFragment())
+        clickBottomNavigation(user = viewModel.userData)
     }
 
     private fun clickBottomNavigation(user: User) {
         binding.mainBnvHome.setOnItemSelectedListener{
             when (it.itemId) {
                 R.id.menu_home-> {
-                    replaceFragment(HomeFragment(user))
+                    replaceFragment(HomeFragment())
                     true
                 }
                 R.id.menu_search-> {
@@ -51,11 +47,20 @@ class MainActivity :AppCompatActivity() {
                     true
                 }
                 R.id.menu_mypage-> {
-                    replaceFragment(MyPageFragment(user, OnClickLogoutButton()))
+                    replaceFragment(MyPageFragment(OnClickLogoutButton()))
                     true
                 }
                 else -> false
             }
+        }
+    }
+
+    private fun setFragmentManager(startFragment: Fragment) {
+        val currentFragment = supportFragmentManager.findFragmentById(binding.mainFcvHome.id)
+        if (currentFragment == null) {
+            supportFragmentManager.beginTransaction()
+                .add(binding.mainFcvHome.id, startFragment)
+                .commit()
         }
     }
 
@@ -68,7 +73,7 @@ class MainActivity :AppCompatActivity() {
     }
 
     private fun getUserInfoFromIntent(): User {
-        return intent.serializable<User>(LOGIN_KEY) ?: User()
+        return intent.parcelable<User>(LOGIN_KEY) ?: User()
     }
 
     private fun addOnBackPressedCallback() {
