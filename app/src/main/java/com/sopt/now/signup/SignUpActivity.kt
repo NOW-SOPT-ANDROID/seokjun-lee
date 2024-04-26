@@ -6,8 +6,8 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.sopt.now.R
-import com.sopt.now.login.LoginActivity.Companion.SIGNUP_KEY
 import com.sopt.now.databinding.ActivitySignUpBinding
+import com.sopt.now.login.LoginActivity.Companion.SIGNUP_KEY
 import com.sopt.now.models.User
 
 class SignUpActivity : AppCompatActivity() {

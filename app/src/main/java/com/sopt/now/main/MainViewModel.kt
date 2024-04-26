@@ -1,6 +1,5 @@
 package com.sopt.now.main
 
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.sopt.now.R
 import com.sopt.now.main.adapter.CommonItem

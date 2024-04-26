@@ -1,6 +1,5 @@
 package com.sopt.now.main
 
-import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -9,7 +8,6 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.sopt.now.R
 import com.sopt.now.databinding.FragmentMyPageBinding
-import com.sopt.now.login.LoginActivity
 import com.sopt.now.models.User
 
 class MyPageFragment(

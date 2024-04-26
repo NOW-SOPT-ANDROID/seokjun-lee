@@ -3,18 +3,16 @@ package com.sopt.now.login
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
-import android.widget.EditText
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import com.sopt.now.R
-import com.sopt.now.signup.SignUpActivity
 import com.sopt.now.databinding.ActivityLoginBinding
 import com.sopt.now.ext.parcelable
 import com.sopt.now.feat.PreferenceManager
 import com.sopt.now.main.MainActivity
 import com.sopt.now.models.User
+import com.sopt.now.signup.SignUpActivity
 
 class LoginActivity : AppCompatActivity() {
     companion object{

@@ -1,7 +1,5 @@
 package com.sopt.now.main.adapter
 
-import android.view.View
-import androidx.core.graphics.drawable.toDrawable
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewbinding.ViewBinding
 import com.sopt.now.databinding.ItemFriendBinding

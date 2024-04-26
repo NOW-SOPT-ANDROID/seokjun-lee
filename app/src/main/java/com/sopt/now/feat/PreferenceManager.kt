@@ -2,7 +2,6 @@ package com.sopt.now.feat
 
 import android.content.Context
 import android.content.SharedPreferences
-import android.content.SharedPreferences.Editor
 import com.sopt.now.models.User
 
 class PreferenceManager(context: Context) {

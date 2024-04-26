@@ -1,23 +1,16 @@
 package com.sopt.now.main
 
-import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.sopt.now.R
 import com.sopt.now.databinding.FragmentHomeBinding
-import com.sopt.now.main.adapter.CommonItem
 import com.sopt.now.main.adapter.CommonListAdapter
-import com.sopt.now.main.adapter.CommonViewType
-import com.sopt.now.main.adapter.ViewObject
-import com.sopt.now.models.User
 
-class HomeFragment() : Fragment() {
+class HomeFragment: Fragment() {
 
     private var _binding: FragmentHomeBinding? = null
     private val binding: FragmentHomeBinding
