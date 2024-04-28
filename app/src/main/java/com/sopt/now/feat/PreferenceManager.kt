@@ -23,7 +23,7 @@ class PreferenceManager(context: Context) {
             putString(ID_PREF_KEY, user.id)
             putString(PW_PREF_KEY, user.pw)
             putString(NICKNAME_PREF_KEY, user.nickName)
-            putString(MBTI_PREF_KEY, user.mbti)
+            putString(MBTI_PREF_KEY, user.phoneNum)
             commit()
         }
     }
@@ -35,7 +35,7 @@ class PreferenceManager(context: Context) {
                     id = getString(ID_PREF_KEY, null)?:"",
                     pw = getString(PW_PREF_KEY, null)?:"",
                     nickName = getString(NICKNAME_PREF_KEY, null)?:"",
-                    mbti = getString(MBTI_PREF_KEY, null)?:"",
+                    phoneNum = getString(MBTI_PREF_KEY, null)?:"",
                 )
             }
 

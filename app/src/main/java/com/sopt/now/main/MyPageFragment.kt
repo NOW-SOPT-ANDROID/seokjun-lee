@@ -44,7 +44,7 @@ class MyPageFragment(
     private fun initTextViews(user: User) {
         with(binding){
             myPageTvNickname.text = user.nickName
-            myPageTvIntro.text = getString(R.string.mypage_tv_mbti, user.mbti)
+            myPageTvIntro.text = getString(R.string.mypage_tv_phone_num, user.phoneNum)
             myPageTvId.text = user.id
             myPageTvPw.text = user.pw
         }

@@ -20,7 +20,7 @@ class MainViewModel: ViewModel() {
                 viewType = CommonViewType.USER_VIEW.name,
                 viewObject = ViewObject.UserViewObject(
                 name = userData.nickName,
-                description = userData.mbti,
+                description = userData.phoneNum,
                 image = R.drawable.ic_launcher_foreground))
         )
     }
