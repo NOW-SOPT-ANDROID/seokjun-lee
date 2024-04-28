@@ -1,10 +1,23 @@
 <resources>
     <string name="app_name">NOW SOPT Android</string>
     <string name="login_title">Welcome To SOPT</string>
+    <string name="signup_title">회원가입</string>
 
     <!--Intent Key-->
     <string name="intent_key_login_signup">signup</string>
     <string name="intent_key_login_main">main</string>
+
+    <!--Screen Route Resources-->
+    <string name="destination_route_login">login</string>
+    <string name="destination_route_signup">signup</string>
+    <string name="destination_route_home">home</string>
+    <string name="destination_route_search">search</string>
+    <string name="destination_route_profile">profile</string>
+
+    <!--Screen Title Resources-->
+    <string name="destination_title_login">login</string>
+    <string name="destination_title_signup">signup</string>
+    <string name="destination_title_home">home</string>
 
     <!--TextField Titles-->
     <string name="title_id">ID</string>
@@ -44,4 +57,7 @@
 
     <!--MainActivity MBTI Introduction-->
     <string name="main_mbti_introduction">제 MBTI는 %s입니다!!</string>
+
+    <!--Profile String-->
+    <string name="profile_btn_logout">로그아웃</string>
 </resources>
