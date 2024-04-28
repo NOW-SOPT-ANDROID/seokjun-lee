@@ -1,10 +1,12 @@
 package com.sopt.now.models
 
-import java.io.Serializable
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
 
+@Parcelize
 data class User(
     var id: String = "",
     var pw: String = "",
     var nickName: String = "",
     var mbti: String = ""
-): Serializable
+): Parcelable
