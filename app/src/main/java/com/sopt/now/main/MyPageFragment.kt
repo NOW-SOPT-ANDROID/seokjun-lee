@@ -8,11 +8,10 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.sopt.now.R
 import com.sopt.now.databinding.FragmentMyPageBinding
+import com.sopt.now.login.LoginActivity
 import com.sopt.now.models.User
 
-class MyPageFragment(
-    private val onClickLogoutButton: MainActivity.OnClickLogoutButton
-): Fragment() {
+class MyPageFragment: Fragment() {
     private var _binding: FragmentMyPageBinding? = null
     private val binding: FragmentMyPageBinding
         get() = requireNotNull(_binding) {"초기화 좀 시켜보시오"}
@@ -46,12 +45,16 @@ class MyPageFragment(
             myPageTvNickname.text = user.nickName
             myPageTvIntro.text = getString(R.string.mypage_tv_phone_num, user.phoneNum)
             myPageTvId.text = user.id
-            myPageTvPw.text = user.pw
         }
     }
 
     private fun initButton() {
-        binding.myPageBtnLogout.setOnClickListener(onClickLogoutButton)
+        with(activity as MainActivity){
+            binding.myPageBtnLogout.setOnClickListener {
+                this.setResult(LoginActivity.LOGOUT_RESULT_CODE)
+                this.finish()
+            }
+        }
     }
 
 }

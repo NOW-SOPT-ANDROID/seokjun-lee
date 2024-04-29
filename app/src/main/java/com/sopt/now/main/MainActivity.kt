@@ -19,12 +19,6 @@ import com.sopt.now.models.User
 class MainActivity :AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private val viewModel by viewModels<MainViewModel>()
-    inner class OnClickLogoutButton: View.OnClickListener{
-        override fun onClick(v: View?) {
-            setResult(LOGOUT_RESULT_CODE)
-            this@MainActivity.finish()
-        }
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -64,7 +58,7 @@ class MainActivity :AppCompatActivity() {
                     true
                 }
                 R.id.menu_mypage-> {
-                    replaceFragment(MyPageFragment(OnClickLogoutButton()))
+                    replaceFragment(MyPageFragment())
                     true
                 }
                 else -> false

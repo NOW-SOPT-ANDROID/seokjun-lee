@@ -46,5 +46,6 @@
     <string name="toast_signup_check_pw">비밀번호는 8~12 글자</string>
     <string name="toast_signup_check_nickname">닉네임 한 글자 이상</string>
     <string name="toast_signup_check_mbti">MBTI 공백 불가</string>
+    <string name="mypage_btn_change_pw">비밀번호 변경</string>
 
 </resources>

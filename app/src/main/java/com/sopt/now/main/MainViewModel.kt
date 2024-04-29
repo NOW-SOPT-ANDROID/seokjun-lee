@@ -1,9 +1,12 @@
 package com.sopt.now.main
 
+import android.app.Activity
 import android.util.Log
+import android.view.View
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.sopt.now.R
+import com.sopt.now.login.LoginActivity
 import com.sopt.now.main.adapter.CommonItem
 import com.sopt.now.main.adapter.CommonViewType
 import com.sopt.now.main.adapter.ViewObject
@@ -141,5 +144,10 @@ class MainViewModel: ViewModel() {
         })
     }
 
-
+    inner class OnClickLogoutButton(private val activity: Activity): View.OnClickListener{
+        override fun onClick(v: View?) {
+            activity.setResult(LoginActivity.LOGOUT_RESULT_CODE)
+            activity.finish()
+        }
+    }
 }
