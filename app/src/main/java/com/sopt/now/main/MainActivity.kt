@@ -1,7 +1,9 @@
 package com.sopt.now.main
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
+import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -28,14 +30,29 @@ class MainActivity :AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        addOnBackPressedCallback()
 
-        viewModel.setUserData(getUserInfoFromIntent())
-        setFragmentManager(HomeFragment())
-        clickBottomNavigation()
+        updateMainState()
+        initObserve()
     }
 
-    private fun clickBottomNavigation() {
+    private fun updateMainState() {
+        val memberId = intent.getStringExtra(LOGIN_KEY)
+        if(memberId != null) {
+            viewModel.updateMainState(memberId)
+        }
+    }
+
+    private fun initObserve() {
+        viewModel.liveData.observe(this) {
+            if(it.isSuccess) {
+                setFragmentManager(HomeFragment())
+                setOnClickBottomNavigation()
+                setOnBackPressedCallback()
+            }
+        }
+    }
+
+    private fun setOnClickBottomNavigation() {
         binding.mainBnvHome.setOnItemSelectedListener{
             when (it.itemId) {
                 R.id.menu_home-> {
@@ -72,11 +89,7 @@ class MainActivity :AppCompatActivity() {
             .commit()
     }
 
-    private fun getUserInfoFromIntent(): User {
-        return intent.parcelable<User>(LOGIN_KEY) ?: User()
-    }
-
-    private fun addOnBackPressedCallback() {
+    private fun setOnBackPressedCallback() {
         val callback = object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
                 setResult(BACK_PRESSED_RESULT_CODE)
@@ -85,6 +98,4 @@ class MainActivity :AppCompatActivity() {
         }
         this.onBackPressedDispatcher.addCallback(this, callback)
     }
-
-
 }

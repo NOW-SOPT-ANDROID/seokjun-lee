@@ -1,6 +1,7 @@
 package com.sopt.now.main
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -35,10 +36,9 @@ class HomeFragment: Fragment() {
         setFriendAdapter()
     }
 
-
-
     private fun setFriendAdapter() {
-        val commonListAdapter = CommonListAdapter(sharedViewModel.mockFriendList)
+        Log.d("HomeFragment", "${sharedViewModel.liveData.value?.friendList?.size.toString()}, ${sharedViewModel.liveData.value?.isSuccess}")
+        val commonListAdapter = CommonListAdapter(sharedViewModel.liveData.value?.friendList?: mutableListOf())
         binding.homeRvFriends.run {
             adapter = commonListAdapter
             layoutManager = LinearLayoutManager(requireContext())

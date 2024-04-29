@@ -3,6 +3,7 @@ package com.sopt.now.network
 import com.sopt.now.network.dto.RequestLoginDto
 import com.sopt.now.network.dto.RequestSignUpDto
 import com.sopt.now.network.dto.ResponseLoginDto
+import com.sopt.now.network.dto.ResponseMemberInfoDto
 import com.sopt.now.network.dto.ResponseSignUpDto
 import retrofit2.Call
 import retrofit2.http.Body
@@ -15,6 +16,9 @@ interface AuthService {
     fun signUp(
         @Body request: RequestSignUpDto,
     ): Call<ResponseSignUpDto>
+
+    @GET("member/info")
+    fun getMemberInfo(): Call<ResponseMemberInfoDto>
 
     @POST("member/login")
     fun login(

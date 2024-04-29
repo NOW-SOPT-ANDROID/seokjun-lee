@@ -31,7 +31,7 @@ class MyPageFragment(
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        initTextViews(sharedViewModel.userData)
+        initTextViews(sharedViewModel.liveData.value?.userData!!)
         initButton()
     }
 

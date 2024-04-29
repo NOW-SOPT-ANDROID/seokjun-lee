@@ -15,7 +15,8 @@ import retrofit2.Response
 
 data class LoginState(
     val isSuccess: Boolean,
-    val message: String
+    val message: String,
+    val memberId: String? = null
 )
 class LoginViewModel: ViewModel() {
 
@@ -33,7 +34,8 @@ class LoginViewModel: ViewModel() {
                     val userId = response.headers()["location"]
                     liveData.value = LoginState(
                         isSuccess = true,
-                        message = "로그인 성공 (유저 ID: $userId)"
+                        message = "로그인 성공 (유저 ID: $userId)",
+                        memberId = userId
                     )
                     Log.d("Login", "data: $data, userId: $userId")
                 } else {

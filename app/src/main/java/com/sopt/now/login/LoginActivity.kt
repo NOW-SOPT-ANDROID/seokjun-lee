@@ -47,7 +47,6 @@ class LoginActivity : AppCompatActivity() {
         setContentView(binding.root)
         initView()
         initObserver()
-
         setSharedPreference()
     }
 
@@ -66,21 +65,18 @@ class LoginActivity : AppCompatActivity() {
                 loginState.message,
                 Toast.LENGTH_SHORT,
             ).show()
-            if(loginState.isSuccess)
-                moveToMainActivity(User())
+            if(loginState.isSuccess) {
+                moveToMainActivity(loginState.memberId?:"")
+            }
         }
     }
 
     private fun initView() {
         with(binding) {
+            loginEtId.setText("seokjun")
+            loginEtPw.setText("seokjun2000!")
+
             loginBtnLogin.setOnClickListener {
-                /*val id = loginEtId.text.toString()
-                val pw = loginEtPw.text.toString()
-                val user = findUserByIdAndPw(id, pw)
-                if (user != null) {
-                    initEditTexts()
-                    moveToMainActivity(user)
-                }*/
                 viewModel.login(getRequestLoginDto())
             }
             loginBtnSignup.setOnClickListener {
@@ -89,55 +85,14 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 
-
-    private fun initEditTexts() {
-        with(binding.loginEtId) {
-            setText("")
-            clearFocus()
-        }
-        with(binding.loginEtPw) {
-            setText("")
-            clearFocus()
-        }
-    }
-
-    private fun findUserByIdAndPw(id: String, pw: String): User? {
-        var userData: User? = null
-        var toastMessage = 0
-        when{
-            id.isBlank() -> {toastMessage = R.string.toast_login_fail_blank_id}
-            pw.isBlank() -> {toastMessage = R.string.toast_login_fail_blank_pw}
-            else -> {
-                users.forEach {user ->
-                    if(user.id == id) {
-                        if(user.pw == pw) {
-                            userData = user
-                            toastMessage = R.string.toast_login_success
-                            return@forEach
-                        } else {
-                            toastMessage = R.string.toast_login_fail_wrong_pw
-                        }
-                    } else {
-                        toastMessage = R.string.toast_login_fail_wrong_id
-                    }
-                }
-            }
-        }
-
-        Toast.makeText(this, toastMessage, Toast.LENGTH_SHORT).show()
-        return userData
-    }
-
     fun getRequestLoginDto(): RequestLoginDto = RequestLoginDto(
         authenticationId = binding.loginEtId.text.toString(),
         password = binding.loginEtPw.text.toString()
     )
 
-
-
-    private fun moveToMainActivity(user: User) {
+    private fun moveToMainActivity(memberId: String) {
         with(Intent(this@LoginActivity, MainActivity::class.java)) {
-            putExtra(LOGIN_KEY, user)
+            putExtra(LOGIN_KEY, memberId)
             getIntentResult.launch(this)
         }
     }
