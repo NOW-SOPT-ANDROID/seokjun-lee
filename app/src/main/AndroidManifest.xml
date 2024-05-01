@@ -26,10 +26,13 @@
         </activity>
         <activity
             android:name=".main.MainActivity"
-            android:exported="false"/>
+            android:exported="false" />
         <activity
             android:name=".signup.SignUpActivity"
-            android:exported="false"/>
+            android:exported="false" />
+        <activity
+            android:name=".password.PasswordActivity"
+            android:exported="false" />
     </application>
 
 </manifest>

@@ -47,5 +47,8 @@
     <string name="toast_signup_check_nickname">닉네임 한 글자 이상</string>
     <string name="toast_signup_check_mbti">MBTI 공백 불가</string>
     <string name="mypage_btn_change_pw">비밀번호 변경</string>
+    <string name="password_tv_before">기존 비밀번호</string>
+    <string name="password_tv_new">새 비밀번호</string>
+    <string name="password_tv_new_check">새 비밀번호 확인</string>
 
 </resources>

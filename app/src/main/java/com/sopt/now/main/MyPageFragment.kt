@@ -1,5 +1,6 @@
 package com.sopt.now.main
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -10,6 +11,7 @@ import com.sopt.now.R
 import com.sopt.now.databinding.FragmentMyPageBinding
 import com.sopt.now.login.LoginActivity
 import com.sopt.now.models.User
+import com.sopt.now.password.PasswordActivity
 
 class MyPageFragment: Fragment() {
     private var _binding: FragmentMyPageBinding? = null
@@ -49,7 +51,13 @@ class MyPageFragment: Fragment() {
     }
 
     private fun initButton() {
+
         with(activity as MainActivity){
+            binding.myPageBtnChangePw.setOnClickListener {
+                val intent = Intent(this, PasswordActivity::class.java)
+                startActivity(intent)
+            }
+
             binding.myPageBtnLogout.setOnClickListener {
                 this.setResult(LoginActivity.LOGOUT_RESULT_CODE)
                 this.finish()

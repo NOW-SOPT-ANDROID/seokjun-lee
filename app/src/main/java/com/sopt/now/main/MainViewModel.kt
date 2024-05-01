@@ -144,10 +144,4 @@ class MainViewModel: ViewModel() {
         })
     }
 
-    inner class OnClickLogoutButton(private val activity: Activity): View.OnClickListener{
-        override fun onClick(v: View?) {
-            activity.setResult(LoginActivity.LOGOUT_RESULT_CODE)
-            activity.finish()
-        }
-    }
 }
