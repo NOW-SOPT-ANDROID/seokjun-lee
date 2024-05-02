@@ -3,6 +3,7 @@ package com.sopt.now.password
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.sopt.now.R
 import com.sopt.now.main.MainState
 import com.sopt.now.models.User
 import com.sopt.now.network.ServicePool
@@ -12,6 +13,10 @@ import com.sopt.now.network.dto.ResponseMemberInfoDto
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+
+/**
+ * 비밀번호 변경 시 오류 메시지를 서버 응답에서 가져오는 방법 알아보기
+ */
 
 data class PasswordState(
     val isSuccess: Boolean,
@@ -36,10 +41,16 @@ class PasswordViewModel: ViewModel() {
                         message = data?.message!!
                     )
                 } else {
-                    val error = response.message()
+                    val error = response.errorBody().toString()
+                    val error1 = response.message().toString()
+                    val error2 = response.code().toString()
+                    val error3 = response.headers().toString()
+                    val error4 = response.body()?.message.toString()
+                    val data = response.body()
                     liveData.value = PasswordState(
                         isSuccess = false,
-                        message = "회원정보 불러오기 실패 $error")
+                        message = "$error\n$error1\n$error2\n$error3\n$error4\n$data"
+                    )
                 }
             }
 

@@ -24,30 +24,35 @@ data class MainState(
     val isSuccess: Boolean,
     var isFollowSuccess: Boolean = false,
     val message: String,
-    val userData: User? = null,
-    val friendList: MutableList<CommonItem> = mutableListOf()
+    val userData: User? = null
+)
+
+data class FollowState(
+    val isSuccess: Boolean,
+    val message: String,
+    val friendList: MutableList<CommonItem> = mutableListOf<CommonItem>()
 )
 
 class MainViewModel : ViewModel() {
     private lateinit var authService: AuthService
     val liveData = MutableLiveData<MainState>()
+    val followLiveData = MutableLiveData<FollowState>()
 
     fun updateMainState(memberId: String) {
         ServicePool.initMainService(memberId)
         authService = ServicePool.mainService
 
         fetchMemberInfo()
-        fetchFollow()
     }
 
-    fun setUserData(user: User) {
-        liveData.value?.friendList?.add(
+    private fun putUserDataInFollow() {
+        followLiveData.value?.friendList?.add(
             0,
             CommonItem(
                 viewType = CommonViewType.USER_VIEW.name,
                 viewObject = ViewObject.UserViewObject(
-                    name = user.nickName,
-                    description = user.phoneNum,
+                    name = liveData.value?.userData?.nickName?:"",
+                    description = liveData.value?.userData?.phoneNum?:"",
                     image = R.drawable.ic_launcher_foreground
                 )
             )
@@ -70,9 +75,7 @@ class MainViewModel : ViewModel() {
                             nickName = data?.data?.nickname ?: "",
                             phoneNum = data?.data?.phone ?: ""
                         )
-
                     )
-                    setUserData(liveData.value?.userData ?: User())
                 } else {
                     val error = response.message()
                     liveData.value = MainState(
@@ -92,27 +95,23 @@ class MainViewModel : ViewModel() {
         })
     }
 
-    private fun fetchFollow(page: Int = 2) {
+    fun fetchFollow(page: Int = 2) {
         ServicePool.followService.getFollow(page).enqueue(object : Callback<ResponseFollowListDto> {
             override fun onResponse(
                 call: Call<ResponseFollowListDto>,
                 response: Response<ResponseFollowListDto>
             ) {
-                Log.d("MainViewModel", "onResponse")
                 if (response.isSuccessful) {
                     val data: ResponseFollowListDto? = response.body()
                     if(data?.data != null){
                         val itemList = convertDataListToCommonItems(data.data)
-                        liveData.value = MainState(
-                            isSuccess = liveData.value?.isSuccess!!,
-                            isFollowSuccess = true,
-                            message = liveData.value?.message!!,
-                            userData = liveData.value?.userData,
-                            friendList = liveData.value?.friendList!!
+                        followLiveData.value = FollowState(
+                            isSuccess = true,
+                            message = response.message()?:"",
+                            friendList = itemList ?: mutableListOf()
                         )
-                        liveData.value?.friendList?.addAll(itemList)
+                        putUserDataInFollow()
                     }
-                    Log.d("MainViewModel", liveData.value?.friendList.toString())
                 } else {
                     val error = response.message()
                     liveData.value = MainState(
@@ -129,7 +128,7 @@ class MainViewModel : ViewModel() {
         })
     }
 
-    private fun convertDataListToCommonItems(dataList: List<ResponseFollowListDto.Data>): List<CommonItem> {
+    private fun convertDataListToCommonItems(dataList: List<ResponseFollowListDto.Data>): MutableList<CommonItem> {
         val itemList = mutableListOf<CommonItem>()
         for (data in dataList) {
             itemList.add(

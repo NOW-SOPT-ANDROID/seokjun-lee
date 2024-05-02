@@ -12,6 +12,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.sopt.now.databinding.FragmentHomeBinding
 import com.sopt.now.main.adapter.CommonListAdapter
 
+private const val TAG = "HomeFragment"
+
 class HomeFragment: Fragment() {
 
     private var _binding: FragmentHomeBinding? = null
@@ -35,21 +37,19 @@ class HomeFragment: Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initObserve()
-        setFriendAdapter()
     }
 
     @SuppressLint("NotifyDataSetChanged")
     private fun initObserve() {
-        sharedViewModel.liveData.observe(viewLifecycleOwner) {
-            if(it.isFollowSuccess) {
-                binding.homeRvFriends.adapter?.notifyDataSetChanged()
+        sharedViewModel.followLiveData.observe(viewLifecycleOwner) {
+            if(it.isSuccess) {
+                setFriendAdapter()
             }
         }
     }
 
     private fun setFriendAdapter() {
-        Log.d("HomeFragment", "${sharedViewModel.liveData.value?.friendList?.size.toString()}, ${sharedViewModel.liveData.value?.isSuccess}")
-        val commonListAdapter = CommonListAdapter(sharedViewModel.liveData.value?.friendList?: mutableListOf())
+        val commonListAdapter = CommonListAdapter(sharedViewModel.followLiveData.value?.friendList?: mutableListOf())
         binding.homeRvFriends.run {
             adapter = commonListAdapter
             layoutManager = LinearLayoutManager(requireContext())

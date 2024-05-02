@@ -26,6 +26,10 @@ class MainActivity :AppCompatActivity() {
         setContentView(binding.root)
 
         updateMainState()
+        setFragmentManager(HomeFragment())
+        setOnClickBottomNavigation()
+        setOnBackPressedCallback()
+
         initObserve()
     }
 
@@ -38,13 +42,9 @@ class MainActivity :AppCompatActivity() {
 
     private fun initObserve() {
         viewModel.liveData.observe(this) {
-            if(it.isSuccess && it.isFollowSuccess) {
-                setFragmentManager(HomeFragment())
-                setOnClickBottomNavigation()
-                setOnBackPressedCallback()
+            if(it.isSuccess) {
+                viewModel.fetchFollow()
             }
-
-
         }
     }
 

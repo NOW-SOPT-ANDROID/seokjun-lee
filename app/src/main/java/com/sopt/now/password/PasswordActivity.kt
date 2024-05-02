@@ -1,6 +1,7 @@
 package com.sopt.now.password
 
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
@@ -32,7 +33,6 @@ class PasswordActivity : AppCompatActivity() {
                 val request = getRequestChangePasswordDto()
                 viewModel.patchPassword(request)
             }
-
             passwordBtnCancel.setOnClickListener {
                 finish()
             }
@@ -40,20 +40,20 @@ class PasswordActivity : AppCompatActivity() {
     }
 
     private fun initObserve() {
-        viewModel.liveData.observe(this){
-            val text = if(it.isSuccess) {
-                "비밀번호 변경 성공"
-            } else {
-                "비밀번호 변경 실패"
+        viewModel.liveData.observe(this) {
+            Toast.makeText(this, it.message, Toast.LENGTH_SHORT).show()
+            Log.d("PasswordActivity", it.message)
+            if(it.isSuccess) {
+                //finish()
             }
-            Toast.makeText(this, text, Toast.LENGTH_SHORT).show()
         }
     }
 
-
-    private fun getRequestChangePasswordDto(): RequestChangePasswordDto = RequestChangePasswordDto(
-            previousPassword = binding.passwordEtBefore.text.toString(),
-            newPassword = binding.passwordEtNew.text.toString(),
-            newPasswordVerification = binding.passwordEtNewCheck.text.toString(),
+    private fun getRequestChangePasswordDto(): RequestChangePasswordDto = with(binding) {
+        return@with RequestChangePasswordDto(
+            previousPassword = passwordEtBefore.text.toString(),
+            newPassword = passwordEtNew.text.toString(),
+            newPasswordVerification = passwordEtNewCheck.text.toString(),
         )
     }
+}
