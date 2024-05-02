@@ -1,25 +1,18 @@
-package com.sopt.now.compose.container
+package com.sopt.now.compose.network
 
-import android.content.Context
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import com.sopt.now.compose.BuildConfig
-import com.sopt.now.compose.network.AuthService
 import kotlinx.serialization.json.Json
 import okhttp3.Interceptor
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
-import retrofit2.create
 
-interface AppContainer{
-    val userRepository: PreferenceUserRepository
+object ApiFactory {
+    private const val BASE_URL: String = BuildConfig.AUTH_BASE_URL
 
-}
-
-class SoptAppContainer(context: Context): AppContainer {
     lateinit var retrofitAfterLogin: AuthService
-
-    val retrofitLogin: Retrofit by lazy {
+    val retrofitBeforeLogin: Retrofit by lazy {
         Retrofit.Builder()
             .baseUrl(BASE_URL)
             .addConverterFactory(Json.asConverterFactory("application/json".toMediaType()))
@@ -51,13 +44,19 @@ class SoptAppContainer(context: Context): AppContainer {
                 chain.proceed(request)
             })
         }
+
+    inline fun <reified T> create(): T = retrofitBeforeLogin.create(T::class.java)
     inline fun <reified T> createFollow(): T = retrofitFollow.create(T::class.java)
 
-    override val userRepository: PreferenceUserRepository by lazy {
-        PreferenceUserRepository(context.getSharedPreferences("SOPT", Context.MODE_PRIVATE))
-    }
+}
 
-    companion object{
-        const val BASE_URL = BuildConfig.AUTH_BASE_URL
+object ServicePool {
+    val authService = ApiFactory.create<AuthService>()
+    val followService = ApiFactory.createFollow<FollowService>()
+
+    lateinit var mainService: AuthService
+    fun initMainService(memberId: String) {
+        ApiFactory.createRetrofitWithMemberId(memberId)
+        mainService = ApiFactory.retrofitAfterLogin
     }
 }

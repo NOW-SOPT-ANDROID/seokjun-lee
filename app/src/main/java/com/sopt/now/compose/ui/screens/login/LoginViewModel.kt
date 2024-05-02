@@ -2,6 +2,7 @@ package com.sopt.now.compose.ui.screens.login
 
 import android.app.Activity
 import android.content.Context
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.Companion.APPLICATION_KEY
@@ -12,10 +13,12 @@ import androidx.navigation.NavHostController
 import com.sopt.now.compose.MainActivity.Companion.NAVIGATE_BACK_PRESSED_KEY
 import com.sopt.now.compose.MainActivity.Companion.NAVIGATE_LOGIN_KEY
 import com.sopt.now.compose.MainActivity.Companion.NAVIGATE_SIGNUP_KEY
-import com.sopt.now.compose.R
 import com.sopt.now.compose.SoptApplication
 import com.sopt.now.compose.container.PreferenceUserRepository
 import com.sopt.now.compose.models.User
+import com.sopt.now.compose.network.ServicePool.authService
+import com.sopt.now.compose.network.dto.RequestLoginDto
+import com.sopt.now.compose.network.dto.ResponseLoginDto
 import com.sopt.now.compose.ui.navigation.HomeDestination
 import com.sopt.now.compose.ui.navigation.SignUpDestination
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -23,6 +26,11 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlinx.serialization.json.Json
+import kotlinx.serialization.json.jsonObject
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class LoginViewModel(
     val userRepository: PreferenceUserRepository
@@ -30,20 +38,12 @@ class LoginViewModel(
     private val _uiState = MutableStateFlow(LoginUiState())
     val uiState: StateFlow<LoginUiState> = _uiState.asStateFlow()
 
-    private val userList: MutableList<User> = mutableListOf(
-        User("test", "test1234", "test", "TEST")
-    )
-
-    init {
-        fetchUserFromPreferenceRepository()
-    }
-
     fun updateUiState(
         id: String = _uiState.value.id,
         pw: String = _uiState.value.pw,
         userIndex: Int = _uiState.value.userIndex
     ) {
-        _uiState.update {currentState ->
+        _uiState.update { currentState ->
             currentState.copy(
                 id = id,
                 pw = pw,
@@ -52,48 +52,67 @@ class LoginViewModel(
         }
     }
 
-    fun onSignUpButtonClicked(navController: NavHostController){
+    fun onSignUpButtonClicked(navController: NavHostController) {
         navController.navigate(SignUpDestination.route)
     }
 
     fun onLoginButtonClicked(navController: NavHostController) {
-        if(_uiState.value.userIndex != -1) {
-            navigateToHome(navController)
+        val request = getRequestLoginDto()
+        login(request)
+        if(_uiState.value.isSuccess) {
+            navigateToHome(navController = navController)
         }
     }
 
-    fun getToastMessageByCheckingIdAndPw(): Int {
-        var toastMessageResId:Int = R.string.login_toast_success_login
-        when{
-            _uiState.value.id.isBlank() -> {toastMessageResId = R.string.login_toast_blank_id}
-            _uiState.value.pw.isBlank() -> {toastMessageResId = R.string.login_toast_blank_pw}
-            else -> {
-                userList.forEach { user ->
-                    when{
-                        user.id == _uiState.value.id && user.pw == _uiState.value.pw -> {
-                            _uiState.value.userIndex = userList.indexOf(user)
-                            return@forEach
+    private fun login(request: RequestLoginDto) = viewModelScope.launch {
+        authService.login(request).enqueue(object : Callback<ResponseLoginDto> {
+            override fun onResponse(
+                call: Call<ResponseLoginDto>,
+                response: Response<ResponseLoginDto>,
+            ) {
+                if (response.isSuccessful) {
+                    val data: ResponseLoginDto? = response.body()
+                    val userId = response.headers()[HEADER_NAME]
+                    with(_uiState.value) {
+                        isSuccess = true
+                        message = userId.toString()
+                    }
+                    Log.d("LoginViewModel", userId.toString())
+                } else {
+                    val error = response.errorBody()?.string()
+
+                    if (error != null) {
+                        val jsonMessage = Json.parseToJsonElement(error)
+
+                        with(_uiState.value) {
+                            isSuccess = false
+                            message = jsonMessage.jsonObject[JSON_NAME].toString()
                         }
-                        user.id == _uiState.value.id && user.pw != _uiState.value.pw -> {
-                            toastMessageResId = R.string.login_toast_check_pw
-                            return@forEach
-                        }
-                        userList.indexOf(user) == userList.size-1 -> {
-                            toastMessageResId = R.string.login_toast_check_id
-                        }
+
+                        Log.d("LoginViewModel", _uiState.value.message)
                     }
                 }
-
             }
-        }
-        return toastMessageResId
+
+            override fun onFailure(call: Call<ResponseLoginDto>, t: Throwable) {
+                with(_uiState.value) {
+                    isSuccess = false
+                    message = "서버 에러"
+                }
+            }
+        })
     }
+
+    private fun getRequestLoginDto(): RequestLoginDto = RequestLoginDto(
+        authenticationId = _uiState.value.id,
+        password =  _uiState.value.pw
+    )
 
     fun checkCurrentStack(context: Context, navController: NavHostController) {
         navController.currentBackStackEntry?.savedStateHandle?.run {
             getLiveData<User>(NAVIGATE_SIGNUP_KEY).value?.run{
-                setUserInPreferenceRepository(this)
-                userList.add(this)
+                //setUserInPreferenceRepository(this)
+                //userList.add(this)
             }
 
             getLiveData<String>(NAVIGATE_BACK_PRESSED_KEY).value?.run{
@@ -111,13 +130,13 @@ class LoginViewModel(
     private fun navigateToHome(navController: NavHostController) {
         navController.currentBackStackEntry?.savedStateHandle?.set(
             key = NAVIGATE_LOGIN_KEY,
-            value = userList[_uiState.value.userIndex]
+            value = _uiState.value.message
         )
         navController.navigate(HomeDestination.route)
         updateUiState(id = "", pw = "", userIndex = -1)
     }
 
-    private fun setUserInPreferenceRepository(newUser: User){
+    /*private fun setUserInPreferenceRepository(newUser: User){
         viewModelScope.launch {
             userRepository.setUserProfile(newUser)
         }
@@ -127,7 +146,7 @@ class LoginViewModel(
         if(user.id.isNotBlank()){
             userList.add(user)
         }
-    }
+    }*/
 
     companion object {
         val Factory: ViewModelProvider.Factory = viewModelFactory {
@@ -137,5 +156,8 @@ class LoginViewModel(
                 LoginViewModel(userRepository = userRepository)
             }
         }
+
+        const val HEADER_NAME = "location"
+        const val JSON_NAME = "message"
     }
 }

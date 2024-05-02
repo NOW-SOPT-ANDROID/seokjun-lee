@@ -72,7 +72,7 @@ fun LoginScreen(
             ButtonComposable(
                 text = R.string.login_btn_login,
                 onClick = {
-                    printToastMessage(context = context, viewModel.getToastMessageByCheckingIdAndPw())
+                    //printToastMessage(context = context, viewModel.getToastMessageByCheckingIdAndPw())
                     viewModel.onLoginButtonClicked(navController)
                 },
                 color = Color.Unspecified
