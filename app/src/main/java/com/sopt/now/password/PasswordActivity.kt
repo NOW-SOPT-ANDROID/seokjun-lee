@@ -42,9 +42,8 @@ class PasswordActivity : AppCompatActivity() {
     private fun initObserve() {
         viewModel.liveData.observe(this) {
             Toast.makeText(this, it.message, Toast.LENGTH_SHORT).show()
-            Log.d("PasswordActivity", it.message)
             if(it.isSuccess) {
-                //finish()
+                finish()
             }
         }
     }

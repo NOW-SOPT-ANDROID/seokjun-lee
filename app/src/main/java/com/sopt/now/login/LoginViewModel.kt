@@ -1,5 +1,6 @@
 package com.sopt.now.login
 
+import android.util.JsonReader
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -9,6 +10,8 @@ import com.sopt.now.network.dto.RequestSignUpDto
 import com.sopt.now.network.dto.ResponseLoginDto
 import com.sopt.now.network.dto.ResponseSignUpDto
 import com.sopt.now.signup.SignUpState
+import kotlinx.serialization.json.Json
+import kotlinx.serialization.json.jsonObject
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -17,8 +20,7 @@ private const val TAG = "LoginViewModel"
 
 data class LoginState(
     val isSuccess: Boolean,
-    val message: String,
-    val memberId: String? = null
+    val message: String
 )
 class LoginViewModel: ViewModel() {
     private val authService by lazy { ServicePool.authService }
@@ -35,24 +37,26 @@ class LoginViewModel: ViewModel() {
                     val userId = response.headers()[HEADER_NAME]
                     liveData.value = LoginState(
                         isSuccess = true,
-                        message = "로그인 성공 (유저 ID: $userId)",
-                        memberId = userId
+                        message = userId.toString()
                     )
                 } else {
-                    val code = response.body()?.code
-                    val error = response.body()
-                    liveData.value = LoginState(
-                        isSuccess = false,
-                        message = "로그인이 실패 $error"
-                    )
-                    Log.d(TAG, code.toString())
+                    val error = response.errorBody()?.string()
+
+                    if(error != null){
+                        val jsonMessage = Json.parseToJsonElement(error)
+
+                        liveData.value = LoginState(
+                            isSuccess = false,
+                            message = jsonMessage.jsonObject[JSON_NAME].toString()
+                        )
+                    }
                 }
             }
 
             override fun onFailure(call: Call<ResponseLoginDto>, t: Throwable) {
                 liveData.value = LoginState(
                     isSuccess = false,
-                    message = "서버에러"
+                    message = "서버 에러"
                 )
             }
         })
@@ -60,5 +64,6 @@ class LoginViewModel: ViewModel() {
 
     companion object{
         const val HEADER_NAME = "location"
+        const val JSON_NAME = "message"
     }
 }

@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.sopt.now.R
+import com.sopt.now.login.LoginViewModel
 import com.sopt.now.main.adapter.CommonItem
 import com.sopt.now.main.adapter.CommonViewType
 import com.sopt.now.main.adapter.ViewObject
@@ -12,6 +13,8 @@ import com.sopt.now.network.AuthService
 import com.sopt.now.network.ServicePool
 import com.sopt.now.network.dto.ResponseFollowListDto
 import com.sopt.now.network.dto.ResponseMemberInfoDto
+import kotlinx.serialization.json.Json
+import kotlinx.serialization.json.jsonObject
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -20,9 +23,9 @@ import retrofit2.Response
  * 팔로워 API와 유저프로필 API의 호출 순서 조정
  */
 
+
 data class MainState(
     val isSuccess: Boolean,
-    var isFollowSuccess: Boolean = false,
     val message: String,
     val userData: User? = null
 )
@@ -30,7 +33,7 @@ data class MainState(
 data class FollowState(
     val isSuccess: Boolean,
     val message: String,
-    val friendList: MutableList<CommonItem> = mutableListOf<CommonItem>()
+    val friendList: MutableList<CommonItem> = mutableListOf()
 )
 
 class MainViewModel : ViewModel() {
@@ -69,7 +72,7 @@ class MainViewModel : ViewModel() {
                     val data: ResponseMemberInfoDto? = response.body()
                     liveData.value = MainState(
                         isSuccess = true,
-                        message = "회원정보 불러오기 성공",
+                        message = data?.data?.authenticationId ?: "",
                         userData = User(
                             id = data?.data?.authenticationId ?: "",
                             nickName = data?.data?.nickname ?: "",
@@ -77,11 +80,16 @@ class MainViewModel : ViewModel() {
                         )
                     )
                 } else {
-                    val error = response.message()
-                    liveData.value = MainState(
-                        isSuccess = false,
-                        message = "회원정보 불러오기 실패 $error"
-                    )
+                    val error = response.errorBody()?.string()
+
+                    if(error != null) {
+                        val jsonMessage = Json.parseToJsonElement(error)
+
+                        liveData.value = MainState(
+                            isSuccess = false,
+                            message = jsonMessage.jsonObject[LoginViewModel.JSON_NAME].toString()
+                        )
+                    }
                 }
             }
 
@@ -90,7 +98,6 @@ class MainViewModel : ViewModel() {
                     isSuccess = false,
                     message = "서버에러"
                 )
-                Log.d("MainViewModel", liveData.value!!.message)
             }
         })
     }
@@ -108,7 +115,7 @@ class MainViewModel : ViewModel() {
                         followLiveData.value = FollowState(
                             isSuccess = true,
                             message = response.message()?:"",
-                            friendList = itemList ?: mutableListOf()
+                            friendList = itemList
                         )
                         putUserDataInFollow()
                     }
@@ -116,14 +123,16 @@ class MainViewModel : ViewModel() {
                     val error = response.message()
                     liveData.value = MainState(
                         isSuccess = false,
-                        message = "회원정보 불러오기 실패 $error"
+                        message = error
                     )
-                    Log.d("MainViewModel", "failed")
                 }
             }
 
             override fun onFailure(call: Call<ResponseFollowListDto>, t: Throwable) {
-                Log.d("MainViewModel", "onFailure")
+                followLiveData.value = FollowState(
+                    isSuccess = false,
+                    message = "서버에러"
+                )
             }
         })
     }

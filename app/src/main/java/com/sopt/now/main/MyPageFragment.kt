@@ -41,7 +41,6 @@ class MyPageFragment: Fragment() {
         _binding = null
     }
 
-
     private fun initTextViews(user: User) {
         with(binding){
             myPageTvNickname.text = user.nickName
@@ -51,7 +50,6 @@ class MyPageFragment: Fragment() {
     }
 
     private fun initButton() {
-
         with(activity as MainActivity){
             binding.myPageBtnChangePw.setOnClickListener {
                 val intent = Intent(this, PasswordActivity::class.java)

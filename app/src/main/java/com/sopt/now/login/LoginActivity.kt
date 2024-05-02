@@ -21,19 +21,11 @@ class LoginActivity : AppCompatActivity() {
     private val viewModel by viewModels<LoginViewModel>()
 
     private lateinit var preferenceManager: PreferenceManager
-    private var users: MutableList<User> = mutableListOf()
 
     private val getIntentResult = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()
     ) { result ->
         when(result.resultCode) {
-            Activity.RESULT_OK -> {
-                val userData = result.data?.parcelable<User>(SIGNUP_KEY)
-                if(userData != null) {
-                    preferenceManager.setProfile(userData)
-                    users.add(userData)
-                }
-            }
             BACK_PRESSED_RESULT_CODE -> {
                 this@LoginActivity.finish()
             }
@@ -45,28 +37,33 @@ class LoginActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
         initView()
         initObserver()
-        setSharedPreference()
+        //setSharedPreference()
     }
 
-    private fun setSharedPreference() {
+    /*private fun setSharedPreference() {
         preferenceManager = PreferenceManager(this)
         val user = preferenceManager.getProfile()
         if(user != null) {
-            users.add(user)
+            //users.add(user)
         }
-    }
+    }*/
 
     private fun initObserver() {
         viewModel.liveData.observe(this) {loginState->
-            Toast.makeText(
-                this@LoginActivity,
-                loginState.message,
-                Toast.LENGTH_SHORT,
-            ).show()
             if(loginState.isSuccess) {
-                moveToMainActivity(loginState.memberId?:"")
+                Toast.makeText(
+                    this@LoginActivity,
+                    getString(R.string.retrofit_success_login, loginState.message),
+                    Toast.LENGTH_SHORT).show()
+                moveToMainActivity(loginState.message)
+            } else {
+                Toast.makeText(
+                    this@LoginActivity,
+                    getString(R.string.retrofit_failure_login, loginState.message),
+                    Toast.LENGTH_SHORT).show()
             }
         }
     }
@@ -85,10 +82,12 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 
-    fun getRequestLoginDto(): RequestLoginDto = RequestLoginDto(
-        authenticationId = binding.loginEtId.text.toString(),
-        password = binding.loginEtPw.text.toString()
-    )
+    private fun getRequestLoginDto(): RequestLoginDto = with(binding){
+        return@with RequestLoginDto(
+            authenticationId = loginEtId.text.toString(),
+            password = loginEtPw.text.toString()
+        )
+    }
 
     private fun moveToMainActivity(memberId: String) {
         with(Intent(this@LoginActivity, MainActivity::class.java)) {

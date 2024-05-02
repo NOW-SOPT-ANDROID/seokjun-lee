@@ -55,5 +55,7 @@
     <string name="retrofit_error_server">서버 에러</string>
     <string name="retrofit_error_login">로그인 실패 %s</string>
 
+    <string name="retrofit_success_login">로그인 성공 (유저 ID: %s)</string>
+    <string name="retrofit_failure_login">로그인 실패 (%s)</string>
 
 </resources>

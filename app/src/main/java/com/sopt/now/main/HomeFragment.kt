@@ -22,8 +22,6 @@ class HomeFragment: Fragment() {
 
     private val sharedViewModel by activityViewModels<MainViewModel>()
 
-
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -60,6 +58,4 @@ class HomeFragment: Fragment() {
         super.onDestroyView()
         _binding = null
     }
-
-
 }
