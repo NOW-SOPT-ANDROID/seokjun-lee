@@ -13,13 +13,14 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
+private const val TAG = "LoginViewModel"
+
 data class LoginState(
     val isSuccess: Boolean,
     val message: String,
     val memberId: String? = null
 )
 class LoginViewModel: ViewModel() {
-
     private val authService by lazy { ServicePool.authService }
     val liveData = MutableLiveData<LoginState>()
 
@@ -31,19 +32,20 @@ class LoginViewModel: ViewModel() {
             ) {
                 if (response.isSuccessful) {
                     val data: ResponseLoginDto? = response.body()
-                    val userId = response.headers()["location"]
+                    val userId = response.headers()[HEADER_NAME]
                     liveData.value = LoginState(
                         isSuccess = true,
                         message = "로그인 성공 (유저 ID: $userId)",
                         memberId = userId
                     )
-                    Log.d("Login", "data: $data, userId: $userId")
                 } else {
-                    val error = response.message()
+                    val code = response.body()?.code
+                    val error = response.body()
                     liveData.value = LoginState(
                         isSuccess = false,
                         message = "로그인이 실패 $error"
                     )
+                    Log.d(TAG, code.toString())
                 }
             }
 
@@ -54,5 +56,9 @@ class LoginViewModel: ViewModel() {
                 )
             }
         })
+    }
+
+    companion object{
+        const val HEADER_NAME = "location"
     }
 }

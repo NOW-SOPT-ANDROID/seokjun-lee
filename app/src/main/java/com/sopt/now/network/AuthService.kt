@@ -32,6 +32,4 @@ interface AuthService {
     fun changePassword(
         @Body request: RequestChangePasswordDto
     ): Call<ResponseChangePasswordDto>
-
-
 }

@@ -1,5 +1,6 @@
 package com.sopt.now.main
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -33,7 +34,17 @@ class HomeFragment: Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        initObserve()
         setFriendAdapter()
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    private fun initObserve() {
+        sharedViewModel.liveData.observe(viewLifecycleOwner) {
+            if(it.isFollowSuccess) {
+                binding.homeRvFriends.adapter?.notifyDataSetChanged()
+            }
+        }
     }
 
     private fun setFriendAdapter() {

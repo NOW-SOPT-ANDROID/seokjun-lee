@@ -51,4 +51,7 @@
     <string name="password_tv_new">새 비밀번호</string>
     <string name="password_tv_new_check">새 비밀번호 확인</string>
 
+    <!--Retrofit Message-->
+    <string name="retrofit_error_server">서버 에러</string>
+    <string name="retrofit_error_login">로그인 실패 %s</string>
 </resources>

@@ -13,6 +13,7 @@ sealed class ViewObject {
     data class FriendViewObject(
         @DrawableRes
         val profileImage: Int,
+        val imageUrl: String?=null,
         val name: String,
         val selfDescription: String
     ): ViewObject()

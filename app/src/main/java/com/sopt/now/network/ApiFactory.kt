@@ -14,10 +14,15 @@ object ApiFactory {
     private const val BASE_URL: String = BuildConfig.AUTH_BASE_URL
 
     lateinit var retrofitAfterLogin: AuthService
-
     val retrofitBeforeLogin: Retrofit by lazy {
         Retrofit.Builder()
             .baseUrl(BASE_URL)
+            .addConverterFactory(Json.asConverterFactory("application/json".toMediaType()))
+            .build()
+    }
+    val retrofitFollow: Retrofit by lazy {
+        Retrofit.Builder()
+            .baseUrl("https://reqres.in/")
             .addConverterFactory(Json.asConverterFactory("application/json".toMediaType()))
             .build()
     }
@@ -43,13 +48,15 @@ object ApiFactory {
         }
 
     inline fun <reified T> create(): T = retrofitBeforeLogin.create(T::class.java)
+    inline fun <reified T> createFollow(): T = retrofitFollow.create(T::class.java)
 
 }
 
 object ServicePool {
     val authService = ApiFactory.create<AuthService>()
-    lateinit var mainService: AuthService
+    val followService = ApiFactory.createFollow<FollowService>()
 
+    lateinit var mainService: AuthService
     fun initMainService(memberId: String) {
         ApiFactory.createRetrofitWithMemberId(memberId)
         mainService = ApiFactory.retrofitAfterLogin
