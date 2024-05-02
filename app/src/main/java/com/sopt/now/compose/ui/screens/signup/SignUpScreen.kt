@@ -52,16 +52,16 @@ fun SignUpScreen(
             title = R.string.title_id,
             titleFontSize = commonFontSize,
             label = R.string.signup_label_id,
-            textFieldText = uiState.value.id,
-            onValueChange = { viewModel.updateUiState(id = it) })
+            textFieldText = uiState.value.authenticationId,
+            onValueChange = { viewModel.updateUiState(authenticationId = it) })
 
         TextFieldWithTitleComposable(
             modifier = commonModifier,
             title = R.string.title_pw,
             titleFontSize = commonFontSize,
             label = R.string.signup_label_pw,
-            textFieldText = uiState.value.pw,
-            onValueChange = { viewModel.updateUiState(pw = it) })
+            textFieldText = uiState.value.password,
+            onValueChange = { viewModel.updateUiState(password = it) })
 
         TextFieldWithTitleComposable(
             modifier = Modifier.padding(top = 30.dp),
@@ -77,8 +77,8 @@ fun SignUpScreen(
             titleFontSize = commonFontSize,
             label = R.string.signup_label_mbti,
             imeAction = ImeAction.Done,
-            textFieldText = uiState.value.mbti,
-            onValueChange = { viewModel.updateUiState(mbti = it) })
+            textFieldText = uiState.value.phone,
+            onValueChange = { viewModel.updateUiState(phone = it) })
 
         Box(
             modifier = Modifier.fillMaxSize(),
@@ -86,7 +86,7 @@ fun SignUpScreen(
         ) {
             ButtonComposable(
                 text = R.string.signup_btn_signup,
-                onClick = {viewModel.onSignUpButtonClicked(context, navController)})
+                onClick = {viewModel.onSignUpButtonClicked(navController)})
         }
     }
 }

@@ -58,13 +58,10 @@ class LoginViewModel(
 
     fun onLoginButtonClicked(navController: NavHostController) {
         val request = getRequestLoginDto()
-        login(request)
-        if(_uiState.value.isSuccess) {
-            navigateToHome(navController = navController)
-        }
+        login(navController, request)
     }
 
-    private fun login(request: RequestLoginDto) = viewModelScope.launch {
+    private fun login(navController: NavHostController, request: RequestLoginDto) {
         authService.login(request).enqueue(object : Callback<ResponseLoginDto> {
             override fun onResponse(
                 call: Call<ResponseLoginDto>,
@@ -78,6 +75,7 @@ class LoginViewModel(
                         message = userId.toString()
                     }
                     Log.d("LoginViewModel", userId.toString())
+                    navController.navigateUp()
                 } else {
                     val error = response.errorBody()?.string()
 

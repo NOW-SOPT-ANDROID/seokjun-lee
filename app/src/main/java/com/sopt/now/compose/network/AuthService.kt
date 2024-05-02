@@ -15,12 +15,12 @@ import retrofit2.http.POST
 
 interface AuthService {
     @POST("member/join")
-    suspend fun signUp(
+    fun signUp(
         @Body request: RequestSignUpDto,
     ): Call<ResponseSignUpDto>
 
     @GET("member/info")
-    suspend fun getMemberInfo(): Call<ResponseMemberInfoDto>
+    fun getMemberInfo(): Call<ResponseMemberInfoDto>
 
     @POST("member/login")
     fun login(

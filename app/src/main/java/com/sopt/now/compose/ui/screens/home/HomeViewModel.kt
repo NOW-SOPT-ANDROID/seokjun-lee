@@ -82,8 +82,8 @@ class HomeViewModel: ViewModel() {
     }
 
     fun fetchUserLoggedIn(navController: NavHostController) {
-            navController.previousBackStackEntry?.savedStateHandle
-                ?.getLiveData<User>(NAVIGATE_LOGIN_KEY)?.value.run { updateUiState(this) }
+//            navController.previousBackStackEntry?.savedStateHandle
+//                ?.getLiveData<String>(NAVIGATE_LOGIN_KEY)?.value.run { updateUiState(this) }
 
     }
     fun onBackPressed(navController: NavHostController){
