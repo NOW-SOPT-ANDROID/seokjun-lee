@@ -6,9 +6,7 @@ import kotlinx.serialization.json.Json
 import okhttp3.Interceptor
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
-import okhttp3.Response
 import retrofit2.Retrofit
-import retrofit2.create
 
 object ApiFactory {
     private const val BASE_URL: String = BuildConfig.AUTH_BASE_URL

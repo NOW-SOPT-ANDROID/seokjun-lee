@@ -1,15 +1,10 @@
 package com.sopt.now.login
 
-import android.util.JsonReader
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.sopt.now.network.ServicePool
 import com.sopt.now.network.dto.RequestLoginDto
-import com.sopt.now.network.dto.RequestSignUpDto
 import com.sopt.now.network.dto.ResponseLoginDto
-import com.sopt.now.network.dto.ResponseSignUpDto
-import com.sopt.now.signup.SignUpState
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.jsonObject
 import retrofit2.Call

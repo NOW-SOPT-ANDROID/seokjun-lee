@@ -1,20 +1,14 @@
 package com.sopt.now.main
 
 import android.os.Bundle
-import android.util.Log
-import android.view.View
-import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.sopt.now.R
 import com.sopt.now.databinding.ActivityMainBinding
-import com.sopt.now.ext.parcelable
 import com.sopt.now.login.LoginActivity.Companion.BACK_PRESSED_RESULT_CODE
 import com.sopt.now.login.LoginActivity.Companion.LOGIN_KEY
-import com.sopt.now.login.LoginActivity.Companion.LOGOUT_RESULT_CODE
-import com.sopt.now.models.User
 
 class MainActivity :AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding

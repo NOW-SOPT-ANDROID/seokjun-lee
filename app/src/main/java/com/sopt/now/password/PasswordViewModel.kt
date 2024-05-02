@@ -1,22 +1,13 @@
 package com.sopt.now.password
 
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.sopt.now.R
-import com.sopt.now.main.MainState
-import com.sopt.now.models.User
 import com.sopt.now.network.ServicePool
 import com.sopt.now.network.dto.RequestChangePasswordDto
 import com.sopt.now.network.dto.ResponseChangePasswordDto
-import com.sopt.now.network.dto.ResponseMemberInfoDto
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-
-/**
- * 비밀번호 변경 시 오류 메시지를 서버 응답에서 가져오는 방법 알아보기
- */
 
 data class PasswordState(
     val isSuccess: Boolean,

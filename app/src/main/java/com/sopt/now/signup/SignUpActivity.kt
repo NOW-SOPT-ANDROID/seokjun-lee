@@ -1,22 +1,11 @@
 package com.sopt.now.signup
 
-import android.app.Activity
-import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import com.sopt.now.R
 import com.sopt.now.databinding.ActivitySignUpBinding
-import com.sopt.now.login.LoginActivity.Companion.SIGNUP_KEY
-import com.sopt.now.models.User
-import com.sopt.now.network.ServicePool.authService
 import com.sopt.now.network.dto.RequestSignUpDto
-import com.sopt.now.network.dto.ResponseSignUpDto
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
 class SignUpActivity : AppCompatActivity() {
     private lateinit var binding: ActivitySignUpBinding

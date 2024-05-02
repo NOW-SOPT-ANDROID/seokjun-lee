@@ -1,6 +1,5 @@
 package com.sopt.now.login
 
-import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
@@ -9,10 +8,8 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import com.sopt.now.R
 import com.sopt.now.databinding.ActivityLoginBinding
-import com.sopt.now.ext.parcelable
 import com.sopt.now.feat.PreferenceManager
 import com.sopt.now.main.MainActivity
-import com.sopt.now.models.User
 import com.sopt.now.network.dto.RequestLoginDto
 import com.sopt.now.signup.SignUpActivity
 
