@@ -3,7 +3,9 @@ package com.sopt.now.compose.container
 import android.content.Context
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import com.sopt.now.compose.BuildConfig
+import com.sopt.now.compose.models.Follow
 import com.sopt.now.compose.network.AuthService
+import com.sopt.now.compose.network.FollowService
 import kotlinx.serialization.json.Json
 import okhttp3.Interceptor
 import okhttp3.MediaType.Companion.toMediaType
@@ -13,7 +15,7 @@ import retrofit2.create
 
 interface AppContainer{
     val userRepository: PreferenceUserRepository
-
+    val followRepository: FollowRepository
 }
 
 class SoptAppContainer(context: Context): AppContainer {
@@ -51,10 +53,13 @@ class SoptAppContainer(context: Context): AppContainer {
                 chain.proceed(request)
             })
         }
-    inline fun <reified T> createFollow(): T = retrofitFollow.create(T::class.java)
 
     override val userRepository: PreferenceUserRepository by lazy {
         PreferenceUserRepository(context.getSharedPreferences("SOPT", Context.MODE_PRIVATE))
+    }
+
+    override val followRepository: FollowRepository by lazy {
+        FollowRepository(followService = retrofitFollow.create(FollowService::class.java))
     }
 
     companion object{

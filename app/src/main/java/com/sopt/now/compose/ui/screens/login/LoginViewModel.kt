@@ -75,7 +75,7 @@ class LoginViewModel(
                         message = userId.toString()
                     }
                     Log.d("LoginViewModel", userId.toString())
-                    navController.navigateUp()
+                    navigateToHome(navController)
                 } else {
                     val error = response.errorBody()?.string()
 

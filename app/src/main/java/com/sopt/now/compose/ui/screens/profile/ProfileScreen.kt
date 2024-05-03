@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -35,7 +36,9 @@ fun ProfileScreen(
     navController: NavHostController = rememberNavController(),
     viewModel: ProfileViewModel = viewModel(),
 ) {
-    viewModel.fetchUserLoggedIn(navController)
+    LaunchedEffect(navController) {
+        viewModel.fetchUserLoggedIn(navController)
+    }
     BackHandler { viewModel.onBackPressed(navController) }
 
     Scaffold(
@@ -97,22 +100,14 @@ private fun ProfileScreen(
             )
         }
 
-        Text(
-            text = stringResource(id = R.string.main_mbti_introduction, user.mbti),
-            fontSize = 20.sp,
-            fontWeight = FontWeight.Bold,
-            modifier = Modifier.padding(top = 20.dp)
-        )
-
-
         TitleAndContentTextComposable(
-            title = R.string.title_pw,
+            title = R.string.title_id,
             content = user.id,
             modifier = Modifier.padding(top = 70.dp)
         )
         TitleAndContentTextComposable(
-            title = R.string.title_pw,
-            content = user.pw,
+            title = R.string.title_phone,
+            content = user.mbti,
             modifier = Modifier.padding(top = 70.dp)
         )
 

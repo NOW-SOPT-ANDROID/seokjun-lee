@@ -9,5 +9,5 @@ interface FollowService {
     @GET("/api/users")
     suspend fun getFollow(
         @Query("page") page:Int
-    ):Call<ResponseFollowListDto>
+    ): ResponseFollowListDto
 }

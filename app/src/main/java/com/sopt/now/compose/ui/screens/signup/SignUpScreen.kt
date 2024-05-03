@@ -73,9 +73,9 @@ fun SignUpScreen(
 
         TextFieldWithTitleComposable(
             modifier = Modifier.padding(top = 30.dp),
-            title = R.string.title_mbti,
+            title = R.string.title_phone,
             titleFontSize = commonFontSize,
-            label = R.string.signup_label_mbti,
+            label = R.string.signup_label_phone,
             imeAction = ImeAction.Done,
             textFieldText = uiState.value.phone,
             onValueChange = { viewModel.updateUiState(phone = it) })
