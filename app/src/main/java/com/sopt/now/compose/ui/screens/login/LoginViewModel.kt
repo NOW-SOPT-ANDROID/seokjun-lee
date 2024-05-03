@@ -57,6 +57,7 @@ class LoginViewModel(): ViewModel() {
     fun onLoginButtonClicked(navController: NavHostController) {
         val request = getRequestLoginDto()
         login(navController, request)
+        Log.d("test", "hello")
     }
 
     private fun login(navController: NavHostController, request: RequestLoginDto) {
@@ -102,11 +103,6 @@ class LoginViewModel(): ViewModel() {
 
     fun checkCurrentStack(context: Context, navController: NavHostController) {
         navController.currentBackStackEntry?.savedStateHandle?.run {
-            getLiveData<User>(NAVIGATE_SIGNUP_KEY).value?.run{
-                //setUserInPreferenceRepository(this)
-                //userList.add(this)
-            }
-
             getLiveData<String>(NAVIGATE_BACK_PRESSED_KEY).value?.run{
                 if(this == NAVIGATE_BACK_PRESSED_KEY) endApplication(context)
             }

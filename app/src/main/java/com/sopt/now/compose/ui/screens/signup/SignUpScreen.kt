@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -30,8 +31,18 @@ fun SignUpScreen(
     navController: NavHostController = rememberNavController(),
     viewModel: SignUpViewModel = viewModel()
 ) {
-    val uiState = viewModel.uiState.collectAsState()
+
     val context = LocalContext.current
+    val uiState = viewModel.uiState.collectAsState()
+    LaunchedEffect(uiState.value.message) {
+        if(uiState.value.message.isNotEmpty()){
+            if(uiState.value.isSuccess) {
+                Toast.makeText(context, "회원가입 성공 ${uiState.value.message}", Toast.LENGTH_SHORT).show()
+            } else {
+                Toast.makeText(context, "회원가입 실패 ${uiState.value.message}", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
 
     Column(
         modifier = modifier
@@ -89,7 +100,6 @@ fun SignUpScreen(
                 text = R.string.signup_btn_signup,
                 onClick = {
                     viewModel.onSignUpButtonClicked(navController)
-                    Toast.makeText(context, uiState.value.message, Toast.LENGTH_SHORT).show()
                 }
             )
         }

@@ -1,5 +1,7 @@
 package com.sopt.now.compose.ui.screens.login
 
+import android.util.Log
+import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -8,6 +10,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -36,6 +39,17 @@ fun LoginScreen(
     val context = LocalContext.current
     val uiState = viewModel.uiState.collectAsState()
     viewModel.checkCurrentStack(context = context, navController = navController)
+
+    LaunchedEffect(uiState.value.message) {
+        if(uiState.value.message.isNotEmpty()){
+            Log.d("SignUpScreen", "launched")
+            if(uiState.value.isSuccess) {
+                Toast.makeText(context, "로그인 성공 ${uiState.value.message}", Toast.LENGTH_SHORT).show()
+            } else {
+                Toast.makeText(context, "로그인 실패 ${uiState.value.message}", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
 
     Column(
         modifier = Modifier
@@ -72,7 +86,6 @@ fun LoginScreen(
             ButtonComposable(
                 text = R.string.login_btn_login,
                 onClick = {
-                    //printToastMessage(context = context, viewModel.getToastMessageByCheckingIdAndPw())
                     viewModel.onLoginButtonClicked(navController)
                 },
                 color = Color.Unspecified

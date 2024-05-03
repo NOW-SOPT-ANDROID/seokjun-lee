@@ -125,9 +125,6 @@ class HomeViewModel(
         val Factory: ViewModelProvider.Factory = viewModelFactory {
             initializer {
                 val application = (this[ViewModelProvider.AndroidViewModelFactory.APPLICATION_KEY] as SoptApplication)
-                with(application.appContainer){
-                    val autRepository = followRepository
-                }
                 val followRepository = application.appContainer.followRepository
                 HomeViewModel(followRepository = followRepository)
             }
