@@ -73,6 +73,8 @@ class HomeViewModel(
     fun fetchDatas(navController: NavHostController) {
         val memberId = navController.previousBackStackEntry?.savedStateHandle
             ?.getLiveData<String>(NAVIGATE_LOGIN_KEY)?.value
+
+        Log.d(TAG, memberId.toString())
         /*val followList = followRepository.fetchFollow()
         updateUiState(user = User(), follow = followRepository.fetchFollow())*/
         if(memberId != null){

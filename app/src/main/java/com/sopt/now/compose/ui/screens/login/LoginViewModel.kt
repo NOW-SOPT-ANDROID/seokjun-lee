@@ -32,9 +32,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class LoginViewModel(
-    val userRepository: PreferenceUserRepository
-): ViewModel() {
+class LoginViewModel(): ViewModel() {
     private val _uiState = MutableStateFlow(LoginUiState())
     val uiState: StateFlow<LoginUiState> = _uiState.asStateFlow()
 
@@ -74,20 +72,16 @@ class LoginViewModel(
                         isSuccess = true
                         message = userId.toString()
                     }
-                    Log.d("LoginViewModel", userId.toString())
                     navigateToHome(navController)
                 } else {
                     val error = response.errorBody()?.string()
 
                     if (error != null) {
                         val jsonMessage = Json.parseToJsonElement(error)
-
                         with(_uiState.value) {
                             isSuccess = false
                             message = jsonMessage.jsonObject[JSON_NAME].toString()
                         }
-
-                        Log.d("LoginViewModel", _uiState.value.message)
                     }
                 }
             }
@@ -147,14 +141,6 @@ class LoginViewModel(
     }*/
 
     companion object {
-        val Factory: ViewModelProvider.Factory = viewModelFactory {
-            initializer {
-                val application = (this[APPLICATION_KEY] as SoptApplication)
-                val userRepository = application.appContainer.userRepository
-                LoginViewModel(userRepository = userRepository)
-            }
-        }
-
         const val HEADER_NAME = "location"
         const val JSON_NAME = "message"
     }
