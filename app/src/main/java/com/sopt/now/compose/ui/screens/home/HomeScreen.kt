@@ -94,7 +94,7 @@ fun HomeScreen(
                     .fillMaxWidth()
                     .padding(top = 10.dp),
                 imageRes = R.drawable.ic_launcher_background,
-                imageUrl = "https://example.com/image.jpg",
+                imageUrl = "https://developer.android.com/codelabs/basic-android-kotlin-compose-amphibians-app/img/roraima-bush-toad.png",
                 contentDescription = "",
                 imageSize = 80.dp,
                 name = uiState.user.nickName,
@@ -159,7 +159,10 @@ fun ItemComposable(
             placeholder = painterResource(R.drawable.ic_broken_image),
             contentDescription = "",
             contentScale = ContentScale.Crop,
-            modifier = Modifier.clip(CircleShape)
+            modifier = Modifier
+                .width(imageSize)
+                .aspectRatio(1f)
+                .clip(shape = RoundedCornerShape(20.dp))
         )
         Column(
             modifier = Modifier.padding(start = 10.dp)

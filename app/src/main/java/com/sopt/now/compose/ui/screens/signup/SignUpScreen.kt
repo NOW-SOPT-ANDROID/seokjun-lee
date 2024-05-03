@@ -1,5 +1,6 @@
 package com.sopt.now.compose.ui.screens.signup
 
+import android.widget.Toast
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -86,7 +87,11 @@ fun SignUpScreen(
         ) {
             ButtonComposable(
                 text = R.string.signup_btn_signup,
-                onClick = {viewModel.onSignUpButtonClicked(navController)})
+                onClick = {
+                    viewModel.onSignUpButtonClicked(navController)
+                    Toast.makeText(context, uiState.value.message, Toast.LENGTH_SHORT).show()
+                }
+            )
         }
     }
 }

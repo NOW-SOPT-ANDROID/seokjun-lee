@@ -52,7 +52,7 @@ class HomeViewModel(
     val uiState: StateFlow<HomeUiState> = _uiState.asStateFlow()
 
     private fun updateUiState(user: User?, follow: List<Follow>?) {
-        if(state.value.isFollowSuccess) {
+        if(state.value.isMemberSuccess && state.value.isFollowSuccess) {
             _uiState.value = HomeUiState.Success(user?:User(), follow?: listOf())
             Log.d(TAG, follow.toString())
         } else {
@@ -60,40 +60,15 @@ class HomeViewModel(
         }
     }
 
-    private fun updateUiState(navController: NavHostController) {
-        val memberId = navController.previousBackStackEntry?.savedStateHandle
-            ?.getLiveData<String>(NAVIGATE_LOGIN_KEY)?.value
-        if(memberId != null) {
-            fetchFollowList()
-            fetchMemberInfo(memberId)
-        }
-
-    }
-
     fun fetchDatas(navController: NavHostController) {
         val memberId = navController.previousBackStackEntry?.savedStateHandle
             ?.getLiveData<String>(NAVIGATE_LOGIN_KEY)?.value
 
         Log.d(TAG, memberId.toString())
-        /*val followList = followRepository.fetchFollow()
-        updateUiState(user = User(), follow = followRepository.fetchFollow())*/
         if(memberId != null){
-            fetchFollowList()
             fetchMemberInfo(memberId = memberId)
-            updateUiState(user = state.value.user, follow = state.value.follow)
         }
     }
-
-
-
-    private fun fetchFollowList() = viewModelScope.launch {
-        val followList = followRepository.fetchFollow()
-        if(followList != null) {
-            state.value.isFollowSuccess = true
-            state.value.follow = followList
-        }
-    }
-
 
     private fun fetchMemberInfo(memberId: String = "66") {
         ServicePool.initMainService(memberId)
@@ -111,6 +86,7 @@ class HomeViewModel(
                         nickName = data?.data?.nickname ?: "",
                         mbti = data?.data?.phone ?: ""
                     )
+                    fetchFollowList()
                 } else {
                     val error = response.errorBody()?.string()
 
@@ -125,6 +101,16 @@ class HomeViewModel(
                 Log.d(TAG, "서버에러")
             }
         })
+    }
+
+    private fun fetchFollowList() = viewModelScope.launch {
+        val followList = followRepository.fetchFollow()
+        if(followList != null) {
+            state.value.isFollowSuccess = true
+            state.value.follow = followList
+
+            updateUiState(user = state.value.user, follow = state.value.follow)
+        }
     }
 
 
