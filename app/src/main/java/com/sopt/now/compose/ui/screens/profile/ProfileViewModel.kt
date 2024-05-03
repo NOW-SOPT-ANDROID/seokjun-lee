@@ -27,12 +27,6 @@ class ProfileViewModel: ViewModel() {
             _uiState.value = ProfileUiState.Error
         }
     }
-    fun fetchUserLoggedIn(navController: NavHostController) {
-        val memberId = navController.previousBackStackEntry?.savedStateHandle
-            ?.getLiveData<String>(NAVIGATE_LOGIN_KEY)?.value
-        if(memberId != null)
-            getMemberInfo(memberId = memberId)
-    }
 
     fun getMemberInfo(memberId: String) {
         ServicePool.initMainService(memberId)

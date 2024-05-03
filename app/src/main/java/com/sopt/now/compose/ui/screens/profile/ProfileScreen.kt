@@ -22,6 +22,7 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import com.sopt.now.compose.MainActivity
 import com.sopt.now.compose.R
 import com.sopt.now.compose.models.User
 import com.sopt.now.compose.ui.SoptBottomNavigation
@@ -37,7 +38,10 @@ fun ProfileScreen(
     viewModel: ProfileViewModel = viewModel(),
 ) {
     LaunchedEffect(navController) {
-        viewModel.fetchUserLoggedIn(navController)
+        val memberId = navController.previousBackStackEntry?.savedStateHandle
+            ?.getLiveData<String>(MainActivity.NAVIGATE_LOGIN_KEY)?.value
+        if(memberId != null)
+            viewModel.getMemberInfo(memberId)
     }
     BackHandler { viewModel.onBackPressed(navController) }
 
