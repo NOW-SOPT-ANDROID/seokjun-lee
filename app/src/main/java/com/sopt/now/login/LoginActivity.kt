@@ -67,8 +67,6 @@ class LoginActivity : AppCompatActivity() {
 
     private fun initView() {
         with(binding) {
-            loginEtId.setText("seokjun")
-            loginEtPw.setText("seokjun")
 
             loginBtnLogin.setOnClickListener {
                 viewModel.login(getRequestLoginDto())

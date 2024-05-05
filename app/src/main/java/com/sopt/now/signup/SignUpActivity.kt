@@ -32,6 +32,8 @@ class SignUpActivity : AppCompatActivity() {
                 it.message,
                 Toast.LENGTH_SHORT,
             ).show()
+            if(viewModel.liveData.value?.isSuccess!!)
+                finish()
         }
     }
 

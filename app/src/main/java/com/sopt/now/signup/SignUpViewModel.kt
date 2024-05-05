@@ -3,9 +3,12 @@ package com.sopt.now.signup
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.sopt.now.login.LoginViewModel
 import com.sopt.now.network.ServicePool
 import com.sopt.now.network.dto.RequestSignUpDto
 import com.sopt.now.network.dto.ResponseSignUpDto
+import kotlinx.serialization.json.Json
+import kotlinx.serialization.json.jsonObject
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -34,11 +37,16 @@ class SignUpViewModel : ViewModel() {
                     )
                     Log.d("SignUp", "data: $data, userId: $userId")
                 } else {
-                    val error = response.message()
-                    liveData.value = SignUpState(
-                        isSuccess = false,
-                        message = "로그인이 실패 $error"
-                    )
+                    val error = response.errorBody()?.string()
+
+                    if(error != null) {
+                        val jsonMessage = Json.parseToJsonElement(error)
+
+                        liveData.value = SignUpState(
+                            isSuccess = false,
+                            message = jsonMessage.jsonObject[LoginViewModel.JSON_NAME].toString()
+                        )
+                    }
                 }
             }
 
