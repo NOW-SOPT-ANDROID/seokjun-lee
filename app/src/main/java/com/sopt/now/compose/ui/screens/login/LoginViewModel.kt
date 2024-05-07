@@ -3,6 +3,7 @@ package com.sopt.now.compose.ui.screens.login
 import android.app.Activity
 import android.content.Context
 import android.util.Log
+import androidx.core.app.NotificationCompat.MessagingStyle.Message
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.Companion.APPLICATION_KEY
@@ -13,6 +14,8 @@ import androidx.navigation.NavHostController
 import com.sopt.now.compose.MainActivity.Companion.NAVIGATE_BACK_PRESSED_KEY
 import com.sopt.now.compose.MainActivity.Companion.NAVIGATE_LOGIN_KEY
 import com.sopt.now.compose.SoptApplication
+import com.sopt.now.compose.container.AuthRepository
+import com.sopt.now.compose.container.NetworkAuthRepository
 import com.sopt.now.compose.container.PreferenceUserRepository
 import com.sopt.now.compose.network.ServicePool.temporaryAuthService
 import com.sopt.now.compose.network.dto.RequestLoginDto
@@ -31,7 +34,8 @@ import retrofit2.Callback
 import retrofit2.Response
 
 class LoginViewModel(
-    private val userRepository: PreferenceUserRepository
+    private val userRepository: PreferenceUserRepository,
+    private val authRepository: NetworkAuthRepository
 ): ViewModel() {
     private val _uiState = MutableStateFlow(LoginUiState())
     val uiState: StateFlow<LoginUiState> = _uiState.asStateFlow()
@@ -39,13 +43,18 @@ class LoginViewModel(
     fun updateUiState(
         id: String = _uiState.value.id,
         pw: String = _uiState.value.pw,
-        userIndex: Int = _uiState.value.userIndex
+        userIndex: Int = _uiState.value.userIndex,
+        isSuccess:Boolean = _uiState.value.isSuccess,
+        message: String = _uiState.value.message
+
     ) {
         _uiState.update { currentState ->
             currentState.copy(
                 id = id,
                 pw = pw,
-                userIndex = userIndex
+                userIndex = userIndex,
+                isSuccess = isSuccess,
+                message = message
             )
         }
     }
@@ -54,47 +63,37 @@ class LoginViewModel(
         navController.navigate(SignUpDestination.route)
     }
 
-    fun onLoginButtonClicked(navController: NavHostController) {
-        val request = getRequestLoginDto()
-        login(navController, request)
-        Log.d("test", "hello")
-    }
+    fun postLogin(request: RequestLoginDto = getRequestLoginDto()) {
+        viewModelScope.launch {
+            authRepository.postLogin(request).fold(
+                onSuccess = {
+                    if(it.isSuccessful){
+                        val userId = it.headers()[HEADER_NAME]
+                        updateUiState(
+                            isSuccess = true,
+                            message = userId.toString()
+                        )
+                        setUserIdInPreference(userId = userId.toString())
+                    } else {
+                        val error = it.errorBody()?.string()
+                        if (error != null) {
+                            val jsonMessage = Json.parseToJsonElement(error)
 
-    private fun login(navController: NavHostController, request: RequestLoginDto) {
-        temporaryAuthService.login(request).enqueue(object : Callback<ResponseLoginDto> {
-            override fun onResponse(
-                call: Call<ResponseLoginDto>,
-                response: Response<ResponseLoginDto>,
-            ) {
-                if (response.isSuccessful) {
-                    val data: ResponseLoginDto? = response.body()
-                    val userId = response.headers()[HEADER_NAME]
-                    with(_uiState.value) {
-                        isSuccess = true
-                        message = userId.toString()
-                    }
-                    setUserIdInPreference(userId = userId.toString())
-                    navigateToHome(navController)
-                } else {
-                    val error = response.errorBody()?.string()
-
-                    if (error != null) {
-                        val jsonMessage = Json.parseToJsonElement(error)
-                        with(_uiState.value) {
-                            isSuccess = false
-                            message = jsonMessage.jsonObject[JSON_NAME].toString()
+                            updateUiState(
+                                isSuccess = false,
+                                message = jsonMessage.jsonObject[JSON_NAME].toString()
+                            )
                         }
                     }
+                },
+                onFailure = {
+                    updateUiState(
+                        isSuccess = false,
+                        message = "서버 에러"
+                    )
                 }
-            }
-
-            override fun onFailure(call: Call<ResponseLoginDto>, t: Throwable) {
-                with(_uiState.value) {
-                    isSuccess = false
-                    message = "서버 에러"
-                }
-            }
-        })
+            )
+        }
     }
 
     private fun getRequestLoginDto(): RequestLoginDto = RequestLoginDto(
@@ -102,45 +101,9 @@ class LoginViewModel(
         password =  _uiState.value.pw
     )
 
-    fun checkCurrentStack(context: Context, navController: NavHostController) {
-        navController.currentBackStackEntry?.savedStateHandle?.run {
-            getLiveData<String>(NAVIGATE_BACK_PRESSED_KEY).value?.run{
-                if(this == NAVIGATE_BACK_PRESSED_KEY) endApplication(context)
-            }
-        }
-    }
-
-    private fun endApplication(context: Context) {
-        if (context is Activity) {
-            context.finish()
-        }
-    }
-
-    private fun navigateToHome(navController: NavHostController) {
-        navController.currentBackStackEntry?.savedStateHandle?.set(
-            key = NAVIGATE_LOGIN_KEY,
-            value = _uiState.value.message
-        )
-        navController.navigate(HomeDestination.route)
-        updateUiState(id = "", pw = "", userIndex = -1)
-    }
-
-    /*private fun setUserInPreferenceRepository(newUser: User){
-        viewModelScope.launch {
-            userRepository.setUserProfile(newUser)
-        }
-    }
-    private fun fetchUserFromPreferenceRepository() = viewModelScope.launch {
-        val user = userRepository.getUserProfile()
-        if(user.id.isNotBlank()){
-            userList.add(user)
-        }
-    }*/
-
     private fun setUserIdInPreference(userId: String) = viewModelScope.launch {
         userRepository.setUserId(userId)
     }
-
 
     companion object {
         const val HEADER_NAME = "location"
@@ -150,7 +113,8 @@ class LoginViewModel(
             initializer {
                 val application = (this[APPLICATION_KEY] as SoptApplication)
                 val userRepository = application.appContainer.userRepository
-                LoginViewModel(userRepository)
+                val authRepository = application.appContainer.authRepository
+                LoginViewModel(userRepository = userRepository, authRepository = authRepository)
             }
         }
     }

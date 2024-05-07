@@ -54,7 +54,7 @@ class ProfileViewModel(
         val Factory: ViewModelProvider.Factory = viewModelFactory {
             initializer {
                 val application = (this[ViewModelProvider.AndroidViewModelFactory.APPLICATION_KEY] as SoptApplication)
-                val authRepository = application.appContainer.authRepository
+                val authRepository = application.appContainer.memberRepository
                 ProfileViewModel(authRepository)
             }
         }

@@ -11,12 +11,14 @@ import okhttp3.Interceptor
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
+import retrofit2.create
 
 
 interface AppContainer{
     val userRepository: PreferenceUserRepository
     val followRepository: NetworkFollowerRepository
-    val authRepository: NetworkMemberRepository
+    val memberRepository: NetworkMemberRepository
+    val authRepository: NetworkAuthRepository
 }
 
 class SoptAppContainer(context: Context): AppContainer {
@@ -29,8 +31,12 @@ class SoptAppContainer(context: Context): AppContainer {
         NetworkFollowerRepository(followService = retrofitFollower.create(FollowService::class.java))
     }
 
-    override val authRepository: NetworkMemberRepository by lazy {
+    override val memberRepository: NetworkMemberRepository by lazy {
         NetworkMemberRepository(authService = retrofitUser.create(AuthService::class.java))
+    }
+
+    override val authRepository: NetworkAuthRepository by lazy {
+        NetworkAuthRepository(authService =  retrofitLogin.create(AuthService::class.java))
     }
 
     val retrofitLogin: Retrofit by lazy {

@@ -148,7 +148,7 @@ class HomeViewModel(
             initializer {
                 val application = (this[ViewModelProvider.AndroidViewModelFactory.APPLICATION_KEY] as SoptApplication)
                 val followRepository = application.appContainer.followRepository
-                val authRepository = application.appContainer.authRepository
+                val authRepository = application.appContainer.memberRepository
                 HomeViewModel(
                     followerRepository = followRepository,
                     authRepository = authRepository)
