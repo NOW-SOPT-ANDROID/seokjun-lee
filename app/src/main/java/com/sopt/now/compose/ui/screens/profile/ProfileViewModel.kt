@@ -2,19 +2,30 @@ package com.sopt.now.compose.ui.screens.profile
 
 import android.util.Log
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.viewmodel.initializer
+import androidx.lifecycle.viewmodel.viewModelFactory
 import androidx.navigation.NavHostController
 import com.sopt.now.compose.MainActivity.Companion.NAVIGATE_BACK_PRESSED_KEY
+import com.sopt.now.compose.SoptApplication
+import com.sopt.now.compose.container.NetworkAuthRepository
+import com.sopt.now.compose.container.PreferenceUserRepository
 import com.sopt.now.compose.models.User
 import com.sopt.now.compose.network.ServicePool
 import com.sopt.now.compose.network.dto.ResponseMemberInfoDto
+import com.sopt.now.compose.ui.screens.login.LoginViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class ProfileViewModel: ViewModel() {
+class ProfileViewModel(
+    private val authRepository: NetworkAuthRepository
+): ViewModel() {
     private val _uiState = MutableStateFlow<ProfileUiState>(ProfileUiState.Loading)
     val uiState: StateFlow<ProfileUiState> = _uiState.asStateFlow()
 
@@ -26,44 +37,35 @@ class ProfileViewModel: ViewModel() {
         }
     }
 
-    fun getMemberInfo(memberId: String) {
-        ServicePool.initMainService(memberId)
-        val authService = ServicePool.mainService
-        authService.getMemberInfo().enqueue(object : Callback<ResponseMemberInfoDto> {
-            override fun onResponse(
-                call: Call<ResponseMemberInfoDto>,
-                response: Response<ResponseMemberInfoDto>,
-            ) {
-                if (response.isSuccessful) {
-                    val data: ResponseMemberInfoDto? = response.body()
-                    if(data?.data != null) {
-                        updateUiState(
-                            user = User(
-                                id = data.data.authenticationId,
-                                nickName = data.data.nickname,
-                                phone = data.data.phone
-                            )
+    fun fetchUserInfo() {
+        viewModelScope.launch {
+            val result = authRepository.getUserInfo()
+            result.fold(
+                onSuccess = {
+                    updateUiState(
+                        user = User(
+                            id = it.id,
+                            nickName = it.nickName,
+                            phone = it.phone
                         )
-                    }
+                    )
+                },
+                onFailure = {
+                    Log.d(TAG, it.message.toString())
                 }
-            }
-
-            override fun onFailure(call: Call<ResponseMemberInfoDto>, t: Throwable) {
-                Log.d("ProfileViewModel", "서버에러")
-            }
-        })
+            )
+        }
     }
 
+    companion object{
+        private const val TAG = "ProfileViewModel"
 
-
-    fun onLogoutButtonPressed(navController: NavHostController) {
-        navController.navigateUp()
-    }
-
-    fun onBackPressed(navController: NavHostController){
-        navController.run {
-            previousBackStackEntry?.savedStateHandle?.set(NAVIGATE_BACK_PRESSED_KEY, NAVIGATE_BACK_PRESSED_KEY)
-            navigateUp()
+        val Factory: ViewModelProvider.Factory = viewModelFactory {
+            initializer {
+                val application = (this[ViewModelProvider.AndroidViewModelFactory.APPLICATION_KEY] as SoptApplication)
+                val authRepository = application.appContainer.authRepository
+                ProfileViewModel(authRepository)
+            }
         }
     }
 }

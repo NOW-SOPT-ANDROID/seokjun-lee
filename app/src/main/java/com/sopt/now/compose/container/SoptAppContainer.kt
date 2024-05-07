@@ -1,19 +1,16 @@
 package com.sopt.now.compose.container
 
 import android.content.Context
-import android.util.Log
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import com.sopt.now.compose.BuildConfig
 import com.sopt.now.compose.container.PreferenceUserRepository.Companion.USER_ID_KEY
-import com.sopt.now.compose.network.AuthService
 import com.sopt.now.compose.network.FollowService
-import com.sopt.now.compose.network.TempAuthService
+import com.sopt.now.compose.network.AuthService
 import kotlinx.serialization.json.Json
 import okhttp3.Interceptor
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
-import retrofit2.create
 
 
 interface AppContainer{
@@ -33,7 +30,7 @@ class SoptAppContainer(context: Context): AppContainer {
     }
 
     override val authRepository: NetworkAuthRepository by lazy {
-        NetworkAuthRepository(authService = retrofitUser.create(TempAuthService::class.java))
+        NetworkAuthRepository(authService = retrofitUser.create(AuthService::class.java))
     }
 
     val retrofitLogin: Retrofit by lazy {

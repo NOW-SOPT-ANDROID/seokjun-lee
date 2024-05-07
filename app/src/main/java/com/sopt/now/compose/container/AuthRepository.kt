@@ -1,11 +1,9 @@
 package com.sopt.now.compose.container
 
-import android.util.Log
 import com.sopt.now.compose.models.User
-import com.sopt.now.compose.network.TempAuthService
+import com.sopt.now.compose.network.AuthService
 import com.sopt.now.compose.network.dto.RequestChangePasswordDto
 import com.sopt.now.compose.network.dto.ResponseChangePasswordDto
-import com.sopt.now.compose.network.dto.ResponseMemberInfoDto
 import retrofit2.Response
 
 private const val TAG = "AuthRepository"
@@ -18,20 +16,17 @@ interface AuthRepository {
 }
 
 class NetworkAuthRepository(
-    private val authService: TempAuthService
+    private val authService: AuthService
 ): AuthRepository {
     override suspend fun getUserInfo(): Result<User> = runCatching {
         with(authService.getMemberInfo().body()?.data){
             User(
                 id = this?.authenticationId.orEmpty(),
-                nickName = this?.phone.orEmpty(),
+                nickName = this?.nickname.orEmpty(),
                 phone = this?.phone.orEmpty()
             )
         }
-    }.onFailure {
-        Log.d(TAG, it.message.toString())
     }
-
 
     override suspend fun patchUserPassword(
         request: RequestChangePasswordDto

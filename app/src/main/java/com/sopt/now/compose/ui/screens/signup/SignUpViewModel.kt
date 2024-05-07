@@ -1,30 +1,16 @@
 package com.sopt.now.compose.ui.screens.signup
 
-import android.content.Context
 import android.util.Log
-import android.widget.Toast
-import androidx.core.content.ContextCompat
-import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.flowWithLifecycle
-import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavHostController
-import com.sopt.now.compose.MainActivity
-import com.sopt.now.compose.MainActivity.Companion.printToastMessage
-import com.sopt.now.compose.R
-import com.sopt.now.compose.models.User
-import com.sopt.now.compose.network.ServicePool.authService
+import com.sopt.now.compose.network.ServicePool.temporaryAuthService
 import com.sopt.now.compose.network.dto.RequestSignUpDto
 import com.sopt.now.compose.network.dto.ResponseSignUpDto
-import com.sopt.now.compose.ui.screens.home.HomeUiState
 import com.sopt.now.compose.ui.screens.login.LoginViewModel
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.jsonObject
 import retrofit2.Call
@@ -61,7 +47,7 @@ class SignUpViewModel: ViewModel() {
     }
 
     private fun signUp(navController:NavHostController, request: RequestSignUpDto) {
-        authService.signUp(request).enqueue(object : Callback<ResponseSignUpDto> {
+        temporaryAuthService.signUp(request).enqueue(object : Callback<ResponseSignUpDto> {
             override fun onResponse(
                 call: Call<ResponseSignUpDto>,
                 response: Response<ResponseSignUpDto>,

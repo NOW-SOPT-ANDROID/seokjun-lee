@@ -11,7 +11,7 @@ import retrofit2.Retrofit
 object ApiFactory {
     private const val BASE_URL: String = BuildConfig.AUTH_BASE_URL
 
-    lateinit var retrofitAfterLogin: AuthService
+    lateinit var retrofitAfterLogin: TemporaryAuthService
     val retrofitBeforeLogin: Retrofit by lazy {
         Retrofit.Builder()
             .baseUrl(BASE_URL)
@@ -31,7 +31,7 @@ object ApiFactory {
             .addConverterFactory(Json.asConverterFactory("application/json".toMediaType()))
             .client(createHttpClientWithId(memberId).build())
             .build()
-            .create(AuthService::class.java)
+            .create(TemporaryAuthService::class.java)
     }
 
     private fun createHttpClientWithId(memberId: String): OkHttpClient.Builder =
@@ -51,10 +51,10 @@ object ApiFactory {
 }
 
 object ServicePool {
-    val authService = ApiFactory.create<AuthService>()
+    val temporaryAuthService = ApiFactory.create<TemporaryAuthService>()
     val followService = ApiFactory.createFollow<FollowService>()
 
-    lateinit var mainService: AuthService
+    lateinit var mainService: TemporaryAuthService
     fun initMainService(memberId: String) {
         ApiFactory.createRetrofitWithMemberId(memberId)
         mainService = ApiFactory.retrofitAfterLogin

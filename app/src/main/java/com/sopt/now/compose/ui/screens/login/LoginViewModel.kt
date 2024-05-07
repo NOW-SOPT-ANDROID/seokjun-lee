@@ -12,16 +12,13 @@ import androidx.lifecycle.viewmodel.viewModelFactory
 import androidx.navigation.NavHostController
 import com.sopt.now.compose.MainActivity.Companion.NAVIGATE_BACK_PRESSED_KEY
 import com.sopt.now.compose.MainActivity.Companion.NAVIGATE_LOGIN_KEY
-import com.sopt.now.compose.MainActivity.Companion.NAVIGATE_SIGNUP_KEY
 import com.sopt.now.compose.SoptApplication
 import com.sopt.now.compose.container.PreferenceUserRepository
-import com.sopt.now.compose.models.User
-import com.sopt.now.compose.network.ServicePool.authService
+import com.sopt.now.compose.network.ServicePool.temporaryAuthService
 import com.sopt.now.compose.network.dto.RequestLoginDto
 import com.sopt.now.compose.network.dto.ResponseLoginDto
 import com.sopt.now.compose.ui.navigation.HomeDestination
 import com.sopt.now.compose.ui.navigation.SignUpDestination
-import com.sopt.now.compose.ui.screens.home.HomeViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -64,7 +61,7 @@ class LoginViewModel(
     }
 
     private fun login(navController: NavHostController, request: RequestLoginDto) {
-        authService.login(request).enqueue(object : Callback<ResponseLoginDto> {
+        temporaryAuthService.login(request).enqueue(object : Callback<ResponseLoginDto> {
             override fun onResponse(
                 call: Call<ResponseLoginDto>,
                 response: Response<ResponseLoginDto>,
