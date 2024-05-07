@@ -29,7 +29,6 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.sopt.now.compose.MainActivity
-import com.sopt.now.compose.MainActivity.Companion.printToastMessage
 import com.sopt.now.compose.R
 import com.sopt.now.compose.ui.composables.ButtonComposable
 import com.sopt.now.compose.ui.composables.TextFieldWithTitleComposable
@@ -56,7 +55,7 @@ fun LoginScreen(
                     value = uiState.message
                 )
                 navController.navigate(HomeDestination.route)
-                viewModel.updateUiState(id = "", pw = "", userIndex = -1)
+                viewModel.updateUiState(id = "", pw = "")
             } else {
                 Toast.makeText(context, "로그인 실패 ${uiState.message}", Toast.LENGTH_SHORT).show()
             }
