@@ -12,7 +12,7 @@ import retrofit2.Response
 
 interface AuthRepository {
     suspend fun postLogin(request: RequestLoginDto): Result<Response<ResponseLoginDto>>
-    suspend fun postSignUp(requestSignUpDto: RequestSignUpDto): Result<ResponseSignUpDto>
+    suspend fun postSignUp(request: RequestSignUpDto): Result<Response<ResponseSignUpDto>>
 }
 
 class NetworkAuthRepository(
@@ -24,7 +24,9 @@ class NetworkAuthRepository(
         }
 
 
-    override suspend fun postSignUp(requestSignUpDto: RequestSignUpDto): Result<ResponseSignUpDto> {
-        TODO("Not yet implemented")
-    }
+    override suspend fun postSignUp(request: RequestSignUpDto): Result<Response<ResponseSignUpDto>> =
+        runCatching {
+            authService.signUp(request)
+        }
+
 }

@@ -1,23 +1,25 @@
 package com.sopt.now.compose.ui.screens.signup
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
-import androidx.navigation.NavHostController
-import com.sopt.now.compose.network.ServicePool.temporaryAuthService
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.viewmodel.initializer
+import androidx.lifecycle.viewmodel.viewModelFactory
+import com.sopt.now.compose.SoptApplication
+import com.sopt.now.compose.container.NetworkAuthRepository
 import com.sopt.now.compose.network.dto.RequestSignUpDto
-import com.sopt.now.compose.network.dto.ResponseSignUpDto
 import com.sopt.now.compose.ui.screens.login.LoginViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.jsonObject
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
-class SignUpViewModel: ViewModel() {
+class SignUpViewModel(
+    private val authRepository: NetworkAuthRepository
+): ViewModel() {
     private val _uiState = MutableStateFlow(SignUpState())
     val uiState: StateFlow<SignUpState> = _uiState.asStateFlow()
 
@@ -39,57 +41,54 @@ class SignUpViewModel: ViewModel() {
                 phone = phone)
         }
     }
-
-     fun onSignUpButtonClicked(navController: NavHostController) {
-         val request = getRequestSignUpDto()
-         signUp(navController, request)
-
-    }
-
-    private fun signUp(navController:NavHostController, request: RequestSignUpDto) {
-        temporaryAuthService.signUp(request).enqueue(object : Callback<ResponseSignUpDto> {
-            override fun onResponse(
-                call: Call<ResponseSignUpDto>,
-                response: Response<ResponseSignUpDto>,
-            ) {
-                if (response.isSuccessful) {
-                    val data: ResponseSignUpDto? = response.body()
-                    val userId = response.headers()["location"]
-                    updateUiState(
-                        isSuccess = true,
-                        message = userId.toString()
-                    )
-                    navController.navigateUp()
-                } else {
-                    val error = response.errorBody()?.string()
-
-                    if (error != null) {
-                        val jsonMessage = Json.parseToJsonElement(error)
+    fun patchSignUp(request: RequestSignUpDto = getRequestSignUpDto()) {
+        viewModelScope.launch {
+            authRepository.postSignUp(request).fold(
+                onSuccess = {
+                    if(it.isSuccessful){
+                        val userId = it.headers()["location"]
                         updateUiState(
-                            isSuccess = false,
-                            message = jsonMessage.jsonObject[LoginViewModel.JSON_NAME].toString()
+                            isSuccess = true,
+                            message = userId.toString()
                         )
+                    } else {
+                        val error = it.errorBody()?.string()
+                        if (error != null) {
+                            val jsonMessage = Json.parseToJsonElement(error)
+                            updateUiState(
+                                isSuccess = false,
+                                message = jsonMessage.jsonObject[LoginViewModel.JSON_NAME].toString()
+                            )
+                        }
                     }
+                },
+                onFailure = {
+                    updateUiState(
+                        isSuccess = false,
+                        message = "서버에러"
+                    )
                 }
-            }
-
-            override fun onFailure(call: Call<ResponseSignUpDto>, t: Throwable) {
-                updateUiState(
-                    isSuccess = false,
-                    message = "서버에러"
-                )
-                Log.d("SignUpViewModel", _uiState.value.message)
-            }
-        })
+            )
+        }
     }
 
     private fun getRequestSignUpDto(): RequestSignUpDto = with(_uiState.value) {
-        return@with RequestSignUpDto(
+        RequestSignUpDto(
             authenticationId = this.authenticationId,
             password = this.password,
             nickname = this.nickName,
             phone = this.phone
         )
+    }
+
+    companion object{
+        val Factory: ViewModelProvider.Factory = viewModelFactory {
+            initializer {
+                val application = (this[ViewModelProvider.AndroidViewModelFactory.APPLICATION_KEY] as SoptApplication)
+                val authRepository = application.appContainer.authRepository
+                SignUpViewModel(authRepository = authRepository)
+            }
+        }
     }
 
 }
