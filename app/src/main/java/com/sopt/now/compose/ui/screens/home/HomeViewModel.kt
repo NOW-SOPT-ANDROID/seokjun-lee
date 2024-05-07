@@ -70,38 +70,6 @@ class HomeViewModel(
         }
     }
 
-    private fun fetchMemberInfo(memberId: String = "66") {
-        ServicePool.initMainService(memberId)
-        val authService = ServicePool.mainService
-        authService.getMemberInfo().enqueue(object : Callback<ResponseMemberInfoDto> {
-            override fun onResponse(
-                call: Call<ResponseMemberInfoDto>,
-                response: Response<ResponseMemberInfoDto>,
-            ) {
-                if (response.isSuccessful) {
-                    val data: ResponseMemberInfoDto? = response.body()
-                    state.value.isMemberSuccess = true
-                    state.value.user = User(
-                        id = data?.data?.authenticationId.orEmpty(),
-                        nickName = data?.data?.nickname.orEmpty(),
-                        phone = data?.data?.phone.orEmpty()
-                    )
-                    fetchFollowList()
-                } else {
-                    val error = response.errorBody()?.string()
-
-                    if(error != null) {
-                        val jsonMessage = Json.parseToJsonElement(error)
-                        Log.d(TAG, jsonMessage.jsonObject[LoginViewModel.JSON_NAME].toString())
-                    }
-                }
-            }
-
-            override fun onFailure(call: Call<ResponseMemberInfoDto>, t: Throwable) {
-                Log.d(TAG, "서버에러")
-            }
-        })
-    }
 
     private fun fetchUserInfo() {
         viewModelScope.launch {
