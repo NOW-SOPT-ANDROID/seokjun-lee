@@ -8,18 +8,18 @@ import retrofit2.Response
 
 private const val TAG = "AuthRepository"
 
-interface AuthRepository {
+interface MemberRepository {
     suspend fun getUserInfo(): Result<User>
     suspend fun patchUserPassword(
         request: RequestChangePasswordDto
     ): Response<ResponseChangePasswordDto>
 }
 
-class NetworkAuthRepository(
+class NetworkMemberRepository(
     private val authService: AuthService
-): AuthRepository {
+) : MemberRepository {
     override suspend fun getUserInfo(): Result<User> = runCatching {
-        with(authService.getMemberInfo().body()?.data){
+        with(authService.getMemberInfo().body()?.data) {
             User(
                 id = this?.authenticationId.orEmpty(),
                 nickName = this?.nickname.orEmpty(),

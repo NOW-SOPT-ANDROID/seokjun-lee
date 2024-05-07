@@ -16,7 +16,7 @@ import retrofit2.Retrofit
 interface AppContainer{
     val userRepository: PreferenceUserRepository
     val followRepository: NetworkFollowerRepository
-    val authRepository: NetworkAuthRepository
+    val authRepository: NetworkMemberRepository
 }
 
 class SoptAppContainer(context: Context): AppContainer {
@@ -29,8 +29,8 @@ class SoptAppContainer(context: Context): AppContainer {
         NetworkFollowerRepository(followService = retrofitFollower.create(FollowService::class.java))
     }
 
-    override val authRepository: NetworkAuthRepository by lazy {
-        NetworkAuthRepository(authService = retrofitUser.create(AuthService::class.java))
+    override val authRepository: NetworkMemberRepository by lazy {
+        NetworkMemberRepository(authService = retrofitUser.create(AuthService::class.java))
     }
 
     val retrofitLogin: Retrofit by lazy {

@@ -13,7 +13,7 @@ import com.sopt.now.compose.MainActivity.Companion.NAVIGATE_BACK_PRESSED_KEY
 import com.sopt.now.compose.MainActivity.Companion.NAVIGATE_LOGIN_KEY
 import com.sopt.now.compose.SoptApplication
 import com.sopt.now.compose.container.FollowerRepository
-import com.sopt.now.compose.container.NetworkAuthRepository
+import com.sopt.now.compose.container.NetworkMemberRepository
 import com.sopt.now.compose.models.Follower
 import com.sopt.now.compose.models.User
 import com.sopt.now.compose.network.ServicePool
@@ -40,7 +40,7 @@ data class HomeState(
 
 class HomeViewModel(
     private val followerRepository: FollowerRepository,
-    private val authRepository: NetworkAuthRepository
+    private val authRepository: NetworkMemberRepository
 ): ViewModel(){
     private val state:MutableState<HomeState> = mutableStateOf(HomeState())
 
