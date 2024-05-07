@@ -16,18 +16,10 @@ import com.sopt.now.compose.container.FollowerRepository
 import com.sopt.now.compose.container.NetworkMemberRepository
 import com.sopt.now.compose.models.Follower
 import com.sopt.now.compose.models.User
-import com.sopt.now.compose.network.ServicePool
-import com.sopt.now.compose.network.dto.ResponseMemberInfoDto
-import com.sopt.now.compose.ui.screens.login.LoginViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
-import kotlinx.serialization.json.Json
-import kotlinx.serialization.json.jsonObject
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
 private const val TAG = "HomeViewModel"
 
