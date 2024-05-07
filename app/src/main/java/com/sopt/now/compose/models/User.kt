@@ -6,5 +6,5 @@ data class User(
     var id: String = "",
     var pw: String = "",
     var nickName: String = "",
-    var mbti: String = "",
+    var phone: String = "",
 ): Serializable

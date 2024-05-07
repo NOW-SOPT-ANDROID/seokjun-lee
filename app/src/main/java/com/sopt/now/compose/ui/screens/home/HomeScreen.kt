@@ -2,7 +2,6 @@ package com.sopt.now.compose.ui.screens.home
 
 import androidx.activity.compose.BackHandler
 import androidx.annotation.DrawableRes
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -14,7 +13,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -40,7 +38,6 @@ import androidx.navigation.compose.rememberNavController
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.sopt.now.compose.R
-import com.sopt.now.compose.models.Friend
 import com.sopt.now.compose.ui.SoptBottomNavigation
 import com.sopt.now.compose.ui.composables.ScreenWithImage
 
@@ -98,7 +95,7 @@ fun HomeScreen(
                 contentDescription = "",
                 imageSize = 80.dp,
                 name = uiState.user.nickName,
-                selfDescription = uiState.user.mbti,
+                selfDescription = uiState.user.phone,
                 nameFontSize = 20.sp,
                 selfDescriptionFontSize = 15.sp
             )
@@ -111,7 +108,7 @@ fun HomeScreen(
                     .background(color = Color.LightGray)
             )
         }
-        items(uiState.follow) { follow ->
+        items(uiState.follower) { follow ->
             ItemComposable(
                 modifier = Modifier
                     .padding(bottom = 10.dp)

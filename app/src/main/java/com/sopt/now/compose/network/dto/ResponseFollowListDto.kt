@@ -1,6 +1,6 @@
 package com.sopt.now.compose.network.dto
 
-import com.sopt.now.compose.models.Follow
+import com.sopt.now.compose.models.Follower
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -15,7 +15,7 @@ data class ResponseFollowListDto(
     @SerialName("total_pages")
     val total_pages:Int,
     @SerialName("data")
-    val data:List<Follow>,
+    val data:List<Follower>,
     @SerialName("support")
     val support: Support
 

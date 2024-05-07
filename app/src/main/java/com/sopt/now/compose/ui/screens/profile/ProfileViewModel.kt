@@ -4,14 +4,12 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.navigation.NavHostController
 import com.sopt.now.compose.MainActivity.Companion.NAVIGATE_BACK_PRESSED_KEY
-import com.sopt.now.compose.MainActivity.Companion.NAVIGATE_LOGIN_KEY
 import com.sopt.now.compose.models.User
 import com.sopt.now.compose.network.ServicePool
 import com.sopt.now.compose.network.dto.ResponseMemberInfoDto
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.serialization.json.Json
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -43,7 +41,7 @@ class ProfileViewModel: ViewModel() {
                             user = User(
                                 id = data.data.authenticationId,
                                 nickName = data.data.nickname,
-                                mbti = data.data.phone
+                                phone = data.data.phone
                             )
                         )
                     }

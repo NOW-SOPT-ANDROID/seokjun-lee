@@ -34,7 +34,7 @@ import com.sopt.now.compose.ui.navigation.SignUpDestination
 @Composable
 fun LoginScreen(
     navController: NavHostController = rememberNavController(),
-    viewModel: LoginViewModel = viewModel(),
+    viewModel: LoginViewModel = viewModel(factory = LoginViewModel.Factory),
 ) {
     val context = LocalContext.current
     val uiState = viewModel.uiState.collectAsState()

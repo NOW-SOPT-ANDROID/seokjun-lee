@@ -4,7 +4,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class Follow(
+data class Follower(
     @SerialName("id")
     val id:Int,
     @SerialName("email")

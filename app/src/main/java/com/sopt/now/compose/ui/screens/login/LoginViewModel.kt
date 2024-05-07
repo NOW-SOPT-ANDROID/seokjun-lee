@@ -21,6 +21,7 @@ import com.sopt.now.compose.network.dto.RequestLoginDto
 import com.sopt.now.compose.network.dto.ResponseLoginDto
 import com.sopt.now.compose.ui.navigation.HomeDestination
 import com.sopt.now.compose.ui.navigation.SignUpDestination
+import com.sopt.now.compose.ui.screens.home.HomeViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -32,7 +33,9 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class LoginViewModel(): ViewModel() {
+class LoginViewModel(
+    private val userRepository: PreferenceUserRepository
+): ViewModel() {
     private val _uiState = MutableStateFlow(LoginUiState())
     val uiState: StateFlow<LoginUiState> = _uiState.asStateFlow()
 
@@ -73,6 +76,7 @@ class LoginViewModel(): ViewModel() {
                         isSuccess = true
                         message = userId.toString()
                     }
+                    setUserIdInPreference(userId = userId.toString())
                     navigateToHome(navController)
                 } else {
                     val error = response.errorBody()?.string()
@@ -136,8 +140,21 @@ class LoginViewModel(): ViewModel() {
         }
     }*/
 
+    private fun setUserIdInPreference(userId: String) = viewModelScope.launch {
+        userRepository.setUserId(userId)
+    }
+
+
     companion object {
         const val HEADER_NAME = "location"
         const val JSON_NAME = "message"
+
+        val Factory: ViewModelProvider.Factory = viewModelFactory {
+            initializer {
+                val application = (this[APPLICATION_KEY] as SoptApplication)
+                val userRepository = application.appContainer.userRepository
+                LoginViewModel(userRepository)
+            }
+        }
     }
 }
