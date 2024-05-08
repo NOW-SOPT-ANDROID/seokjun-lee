@@ -1,7 +1,6 @@
 package com.sopt.now.compose.ui.screens.home
 
 import androidx.activity.compose.BackHandler
-import androidx.annotation.DrawableRes
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -37,6 +36,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
+import com.sopt.now.compose.MainActivity
 import com.sopt.now.compose.R
 import com.sopt.now.compose.ui.SoptBottomNavigation
 import com.sopt.now.compose.ui.composables.ScreenWithImage
@@ -48,11 +48,19 @@ fun HomeScreen(
     navController: NavHostController = rememberNavController(),
     viewModel: HomeViewModel = viewModel(factory = HomeViewModel.Factory),
 ) {
-    LaunchedEffect(navController){
-        viewModel.fetchDatas(navController)
+    LaunchedEffect(null) {
+        viewModel.fetchNetworkData()
     }
 
-    BackHandler { viewModel.onBackPressed(navController) }
+    BackHandler {
+        navController.run {
+            previousBackStackEntry?.savedStateHandle?.set(
+                MainActivity.NAVIGATE_BACK_PRESSED_KEY,
+                MainActivity.NAVIGATE_BACK_PRESSED_KEY
+            )
+            navigateUp()
+        }
+    }
 
     Scaffold(
         bottomBar = { SoptBottomNavigation(navController = navController) }
@@ -73,7 +81,6 @@ fun HomeScreen(
                 ScreenWithImage(imageRes = R.drawable.ic_broken_image, contentDescription = "Error")
             }
         }
-
     }
 }
 
@@ -90,7 +97,6 @@ fun HomeScreen(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(top = 10.dp),
-                imageRes = R.drawable.ic_launcher_background,
                 imageUrl = "https://developer.android.com/codelabs/basic-android-kotlin-compose-amphibians-app/img/roraima-bush-toad.png",
                 contentDescription = "",
                 imageSize = 80.dp,
@@ -113,7 +119,6 @@ fun HomeScreen(
                 modifier = Modifier
                     .padding(bottom = 10.dp)
                     .fillMaxWidth(),
-                imageRes = R.drawable.ic_launcher_background,
                 imageUrl = follow.avatar,
                 contentDescription = "",
                 name = "${follow.firstName} ${follow.lastName}",
@@ -126,8 +131,6 @@ fun HomeScreen(
 @Composable
 fun ItemComposable(
     modifier: Modifier,
-    @DrawableRes
-    imageRes: Int,
     imageUrl: String,
     contentDescription: String,
     imageSize: Dp = 60.dp,
@@ -140,21 +143,13 @@ fun ItemComposable(
         modifier = modifier,
         verticalAlignment = Alignment.CenterVertically
     ) {
-        /*Image(
-            modifier = Modifier
-                .width(imageSize)
-                .aspectRatio(1f)
-                .clip(shape = RoundedCornerShape(20.dp)),
-            painter = painterResource(id = imageRes),
-            contentDescription = contentDescription
-        )*/
         AsyncImage(
             model = ImageRequest.Builder(LocalContext.current)
                 .data(imageUrl)
                 .crossfade(true)
                 .build(),
             placeholder = painterResource(R.drawable.ic_broken_image),
-            contentDescription = "",
+            contentDescription = contentDescription,
             contentScale = ContentScale.Crop,
             modifier = Modifier
                 .width(imageSize)

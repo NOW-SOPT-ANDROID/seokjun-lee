@@ -8,6 +8,11 @@ sealed interface HomeUiState {
         val user: User,
         val follower: List<Follower>
     ) : HomeUiState
-    data object Loading: HomeUiState
+    data class Loading(
+        val isUserSuccess: Boolean = false,
+        val isFollowerSuccess: Boolean = false,
+        var user: User = User(),
+        var follower: List<Follower> = listOf()
+    ): HomeUiState
     data object Error: HomeUiState
 }

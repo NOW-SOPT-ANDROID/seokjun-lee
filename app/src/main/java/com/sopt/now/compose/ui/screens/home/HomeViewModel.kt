@@ -23,60 +23,44 @@ import kotlinx.coroutines.launch
 
 private const val TAG = "HomeViewModel"
 
-data class HomeState(
-    var isMemberSuccess: Boolean = false,
-    var isFollowSuccess: Boolean = false,
-    var user: User ?= null,
-    var follower: List<Follower> ?= null
-)
-
 class HomeViewModel(
     private val followerRepository: FollowerRepository,
     private val authRepository: NetworkMemberRepository
-): ViewModel(){
-    private val state:MutableState<HomeState> = mutableStateOf(HomeState())
+) : ViewModel() {
 
-    private val _uiState = MutableStateFlow<HomeUiState>(HomeUiState.Loading)
+    private val _uiState = MutableStateFlow<HomeUiState>(HomeUiState.Loading())
     val uiState: StateFlow<HomeUiState> = _uiState.asStateFlow()
 
-    private fun updateUiState(user: User?, follower: List<Follower>?) {
-        if(state.value.isMemberSuccess && state.value.isFollowSuccess) {
-            _uiState.value = HomeUiState.Success(user?:User(), follower?: listOf())
-            Log.d(TAG, follower.toString())
+    private fun updateUiState(
+        state: HomeUiState.Loading = _uiState.value as HomeUiState.Loading
+    ) {
+        if (state.isUserSuccess && state.isFollowerSuccess) {
+            _uiState.value = HomeUiState.Success(
+                user = state.user,
+                follower = state.follower
+            )
         } else {
             _uiState.value = HomeUiState.Error
         }
     }
 
-    fun fetchDatas(navController: NavHostController) {
-        val memberId = navController.previousBackStackEntry?.savedStateHandle
-            ?.getLiveData<String>(NAVIGATE_LOGIN_KEY)?.value
-
-        Log.d(TAG, memberId.toString())
-        if(memberId != null){
-            //fetchMemberInfo(memberId = memberId)
-            val user = fetchUserInfo()
-            if(user != null) {
-                fetchFollowList()
-            }
-        }
+    fun fetchNetworkData() {
+        fetchUserInfo()
     }
-
 
     private fun fetchUserInfo() {
         viewModelScope.launch {
             val result = authRepository.getUserInfo()
-            var user: User? = null
             result.fold(
                 onSuccess = {
-                    user = it
-                    Log.d(TAG, "user in: $it")
-
-                    state.value.isMemberSuccess = true
-                    state.value.user = user
-
-
-                    fetchFollowList()
+                    val state = _uiState.value as HomeUiState.Loading
+                    _uiState.value = HomeUiState.Loading(
+                        isUserSuccess = true,
+                        user = it,
+                        isFollowerSuccess = state.isFollowerSuccess,
+                        follower = state.follower
+                    )
+                    fetchFollowerList()
                 },
                 onFailure = {
                     Log.d(TAG, it.message.toString())
@@ -85,33 +69,31 @@ class HomeViewModel(
         }
     }
 
-    private fun fetchFollowList() = viewModelScope.launch {
-        val followList = followerRepository.fetchFollow()
-        if(followList != null) {
-            state.value.isFollowSuccess = true
-            state.value.follower = followList
-
-            updateUiState(user = state.value.user, follower = state.value.follower)
-        }
-    }
-
-
-    fun onBackPressed(navController: NavHostController){
-        navController.run {
-            previousBackStackEntry?.savedStateHandle?.set(NAVIGATE_BACK_PRESSED_KEY, NAVIGATE_BACK_PRESSED_KEY)
-            navigateUp()
+    private fun fetchFollowerList() = viewModelScope.launch {
+        val followers = followerRepository.fetchFollow()
+        if (followers != null) {
+            val state = _uiState.value as HomeUiState.Loading
+            _uiState.value = HomeUiState.Loading(
+                isUserSuccess = state.isUserSuccess,
+                isFollowerSuccess = true,
+                user = state.user,
+                follower = followers
+            )
+            updateUiState()
         }
     }
 
     companion object {
         val Factory: ViewModelProvider.Factory = viewModelFactory {
             initializer {
-                val application = (this[ViewModelProvider.AndroidViewModelFactory.APPLICATION_KEY] as SoptApplication)
+                val application =
+                    (this[ViewModelProvider.AndroidViewModelFactory.APPLICATION_KEY] as SoptApplication)
                 val followRepository = application.appContainer.followRepository
                 val authRepository = application.appContainer.memberRepository
                 HomeViewModel(
                     followerRepository = followRepository,
-                    authRepository = authRepository)
+                    authRepository = authRepository
+                )
             }
         }
     }
