@@ -82,6 +82,8 @@ class HomeViewModel(
                         follower = followers.orEmpty()
                     )
                     updateUiState()
+                } else {
+
                 }
             },
             onFailure = {

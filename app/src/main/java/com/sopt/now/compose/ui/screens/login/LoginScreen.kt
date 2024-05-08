@@ -43,11 +43,11 @@ fun LoginScreen(
     val context = LocalContext.current
     val uiState by viewModel.uiState.collectAsState()
 
-    checkCurrentStack(context = context, navController = navController)
 
     LaunchedEffect(uiState.message) {
+        checkCurrentStack(context = context, navController = navController)
+
         if(uiState.message.isNotEmpty()){
-            Log.d("SignUpScreen", "launched")
             if(uiState.isSuccess) {
                 Toast.makeText(context, "로그인 성공 ${uiState.message}", Toast.LENGTH_SHORT).show()
                 navController.currentBackStackEntry?.savedStateHandle?.set(
@@ -55,7 +55,7 @@ fun LoginScreen(
                     value = uiState.message
                 )
                 navController.navigate(HomeDestination.route)
-                viewModel.updateUiState(id = "", pw = "")
+                viewModel.updateUiState(id = "", pw = "", message = "", isSuccess = false)
             } else {
                 Toast.makeText(context, "로그인 실패 ${uiState.message}", Toast.LENGTH_SHORT).show()
             }
