@@ -60,7 +60,7 @@ class HomeViewModel(
                         isFollowerSuccess = state.isFollowerSuccess,
                         follower = state.follower
                     )
-                    fetchFollowerList()
+                    fetchFollowers()
                 },
                 onFailure = {
                     Log.d(TAG, it.message.toString())
@@ -69,18 +69,25 @@ class HomeViewModel(
         }
     }
 
-    private fun fetchFollowerList() = viewModelScope.launch {
-        val followers = followerRepository.fetchFollow()
-        if (followers != null) {
-            val state = _uiState.value as HomeUiState.Loading
-            _uiState.value = HomeUiState.Loading(
-                isUserSuccess = state.isUserSuccess,
-                isFollowerSuccess = true,
-                user = state.user,
-                follower = followers
-            )
-            updateUiState()
-        }
+    private fun fetchFollowers() = viewModelScope.launch {
+        followerRepository.getFollowers().fold(
+            onSuccess = {
+                val followers = it.body()?.data
+                if(it.isSuccessful) {
+                    val state = _uiState.value as HomeUiState.Loading
+                    _uiState.value = HomeUiState.Loading(
+                        isUserSuccess = state.isUserSuccess,
+                        isFollowerSuccess = true,
+                        user = state.user,
+                        follower = followers.orEmpty()
+                    )
+                    updateUiState()
+                }
+            },
+            onFailure = {
+                Log.d(TAG, it.message.toString())
+            }
+        )
     }
 
     companion object {
