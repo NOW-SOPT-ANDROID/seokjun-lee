@@ -9,6 +9,9 @@ import com.sopt.now.R
 import com.sopt.now.databinding.ActivityMainBinding
 import com.sopt.now.login.LoginActivity.Companion.BACK_PRESSED_RESULT_CODE
 import com.sopt.now.login.LoginActivity.Companion.LOGIN_KEY
+import com.sopt.now.main.fragment.HomeFragment
+import com.sopt.now.main.fragment.MyPageFragment
+import com.sopt.now.main.fragment.SearchFragment
 
 class MainActivity :AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
@@ -23,22 +26,12 @@ class MainActivity :AppCompatActivity() {
         setFragmentManager(HomeFragment())
         setOnClickBottomNavigation()
         setOnBackPressedCallback()
-
-        initObserve()
     }
 
     private fun updateMainState() {
         val memberId = intent.getStringExtra(LOGIN_KEY)
         if(memberId != null) {
             viewModel.updateMainState(memberId)
-        }
-    }
-
-    private fun initObserve() {
-        viewModel.liveData.observe(this) {
-            if(it.isSuccess) {
-                viewModel.fetchFollow()
-            }
         }
     }
 

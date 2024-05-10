@@ -12,6 +12,7 @@ import com.sopt.now.network.AuthService
 import com.sopt.now.network.ServicePool
 import com.sopt.now.network.dto.ResponseFollowListDto
 import com.sopt.now.network.dto.ResponseMemberInfoDto
+import com.sopt.now.network.dto.convertDataListToCommonItems
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.jsonObject
 import retrofit2.Call
@@ -21,19 +22,6 @@ import retrofit2.Response
 /**
  * 팔로워 API와 유저프로필 API의 호출 순서 조정
  */
-
-
-data class MainState(
-    val isSuccess: Boolean,
-    val message: String,
-    val userData: User? = null
-)
-
-data class FollowState(
-    val isSuccess: Boolean,
-    val message: String,
-    val friendList: MutableList<CommonItem> = mutableListOf()
-)
 
 class MainViewModel : ViewModel() {
     private lateinit var authService: AuthService
@@ -78,6 +66,7 @@ class MainViewModel : ViewModel() {
                             phoneNum = data?.data?.phone ?: ""
                         )
                     )
+                    fetchFollow()
                 } else {
                     val error = response.errorBody()?.string()
 
@@ -134,23 +123,5 @@ class MainViewModel : ViewModel() {
                 )
             }
         })
-    }
-
-    private fun convertDataListToCommonItems(dataList: List<ResponseFollowListDto.Data>): MutableList<CommonItem> {
-        val itemList = mutableListOf<CommonItem>()
-        for (data in dataList) {
-            itemList.add(
-                CommonItem(
-                    viewType = CommonViewType.FRIEND_VIEW.name,
-                    viewObject = ViewObject.FriendViewObject(
-                        profileImage = R.drawable.ic_launcher_foreground,
-                        name = data.firstName + " " + data.lastName,
-                        selfDescription = data.email,
-                        imageUrl = data.avatar
-                    )
-                )
-            )
-        }
-        return itemList
     }
 }

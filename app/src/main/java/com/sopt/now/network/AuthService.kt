@@ -15,7 +15,7 @@ import retrofit2.http.POST
 
 interface AuthService {
     @POST("member/join")
-    fun signUp(
+    fun postSignUp(
         @Body request: RequestSignUpDto,
     ): Call<ResponseSignUpDto>
 
@@ -23,12 +23,12 @@ interface AuthService {
     fun getMemberInfo(): Call<ResponseMemberInfoDto>
 
     @POST("member/login")
-    fun login(
+    fun postLogin(
         @Body request: RequestLoginDto
     ): Call<ResponseLoginDto>
 
     @PATCH("member/password")
-    fun changePassword(
+    fun patchPassword(
         @Body request: RequestChangePasswordDto
     ): Call<ResponseChangePasswordDto>
 }

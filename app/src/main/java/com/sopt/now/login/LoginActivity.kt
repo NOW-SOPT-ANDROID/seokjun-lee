@@ -37,16 +37,7 @@ class LoginActivity : AppCompatActivity() {
 
         initView()
         initObserver()
-        //setSharedPreference()
     }
-
-    /*private fun setSharedPreference() {
-        preferenceManager = PreferenceManager(this)
-        val user = preferenceManager.getProfile()
-        if(user != null) {
-            //users.add(user)
-        }
-    }*/
 
     private fun initObserver() {
         viewModel.liveData.observe(this) {loginState->

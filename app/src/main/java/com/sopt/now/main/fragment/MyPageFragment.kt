@@ -1,4 +1,4 @@
-package com.sopt.now.main
+package com.sopt.now.main.fragment
 
 import android.content.Intent
 import android.os.Bundle
@@ -10,6 +10,8 @@ import androidx.fragment.app.activityViewModels
 import com.sopt.now.R
 import com.sopt.now.databinding.FragmentMyPageBinding
 import com.sopt.now.login.LoginActivity
+import com.sopt.now.main.MainActivity
+import com.sopt.now.main.MainViewModel
 import com.sopt.now.models.User
 import com.sopt.now.password.PasswordActivity
 
@@ -32,7 +34,7 @@ class MyPageFragment: Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        initTextViews(sharedViewModel.liveData.value?.userData!!)
+        initTextViews(sharedViewModel.liveData.value?.userData?:User())
         initButton()
     }
 
@@ -52,8 +54,9 @@ class MyPageFragment: Fragment() {
     private fun initButton() {
         with(activity as MainActivity){
             binding.myPageBtnChangePw.setOnClickListener {
-                val intent = Intent(this, PasswordActivity::class.java)
-                startActivity(intent)
+                Intent(this, PasswordActivity::class.java).apply {
+                    startActivity(this)
+                }
             }
 
             binding.myPageBtnLogout.setOnClickListener {

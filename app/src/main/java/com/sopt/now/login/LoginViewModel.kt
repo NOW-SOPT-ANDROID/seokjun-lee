@@ -22,7 +22,7 @@ class LoginViewModel: ViewModel() {
     val liveData = MutableLiveData<LoginState>()
 
     fun login(request: RequestLoginDto) {
-        authService.login(request).enqueue(object : Callback<ResponseLoginDto> {
+        authService.postLogin(request).enqueue(object : Callback<ResponseLoginDto> {
             override fun onResponse(
                 call: Call<ResponseLoginDto>,
                 response: Response<ResponseLoginDto>,

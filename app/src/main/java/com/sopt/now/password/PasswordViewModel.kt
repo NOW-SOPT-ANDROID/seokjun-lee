@@ -12,12 +12,6 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-data class PasswordState(
-    val isSuccess: Boolean,
-    val message: String
-
-)
-
 class PasswordViewModel: ViewModel() {
     val liveData = MutableLiveData<PasswordState>()
     private val authService by lazy { ServicePool.mainService }
@@ -25,7 +19,7 @@ class PasswordViewModel: ViewModel() {
     
 
     fun patchPassword(request: RequestChangePasswordDto) {
-        authService.changePassword(request).enqueue(object : Callback<ResponseChangePasswordDto> {
+        authService.patchPassword(request).enqueue(object : Callback<ResponseChangePasswordDto> {
             override fun onResponse(
                 call: Call<ResponseChangePasswordDto>,
                 response: Response<ResponseChangePasswordDto>,

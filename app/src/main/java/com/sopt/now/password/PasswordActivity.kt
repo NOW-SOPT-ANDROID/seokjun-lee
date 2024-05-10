@@ -20,6 +20,15 @@ class PasswordActivity : AppCompatActivity() {
         initView()
     }
 
+    private fun initObserve() {
+        viewModel.liveData.observe(this) {
+            Toast.makeText(this, it.message, Toast.LENGTH_SHORT).show()
+            if(it.isSuccess) {
+                finish()
+            }
+        }
+    }
+
     private fun initView() {
         with(binding) {
             passwordBtnProceed.setOnClickListener {
@@ -27,15 +36,6 @@ class PasswordActivity : AppCompatActivity() {
                 viewModel.patchPassword(request)
             }
             passwordBtnCancel.setOnClickListener {
-                finish()
-            }
-        }
-    }
-
-    private fun initObserve() {
-        viewModel.liveData.observe(this) {
-            Toast.makeText(this, it.message, Toast.LENGTH_SHORT).show()
-            if(it.isSuccess) {
                 finish()
             }
         }

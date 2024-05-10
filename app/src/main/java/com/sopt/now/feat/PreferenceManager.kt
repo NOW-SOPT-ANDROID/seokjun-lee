@@ -32,10 +32,10 @@ class PreferenceManager(context: Context) {
         return if(sharedPreferences.contains(ID_PREF_KEY) && sharedPreferences.contains(PW_PREF_KEY)) {
             with(sharedPreferences){
                 User(
-                    id = getString(ID_PREF_KEY, null)?:"",
-                    pw = getString(PW_PREF_KEY, null)?:"",
-                    nickName = getString(NICKNAME_PREF_KEY, null)?:"",
-                    phoneNum = getString(MBTI_PREF_KEY, null)?:"",
+                    id = getString(ID_PREF_KEY, null).orEmpty(),
+                    pw = getString(PW_PREF_KEY, null).orEmpty(),
+                    nickName = getString(NICKNAME_PREF_KEY, null).orEmpty(),
+                    phoneNum = getString(MBTI_PREF_KEY, null).orEmpty()
                 )
             }
 

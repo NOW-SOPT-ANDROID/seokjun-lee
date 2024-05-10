@@ -13,17 +13,12 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-data class SignUpState(
-    val isSuccess: Boolean,
-    val message: String
-)
-
 class SignUpViewModel : ViewModel() {
     private val authService by lazy { ServicePool.authService }
     val liveData = MutableLiveData<SignUpState>()
 
     fun signUp(request: RequestSignUpDto) {
-        authService.signUp(request).enqueue(object : Callback<ResponseSignUpDto> {
+        authService.postSignUp(request).enqueue(object : Callback<ResponseSignUpDto> {
             override fun onResponse(
                 call: Call<ResponseSignUpDto>,
                 response: Response<ResponseSignUpDto>,
