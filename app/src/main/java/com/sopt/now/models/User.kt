@@ -8,5 +8,5 @@ data class User(
     var id: String = "",
     var pw: String = "",
     var nickName: String = "",
-    var mbti: String = ""
+    var phoneNum: String = ""
 ): Parcelable

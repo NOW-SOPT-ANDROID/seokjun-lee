@@ -1,5 +1,6 @@
-package com.sopt.now.main
+package com.sopt.now.main.fragment
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -8,17 +9,20 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.sopt.now.databinding.FragmentHomeBinding
+import com.sopt.now.main.MainViewModel
 import com.sopt.now.main.adapter.CommonListAdapter
 
 class HomeFragment: Fragment() {
 
     private var _binding: FragmentHomeBinding? = null
+    private var _adapter: CommonListAdapter? = null
     private val binding: FragmentHomeBinding
-        get() = requireNotNull(_binding) { "초기화 좀 시켜보시오" }
+        get() = requireNotNull(_binding) { "바인딩 초기화 요망" }
+
+    private val commonListAdapter: CommonListAdapter
+        get() = requireNotNull(_adapter) { "어뎁터 초기화 요망"}
 
     private val sharedViewModel by activityViewModels<MainViewModel>()
-
-
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -32,13 +36,20 @@ class HomeFragment: Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setFriendAdapter()
+        initObserve()
     }
 
-
+    @SuppressLint("NotifyDataSetChanged")
+    private fun initObserve() {
+        sharedViewModel.followLiveData.observe(viewLifecycleOwner) {
+            if(it.isSuccess) {
+                setFriendAdapter()
+            }
+        }
+    }
 
     private fun setFriendAdapter() {
-        val commonListAdapter = CommonListAdapter(sharedViewModel.mockFriendList)
+        _adapter = CommonListAdapter(sharedViewModel.followLiveData.value?.friendList ?: mutableListOf())
         binding.homeRvFriends.run {
             adapter = commonListAdapter
             layoutManager = LinearLayoutManager(requireContext())
@@ -48,7 +59,6 @@ class HomeFragment: Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+        _adapter = null
     }
-
-
 }

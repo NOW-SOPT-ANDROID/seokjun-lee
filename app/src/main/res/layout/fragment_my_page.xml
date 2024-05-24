@@ -70,25 +70,19 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/my_page_tv_title_id" />
 
-    <TextView
-        android:id="@+id/my_page_tv_title_pw"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="60dp"
-        android:text="@string/mypage_tv_title_pw"
-        android:textSize="30sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/my_page_tv_id" />
 
-    <TextView
-        android:id="@+id/my_page_tv_pw"
+    <Button
+        android:id="@+id/my_page_btn_change_pw"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:text=""
-        android:textSize="20sp"
+        android:layout_marginBottom="10dp"
+        android:text="@string/mypage_btn_change_pw"
+        android:textColor="@color/black"
+        android:background="@android:color/transparent"
+        app:layout_constraintBottom_toTopOf="@id/my_page_btn_logout"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/my_page_tv_title_pw" />
+        app:layout_constraintEnd_toEndOf="parent"/>
+
 
     <Button
         android:id="@+id/my_page_btn_logout"
@@ -96,6 +90,8 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="50dp"
         android:text="@string/mypage_btn_logout"
+        android:textColor="@color/black"
+        android:background="@android:color/transparent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>

@@ -1,5 +1,6 @@
-package com.sopt.now.main
+package com.sopt.now.main.fragment
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -8,11 +9,13 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.sopt.now.R
 import com.sopt.now.databinding.FragmentMyPageBinding
+import com.sopt.now.login.LoginActivity
+import com.sopt.now.main.MainActivity
+import com.sopt.now.main.MainViewModel
 import com.sopt.now.models.User
+import com.sopt.now.password.PasswordActivity
 
-class MyPageFragment(
-    private val onClickLogoutButton: MainActivity.OnClickLogoutButton
-): Fragment() {
+class MyPageFragment: Fragment() {
     private var _binding: FragmentMyPageBinding? = null
     private val binding: FragmentMyPageBinding
         get() = requireNotNull(_binding) {"초기화 좀 시켜보시오"}
@@ -31,7 +34,7 @@ class MyPageFragment(
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        initTextViews(sharedViewModel.userData)
+        initTextViews(sharedViewModel.liveData.value?.userData?:User())
         initButton()
     }
 
@@ -40,18 +43,27 @@ class MyPageFragment(
         _binding = null
     }
 
-
     private fun initTextViews(user: User) {
         with(binding){
             myPageTvNickname.text = user.nickName
-            myPageTvIntro.text = getString(R.string.mypage_tv_mbti, user.mbti)
+            myPageTvIntro.text = getString(R.string.mypage_tv_phone_num, user.phoneNum)
             myPageTvId.text = user.id
-            myPageTvPw.text = user.pw
         }
     }
 
     private fun initButton() {
-        binding.myPageBtnLogout.setOnClickListener(onClickLogoutButton)
+        with(activity as MainActivity){
+            binding.myPageBtnChangePw.setOnClickListener {
+                Intent(this, PasswordActivity::class.java).apply {
+                    startActivity(this)
+                }
+            }
+
+            binding.myPageBtnLogout.setOnClickListener {
+                this.setResult(LoginActivity.LOGOUT_RESULT_CODE)
+                this.finish()
+            }
+        }
     }
 
 }

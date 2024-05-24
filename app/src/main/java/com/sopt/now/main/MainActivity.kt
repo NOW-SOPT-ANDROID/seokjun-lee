@@ -1,41 +1,41 @@
 package com.sopt.now.main
 
 import android.os.Bundle
-import android.view.View
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.sopt.now.R
 import com.sopt.now.databinding.ActivityMainBinding
-import com.sopt.now.ext.parcelable
 import com.sopt.now.login.LoginActivity.Companion.BACK_PRESSED_RESULT_CODE
 import com.sopt.now.login.LoginActivity.Companion.LOGIN_KEY
-import com.sopt.now.login.LoginActivity.Companion.LOGOUT_RESULT_CODE
-import com.sopt.now.models.User
+import com.sopt.now.main.fragment.HomeFragment
+import com.sopt.now.main.fragment.MyPageFragment
+import com.sopt.now.main.fragment.SearchFragment
 
 class MainActivity :AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private val viewModel by viewModels<MainViewModel>()
-    inner class OnClickLogoutButton: View.OnClickListener{
-        override fun onClick(v: View?) {
-            setResult(LOGOUT_RESULT_CODE)
-            this@MainActivity.finish()
-        }
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        addOnBackPressedCallback()
 
-        viewModel.setUserData(getUserInfoFromIntent())
+        updateMainState()
         setFragmentManager(HomeFragment())
-        clickBottomNavigation()
+        setOnClickBottomNavigation()
+        setOnBackPressedCallback()
     }
 
-    private fun clickBottomNavigation() {
+    private fun updateMainState() {
+        val memberId = intent.getStringExtra(LOGIN_KEY)
+        if(memberId != null) {
+            viewModel.updateMainState(memberId)
+        }
+    }
+
+    private fun setOnClickBottomNavigation() {
         binding.mainBnvHome.setOnItemSelectedListener{
             when (it.itemId) {
                 R.id.menu_home-> {
@@ -47,7 +47,7 @@ class MainActivity :AppCompatActivity() {
                     true
                 }
                 R.id.menu_mypage-> {
-                    replaceFragment(MyPageFragment(OnClickLogoutButton()))
+                    replaceFragment(MyPageFragment())
                     true
                 }
                 else -> false
@@ -72,11 +72,7 @@ class MainActivity :AppCompatActivity() {
             .commit()
     }
 
-    private fun getUserInfoFromIntent(): User {
-        return intent.parcelable<User>(LOGIN_KEY) ?: User()
-    }
-
-    private fun addOnBackPressedCallback() {
+    private fun setOnBackPressedCallback() {
         val callback = object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
                 setResult(BACK_PRESSED_RESULT_CODE)
@@ -85,6 +81,4 @@ class MainActivity :AppCompatActivity() {
         }
         this.onBackPressedDispatcher.addCallback(this, callback)
     }
-
-
 }

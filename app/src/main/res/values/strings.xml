@@ -15,11 +15,11 @@
     <string name="signup_tv_id">ID</string>
     <string name="signup_tv_pw">PW</string>
     <string name="signup_tv_nickname">닉네임</string>
-    <string name="signup_tv_mbti">MBTI</string>
+    <string name="signup_tv_phone_num">전화번호</string>
     <string name="signup_et_hint_id">아이디를 입력해주세요.</string>
     <string name="signup_et_hint_pw">비밀번호를 입력해주세요.</string>
     <string name="signup_et_hint_nickname">닉네임을 입력해주세요.</string>
-    <string name="signup_et_hint_mbti">본인의 MBTI를 입력해주세요</string>
+    <string name="signup_et_hint_phone_num">전화번호를 입력해주세요</string>
     <string name="signup_btn_signup">회원가입 하기</string>
 
     <!--Bottom Navigation Strings-->
@@ -29,7 +29,7 @@
 
     <!--MyPage Strings-->
     <string name="mypage_iv_profile">profile</string>
-    <string name="mypage_tv_mbti">제 MBTI는 %s입니다!</string>
+    <string name="mypage_tv_phone_num">전화번호: %s</string>
     <string name="mypage_tv_title_id">ID</string>
     <string name="mypage_tv_title_pw">비밀번호</string>
     <string name="mypage_btn_logout">로그아웃</string>
@@ -46,5 +46,16 @@
     <string name="toast_signup_check_pw">비밀번호는 8~12 글자</string>
     <string name="toast_signup_check_nickname">닉네임 한 글자 이상</string>
     <string name="toast_signup_check_mbti">MBTI 공백 불가</string>
+    <string name="mypage_btn_change_pw">비밀번호 변경</string>
+    <string name="password_tv_before">기존 비밀번호</string>
+    <string name="password_tv_new">새 비밀번호</string>
+    <string name="password_tv_new_check">새 비밀번호 확인</string>
+
+    <!--Retrofit Message-->
+    <string name="retrofit_error_server">서버 에러</string>
+    <string name="retrofit_error_login">로그인 실패 %s</string>
+
+    <string name="retrofit_success_login">로그인 성공 (유저 ID: %s)</string>
+    <string name="retrofit_failure_login">로그인 실패 (%s)</string>
 
 </resources>
