@@ -1,6 +1,5 @@
 package com.sopt.now.compose.container
 
-import com.sopt.now.compose.models.Follower
 import com.sopt.now.compose.network.FollowService
 import com.sopt.now.compose.network.dto.ResponseFollowListDto
 import retrofit2.Response

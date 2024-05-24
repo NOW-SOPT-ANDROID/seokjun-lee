@@ -1,6 +1,5 @@
 package com.sopt.now.compose.ui.navigation
 
-import androidx.annotation.StringRes
 import androidx.compose.ui.graphics.vector.ImageVector
 
 interface NavigationDestination {

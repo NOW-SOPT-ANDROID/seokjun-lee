@@ -3,8 +3,6 @@ package com.sopt.now.compose.container
 import android.content.SharedPreferences
 import android.util.Log
 import com.sopt.now.compose.models.User
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
 
 interface UserRepository {
     suspend fun getUserProfile(): User?
