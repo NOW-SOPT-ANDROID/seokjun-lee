@@ -22,6 +22,7 @@
     <!--TextField Titles-->
     <string name="title_id">ID</string>
     <string name="title_pw">비밀번호</string>
+    <string name="title_phone">전화번호</string>
     <string name="title_nickname">닉네임</string>
     <string name="title_mbti">MBTI</string>
 
@@ -48,6 +49,7 @@
     <string name="signup_label_pw">비밀번호를 입력해주세요</string>
     <string name="signup_label_nickname">닉네임을 입력해주세요</string>
     <string name="signup_label_mbti">MBTI를 입력해주세요</string>
+    <string name="signup_label_phone">전화번호를 입력해주세요</string>
 
     <!--SignUp Toast Messages-->
     <string name="signup_toast_id">ID는 6~10 글자</string>

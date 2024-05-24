@@ -1,38 +1,62 @@
 package com.sopt.now.compose.ui.screens.profile
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
-import androidx.navigation.NavHostController
-import com.sopt.now.compose.MainActivity.Companion.NAVIGATE_BACK_PRESSED_KEY
-import com.sopt.now.compose.MainActivity.Companion.NAVIGATE_LOGIN_KEY
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.viewmodel.initializer
+import androidx.lifecycle.viewmodel.viewModelFactory
+import com.sopt.now.compose.SoptApplication
+import com.sopt.now.compose.container.NetworkMemberRepository
 import com.sopt.now.compose.models.User
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.launch
 
-class ProfileViewModel: ViewModel() {
+class ProfileViewModel(
+    private val authRepository: NetworkMemberRepository
+): ViewModel() {
     private val _uiState = MutableStateFlow<ProfileUiState>(ProfileUiState.Loading)
     val uiState: StateFlow<ProfileUiState> = _uiState.asStateFlow()
 
-    fun updateUiState(user: User?) {
+    private fun updateUiState(user: User?) {
         if(user != null) {
             _uiState.value = ProfileUiState.Success(user)
         } else {
             _uiState.value = ProfileUiState.Error
         }
     }
-    fun fetchUserLoggedIn(navController: NavHostController) {
-        navController.previousBackStackEntry?.savedStateHandle
-            ?.getLiveData<User>(NAVIGATE_LOGIN_KEY)?.value.run { updateUiState(this) }
+
+    fun fetchUserInfo() {
+        viewModelScope.launch {
+            val result = authRepository.getUserInfo()
+            result.fold(
+                onSuccess = {
+                    updateUiState(
+                        user = User(
+                            id = it.id,
+                            nickName = it.nickName,
+                            phone = it.phone
+                        )
+                    )
+                },
+                onFailure = {
+                    Log.d(TAG, it.message.toString())
+                }
+            )
+        }
     }
 
-    fun onLogoutButtonPressed(navController: NavHostController) {
-        navController.navigateUp()
-    }
+    companion object{
+        private const val TAG = "ProfileViewModel"
 
-    fun onBackPressed(navController: NavHostController){
-        navController.run {
-            previousBackStackEntry?.savedStateHandle?.set(NAVIGATE_BACK_PRESSED_KEY, NAVIGATE_BACK_PRESSED_KEY)
-            navigateUp()
+        val Factory: ViewModelProvider.Factory = viewModelFactory {
+            initializer {
+                val application = (this[ViewModelProvider.AndroidViewModelFactory.APPLICATION_KEY] as SoptApplication)
+                val authRepository = application.appContainer.memberRepository
+                ProfileViewModel(authRepository)
+            }
         }
     }
 }

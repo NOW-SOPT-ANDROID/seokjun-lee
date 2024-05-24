@@ -10,17 +10,19 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import com.sopt.now.compose.MainActivity
+import com.sopt.now.compose.MainActivity.Companion.NAVIGATE_BACK_PRESSED_KEY
 import com.sopt.now.compose.R
 import com.sopt.now.compose.models.User
 import com.sopt.now.compose.ui.SoptBottomNavigation
@@ -33,10 +35,22 @@ private const val TAG = "ProfileScreen"
 @Composable
 fun ProfileScreen(
     navController: NavHostController = rememberNavController(),
-    viewModel: ProfileViewModel = viewModel(),
+    viewModel: ProfileViewModel = viewModel(factory = ProfileViewModel.Factory),
 ) {
-    viewModel.fetchUserLoggedIn(navController)
-    BackHandler { viewModel.onBackPressed(navController) }
+    LaunchedEffect(navController) {
+        val memberId = navController.previousBackStackEntry?.savedStateHandle
+            ?.getLiveData<String>(MainActivity.NAVIGATE_LOGIN_KEY)?.value
+        if(memberId != null) {
+            viewModel.fetchUserInfo()
+        }
+    }
+
+    BackHandler {
+        navController.run {
+            previousBackStackEntry?.savedStateHandle?.set(NAVIGATE_BACK_PRESSED_KEY, NAVIGATE_BACK_PRESSED_KEY)
+            navigateUp()
+        }
+    }
 
     Scaffold(
         bottomBar = { SoptBottomNavigation(navController = navController) }
@@ -44,8 +58,8 @@ fun ProfileScreen(
         when (val uiState = viewModel.uiState.collectAsState().value) {
             is ProfileUiState.Success -> {
                 ProfileScreen(
-                    user = uiState.user,
-                    onLogoutButtonPressed = {viewModel.onLogoutButtonPressed(navController)},
+                    uiState = uiState,
+                    onLogoutButtonPressed = {navController.navigateUp()},
                     modifier = Modifier.padding(paddingValue))
             }
 
@@ -63,7 +77,7 @@ fun ProfileScreen(
 @Composable
 private fun ProfileScreen(
     modifier: Modifier = Modifier,
-    user: User,
+    uiState: ProfileUiState.Success,
     onLogoutButtonPressed:() -> Unit,
 ) {
     Column(
@@ -88,7 +102,7 @@ private fun ProfileScreen(
                 )
             }
             Text(
-                text = user.nickName,
+                text = uiState.user.nickName,
                 fontSize = 20.sp,
                 fontWeight = FontWeight.Bold,
                 modifier = Modifier
@@ -97,22 +111,14 @@ private fun ProfileScreen(
             )
         }
 
-        Text(
-            text = stringResource(id = R.string.main_mbti_introduction, user.mbti),
-            fontSize = 20.sp,
-            fontWeight = FontWeight.Bold,
-            modifier = Modifier.padding(top = 20.dp)
-        )
-
-
         TitleAndContentTextComposable(
-            title = R.string.title_pw,
-            content = user.id,
+            title = R.string.title_id,
+            content = uiState.user.id,
             modifier = Modifier.padding(top = 70.dp)
         )
         TitleAndContentTextComposable(
-            title = R.string.title_pw,
-            content = user.pw,
+            title = R.string.title_phone,
+            content = uiState.user.phone,
             modifier = Modifier.padding(top = 70.dp)
         )
 
