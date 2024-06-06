@@ -2,7 +2,6 @@ package com.sopt.now.compose.ui.screens.login
 
 import android.app.Activity
 import android.content.Context
-import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column

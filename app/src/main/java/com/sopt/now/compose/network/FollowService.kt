@@ -1,7 +1,6 @@
 package com.sopt.now.compose.network
 
 import com.sopt.now.compose.network.dto.ResponseFollowListDto
-import retrofit2.Call
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Query

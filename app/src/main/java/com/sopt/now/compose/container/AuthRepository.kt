@@ -5,9 +5,6 @@ import com.sopt.now.compose.network.dto.RequestLoginDto
 import com.sopt.now.compose.network.dto.RequestSignUpDto
 import com.sopt.now.compose.network.dto.ResponseLoginDto
 import com.sopt.now.compose.network.dto.ResponseSignUpDto
-import com.sopt.now.compose.ui.screens.login.LoginViewModel
-import kotlinx.serialization.json.Json
-import kotlinx.serialization.json.jsonObject
 import retrofit2.Response
 
 interface AuthRepository {

@@ -7,7 +7,6 @@ import com.sopt.now.compose.network.dto.ResponseChangePasswordDto
 import com.sopt.now.compose.network.dto.ResponseLoginDto
 import com.sopt.now.compose.network.dto.ResponseMemberInfoDto
 import com.sopt.now.compose.network.dto.ResponseSignUpDto
-import retrofit2.Call
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET

@@ -24,7 +24,6 @@ import androidx.navigation.compose.rememberNavController
 import com.sopt.now.compose.MainActivity
 import com.sopt.now.compose.MainActivity.Companion.NAVIGATE_BACK_PRESSED_KEY
 import com.sopt.now.compose.R
-import com.sopt.now.compose.models.User
 import com.sopt.now.compose.ui.SoptBottomNavigation
 import com.sopt.now.compose.ui.composables.ButtonComposable
 import com.sopt.now.compose.ui.composables.ScreenWithImage

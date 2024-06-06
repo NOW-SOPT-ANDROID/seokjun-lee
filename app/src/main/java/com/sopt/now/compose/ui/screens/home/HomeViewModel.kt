@@ -1,21 +1,14 @@
 package com.sopt.now.compose.ui.screens.home
 
 import android.util.Log
-import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
-import androidx.navigation.NavHostController
-import com.sopt.now.compose.MainActivity.Companion.NAVIGATE_BACK_PRESSED_KEY
-import com.sopt.now.compose.MainActivity.Companion.NAVIGATE_LOGIN_KEY
 import com.sopt.now.compose.SoptApplication
 import com.sopt.now.compose.container.FollowerRepository
 import com.sopt.now.compose.container.NetworkMemberRepository
-import com.sopt.now.compose.models.Follower
-import com.sopt.now.compose.models.User
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
