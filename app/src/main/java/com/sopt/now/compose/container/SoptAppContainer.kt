@@ -59,10 +59,7 @@ class SoptAppContainer(context: Context): AppContainer {
     }
 
     private val okHttpClientWithInterceptor: OkHttpClient.Builder by lazy {
-        val memberId = context
-            .getSharedPreferences(PREFERENCE_ID, Context.MODE_PRIVATE)
-            .getString(USER_ID_KEY, "")
-            .orEmpty()
+        val memberId = userRepository.getUserId()
 
         OkHttpClient.Builder().apply {
             addInterceptor(Interceptor { chain ->
@@ -78,7 +75,5 @@ class SoptAppContainer(context: Context): AppContainer {
     companion object{
         const val BASE_URL = BuildConfig.AUTH_BASE_URL
         const val PREFERENCE_ID = "SOPT"
-
-        private const val TAG = "SoptAppContainer"
     }
 }

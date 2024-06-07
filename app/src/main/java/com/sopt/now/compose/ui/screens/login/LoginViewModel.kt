@@ -80,7 +80,7 @@ class LoginViewModel(
         password =  _uiState.value.pw
     )
 
-    private fun setUserIdInPreference(userId: String) = viewModelScope.launch {
+    private fun setUserIdInPreference(userId: String) {
         userRepository.setUserId(userId)
     }
 

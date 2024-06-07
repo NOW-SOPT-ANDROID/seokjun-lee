@@ -7,7 +7,7 @@ import com.sopt.now.compose.models.User
 class UserRepositoryImpl(
     private val sharedPreferences: SharedPreferences
 ) : UserRepository {
-    override suspend fun getUserProfile(): User {
+    override fun getUserProfile(): User {
         sharedPreferences.run {
             val id = getString(ID_KEY, "") ?: ""
             val pw = getString(PW_KEY, "") ?: ""
@@ -17,7 +17,7 @@ class UserRepositoryImpl(
         }
     }
 
-    override suspend fun setUserProfile(user: User) {
+    override fun setUserProfile(user: User) {
         val edit = sharedPreferences.edit()
         edit.run {
             putString(ID_KEY, user.id)
@@ -28,11 +28,11 @@ class UserRepositoryImpl(
         }
     }
 
-    override suspend fun getUserId(): String {
+    override fun getUserId(): String {
         return sharedPreferences.getString(USER_ID_KEY, "").orEmpty()
     }
 
-    override suspend fun setUserId(userId: String) {
+    override fun setUserId(userId: String) {
             val edit = sharedPreferences.edit()
             edit.putString(USER_ID_KEY, userId).apply()
 
