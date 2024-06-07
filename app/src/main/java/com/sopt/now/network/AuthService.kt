@@ -23,11 +23,6 @@ interface AuthService {
     @GET("member/info")
     fun getMemberInfo(): Call<ResponseMemberInfoDto>
 
-    @POST("member/login")
-    fun postLogin(
-        @Body request: RequestLoginDto
-    ): Call<ResponseLoginDto>
-
     @PATCH("member/password")
     fun patchPassword(
         @Body request: RequestChangePasswordDto
