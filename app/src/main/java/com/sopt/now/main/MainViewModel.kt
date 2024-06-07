@@ -1,6 +1,5 @@
 package com.sopt.now.main
 
-import android.content.Context
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -10,41 +9,31 @@ import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import com.sopt.now.R
 import com.sopt.now.SoptApplication
-import com.sopt.now.login.LoginActivity
+import com.sopt.now.container.repository.AuthRepository
+import com.sopt.now.container.repository.FollowerRepository
 import com.sopt.now.login.LoginViewModel
 import com.sopt.now.main.adapter.CommonItem
 import com.sopt.now.main.adapter.CommonViewType
 import com.sopt.now.main.adapter.ViewObject
 import com.sopt.now.models.User
-import com.sopt.now.network.AuthService
-import com.sopt.now.network.ServicePool
-import com.sopt.now.network.dto.ResponseFollowListDto
 import com.sopt.now.network.dto.ResponseMemberInfoDto
 import com.sopt.now.network.dto.convertDataListToCommonItems
-import com.sopt.now.container.repository.AuthRepository
-import com.sopt.now.container.repository.AuthRepositoryImpl
 import kotlinx.coroutines.launch
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.jsonObject
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
 /**
  * 팔로워 API와 유저프로필 API의 호출 순서 조정
  */
 
 class MainViewModel(
-    private val authRepository: AuthRepository
+    private val authRepository: AuthRepository,
+    private val followerRepository: FollowerRepository
 ) : ViewModel() {
-    private lateinit var authService: AuthService
     val liveData = MutableLiveData<MainState>()
     val followLiveData = MutableLiveData<FollowState>()
 
-    fun updateMainState(memberId: String) {
-        ServicePool.initMainService(memberId)
-        authService = ServicePool.mainService
-
+    fun updateMainState() {
         getMemberInfo()
     }
 
@@ -62,41 +51,6 @@ class MainViewModel(
         )
     }
 
-    fun fetchFollow(page: Int = 2) {
-        ServicePool.followService.getFollow(page).enqueue(object : Callback<ResponseFollowListDto> {
-            override fun onResponse(
-                call: Call<ResponseFollowListDto>,
-                response: Response<ResponseFollowListDto>
-            ) {
-                if (response.isSuccessful) {
-                    val data: ResponseFollowListDto? = response.body()
-                    if (data?.data != null) {
-                        val itemList = convertDataListToCommonItems(data.data)
-                        followLiveData.value = FollowState(
-                            isSuccess = true,
-                            message = response.message() ?: "",
-                            friendList = itemList
-                        )
-                        putUserDataInFollow()
-                    }
-                } else {
-                    val error = response.message()
-                    liveData.value = MainState(
-                        isSuccess = false,
-                        message = error
-                    )
-                }
-            }
-
-            override fun onFailure(call: Call<ResponseFollowListDto>, t: Throwable) {
-                followLiveData.value = FollowState(
-                    isSuccess = false,
-                    message = "서버에러"
-                )
-            }
-        })
-    }
-
     private fun getMemberInfo() = viewModelScope.launch {
         runCatching {
             authRepository.getMemberInfo()
@@ -112,7 +66,7 @@ class MainViewModel(
                         phoneNum = data?.data?.phone ?: ""
                     )
                 )
-                fetchFollow()
+                getFollowerList()
             } else {
                 val error = response.errorBody()?.string()
 
@@ -133,12 +87,33 @@ class MainViewModel(
         }
     }
 
+    private fun getFollowerList() = viewModelScope.launch {
+        runCatching {
+            followerRepository.getFollowerList(2)
+        }.onSuccess { response ->
+                val itemList = convertDataListToCommonItems(response.data)
+                followLiveData.value = FollowState(
+                    isSuccess = true,
+                    message = "팔로워를 성공적으로 불러왔습니다.",
+                    friendList = itemList
+                )
+                putUserDataInFollow()
+
+        }.onFailure {
+            followLiveData.value = FollowState(
+                isSuccess = false,
+                message = "서버에러"
+            )
+        }
+    }
+
     companion object {
         val Factory: ViewModelProvider.Factory = viewModelFactory {
             initializer {
                 val application = this[APPLICATION_KEY] as SoptApplication
-                val authRepository = application.appContainer.authAfterLoinRepostory
-                MainViewModel(authRepository = authRepository)
+                val authRepository = application.appContainer.authAfterLoinRepository
+                val followerRepository = application.appContainer.followerRepository
+                MainViewModel(authRepository = authRepository, followerRepository = followerRepository)
             }
         }
     }
