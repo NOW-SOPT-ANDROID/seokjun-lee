@@ -2,10 +2,12 @@ package com.sopt.now.login
 
 import android.content.Intent
 import android.os.Bundle
+import android.os.Message
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.viewmodel.viewModelFactory
 import com.sopt.now.R
 import com.sopt.now.databinding.ActivityLoginBinding
 import com.sopt.now.main.MainActivity
@@ -14,7 +16,9 @@ import com.sopt.now.signup.SignUpActivity
 
 class LoginActivity : AppCompatActivity() {
     private lateinit var binding: ActivityLoginBinding
-    private val viewModel by viewModels<LoginViewModel>()
+    private val viewModel by viewModels<LoginViewModel>(
+        factoryProducer = {LoginViewModel.Factory}
+    )
 
     private val getIntentResult = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()
@@ -36,31 +40,24 @@ class LoginActivity : AppCompatActivity() {
         initObserver()
     }
 
-    private fun initObserver() {
-        viewModel.liveData.observe(this) {loginState->
-            if(loginState.isSuccess) {
-                Toast.makeText(
-                    this@LoginActivity,
-                    getString(R.string.retrofit_success_login, loginState.message),
-                    Toast.LENGTH_SHORT).show()
-                moveToMainActivity(loginState.message)
-            } else {
-                Toast.makeText(
-                    this@LoginActivity,
-                    getString(R.string.retrofit_failure_login, loginState.message),
-                    Toast.LENGTH_SHORT).show()
+    private fun initView() {
+        with(binding) {
+            loginBtnLogin.setOnClickListener {
+                viewModel.postLogin(getRequestLoginDto())
+            }
+            loginBtnSignup.setOnClickListener {
+                navigateToSignUpActivity()
             }
         }
     }
 
-    private fun initView() {
-        with(binding) {
-
-            loginBtnLogin.setOnClickListener {
-                viewModel.login(getRequestLoginDto())
-            }
-            loginBtnSignup.setOnClickListener {
-                moveToSignUpActivity()
+    private fun initObserver() {
+        viewModel.liveData.observe(this) {loginState->
+            if(loginState.isSuccess) {
+                showToastMessage(getString(R.string.retrofit_success_login, loginState.message))
+                navigateToMainActivity(loginState.message)
+            } else {
+                showToastMessage(getString(R.string.retrofit_failure_login, loginState.message))
             }
         }
     }
@@ -72,22 +69,24 @@ class LoginActivity : AppCompatActivity() {
         )
     }
 
-    private fun moveToMainActivity(memberId: String) {
+    private fun navigateToSignUpActivity() {
+        with(Intent(this@LoginActivity, SignUpActivity::class.java)) {
+            getIntentResult.launch(this)
+        }
+    }
+
+    private fun navigateToMainActivity(memberId: String) {
         with(Intent(this@LoginActivity, MainActivity::class.java)) {
             putExtra(LOGIN_KEY, memberId)
             getIntentResult.launch(this)
         }
     }
 
-    private fun moveToSignUpActivity() {
-        with(Intent(this@LoginActivity, SignUpActivity::class.java)) {
-            getIntentResult.launch(this)
-        }
-    }
+    private fun showToastMessage(message: String) =
+        Toast.makeText(this@LoginActivity, message, Toast.LENGTH_SHORT).show()
 
     companion object{
         const val LOGIN_KEY = "login"
-
         const val LOGOUT_RESULT_CODE = 100
         const val BACK_PRESSED_RESULT_CODE = 101
     }
