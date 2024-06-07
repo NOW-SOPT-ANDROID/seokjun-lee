@@ -18,6 +18,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
@@ -55,7 +56,7 @@ fun ProfileScreen(
     Scaffold(
         bottomBar = { SoptBottomNavigation(navController = navController) }
     ) { paddingValue ->
-        when (val uiState = viewModel.uiState.collectAsState().value) {
+        when (val uiState = viewModel.uiState.collectAsStateWithLifecycle().value) {
             is ProfileUiState.Success -> {
                 ProfileScreen(
                     uiState = uiState,
