@@ -7,12 +7,13 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
+import com.sopt.now.SoptApplication
 import com.sopt.now.login.LoginViewModel
 import com.sopt.now.network.ServicePool
 import com.sopt.now.network.dto.RequestSignUpDto
 import com.sopt.now.network.dto.ResponseSignUpDto
-import com.sopt.now.repository.AuthRepository
-import com.sopt.now.repository.AuthRepositoryImpl
+import com.sopt.now.container.repository.AuthRepository
+import com.sopt.now.container.repository.AuthRepositoryImpl
 import kotlinx.coroutines.launch
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.jsonObject
@@ -57,7 +58,8 @@ class SignUpViewModel(
         const val USER_ID_HEADER = "location"
         val Factory: ViewModelProvider.Factory = viewModelFactory {
             initializer {
-                val authRepository = AuthRepositoryImpl(ServicePool.authService)
+                val application = this[ViewModelProvider.AndroidViewModelFactory.APPLICATION_KEY] as SoptApplication
+                val authRepository = application.appContainer.authRepository
                 SignUpViewModel(authRepository = authRepository)
             }
         }
