@@ -23,6 +23,11 @@ class SoptAppContainer(
         AuthRepositoryImpl(authService)
     }
 
+    override val authAfterLoinRepostory: AuthRepository by lazy {
+        val authService = create<AuthService>(retrofitAfterLogin)
+        AuthRepositoryImpl(authService)
+    }
+
     val retrofitBeforeLogin: Retrofit by lazy {
         Retrofit.Builder()
             .baseUrl(BASE_URL)
@@ -40,11 +45,11 @@ class SoptAppContainer(
          Retrofit.Builder()
             .baseUrl(BASE_URL)
             .addConverterFactory(Json.asConverterFactory("application/json".toMediaType()))
-            .client(CreateHttpClientWithId().build())
+            .client(createHttpClient().build())
             .build()
     }
 
-    private fun CreateHttpClientWithId(): OkHttpClient.Builder {
+    private fun createHttpClient(): OkHttpClient.Builder {
         val sharedPreferences = context.getSharedPreferences(LoginActivity.PREFERENCE_KEY, Context.MODE_PRIVATE)
         val memberId = sharedPreferences.getString(LoginActivity.MEMBER_ID_KEY, "")?.ifEmpty { "" }!!
 
