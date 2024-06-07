@@ -6,7 +6,7 @@ import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import com.sopt.now.compose.SoptApplication
-import com.sopt.now.compose.container.NetworkAuthRepository
+import com.sopt.now.compose.container.impl.AuthRepositoryImpl
 import com.sopt.now.compose.network.dto.RequestSignUpDto
 import com.sopt.now.compose.ui.screens.login.LoginViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -18,7 +18,7 @@ import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.jsonObject
 
 class SignUpViewModel(
-    private val authRepository: NetworkAuthRepository
+    private val authRepository: AuthRepositoryImpl
 ): ViewModel() {
     private val _uiState = MutableStateFlow(SignUpState())
     val uiState: StateFlow<SignUpState> = _uiState.asStateFlow()

@@ -3,7 +3,11 @@ package com.sopt.now.compose.container
 import android.content.Context
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import com.sopt.now.compose.BuildConfig
-import com.sopt.now.compose.container.PreferenceUserRepository.Companion.USER_ID_KEY
+import com.sopt.now.compose.container.impl.UserRepositoryImpl.Companion.USER_ID_KEY
+import com.sopt.now.compose.container.impl.AuthRepositoryImpl
+import com.sopt.now.compose.container.impl.FollowerRepositoryImpl
+import com.sopt.now.compose.container.impl.MemberRepositoryImpl
+import com.sopt.now.compose.container.impl.UserRepositoryImpl
 import com.sopt.now.compose.network.FollowService
 import com.sopt.now.compose.network.AuthService
 import kotlinx.serialization.json.Json
@@ -11,32 +15,26 @@ import okhttp3.Interceptor
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
-import retrofit2.create
 
 
-interface AppContainer{
-    val userRepository: PreferenceUserRepository
-    val followRepository: NetworkFollowerRepository
-    val memberRepository: NetworkMemberRepository
-    val authRepository: NetworkAuthRepository
-}
+
 
 class SoptAppContainer(context: Context): AppContainer {
 
-    override val userRepository: PreferenceUserRepository by lazy {
-        PreferenceUserRepository(context.getSharedPreferences(PREFERENCE_ID, Context.MODE_PRIVATE))
+    override val userRepository: UserRepositoryImpl by lazy {
+        UserRepositoryImpl(context.getSharedPreferences(PREFERENCE_ID, Context.MODE_PRIVATE))
     }
 
-    override val followRepository: NetworkFollowerRepository by lazy {
-        NetworkFollowerRepository(followService = retrofitFollower.create(FollowService::class.java))
+    override val followRepository: FollowerRepositoryImpl by lazy {
+        FollowerRepositoryImpl(followService = retrofitFollower.create(FollowService::class.java))
     }
 
-    override val memberRepository: NetworkMemberRepository by lazy {
-        NetworkMemberRepository(authService = retrofitUser.create(AuthService::class.java))
+    override val memberRepository: MemberRepositoryImpl by lazy {
+        MemberRepositoryImpl(authService = retrofitUser.create(AuthService::class.java))
     }
 
-    override val authRepository: NetworkAuthRepository by lazy {
-        NetworkAuthRepository(authService =  retrofitLogin.create(AuthService::class.java))
+    override val authRepository: AuthRepositoryImpl by lazy {
+        AuthRepositoryImpl(authService =  retrofitLogin.create(AuthService::class.java))
     }
 
     val retrofitLogin: Retrofit by lazy {

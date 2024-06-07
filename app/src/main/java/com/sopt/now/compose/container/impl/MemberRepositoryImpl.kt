@@ -1,21 +1,13 @@
-package com.sopt.now.compose.container
+package com.sopt.now.compose.container.impl
 
+import com.sopt.now.compose.container.repository.MemberRepository
 import com.sopt.now.compose.models.User
 import com.sopt.now.compose.network.AuthService
 import com.sopt.now.compose.network.dto.RequestChangePasswordDto
 import com.sopt.now.compose.network.dto.ResponseChangePasswordDto
 import retrofit2.Response
 
-private const val TAG = "AuthRepository"
-
-interface MemberRepository {
-    suspend fun getUserInfo(): Result<User>
-    suspend fun patchUserPassword(
-        request: RequestChangePasswordDto
-    ): Response<ResponseChangePasswordDto>
-}
-
-class NetworkMemberRepository(
+class MemberRepositoryImpl(
     private val authService: AuthService
 ) : MemberRepository {
     override suspend fun getUserInfo(): Result<User> = runCatching {

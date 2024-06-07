@@ -1,21 +1,11 @@
-package com.sopt.now.compose.container
+package com.sopt.now.compose.container.impl
 
 import android.content.SharedPreferences
-import android.util.Log
+import com.sopt.now.compose.container.repository.UserRepository
 import com.sopt.now.compose.models.User
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
 
-interface UserRepository {
-    suspend fun getUserProfile(): User?
-    suspend fun setUserProfile(user: User)
-
-    suspend fun getUserId(): String
-    suspend fun setUserId(userId: String)
-}
-
-class PreferenceUserRepository(
-    val sharedPreferences: SharedPreferences
+class UserRepositoryImpl(
+    private val sharedPreferences: SharedPreferences
 ) : UserRepository {
     override suspend fun getUserProfile(): User {
         sharedPreferences.run {
@@ -43,7 +33,6 @@ class PreferenceUserRepository(
     }
 
     override suspend fun setUserId(userId: String) {
-            Log.d(TAG, "userId: $userId")
             val edit = sharedPreferences.edit()
             edit.putString(USER_ID_KEY, userId).apply()
 

@@ -1,15 +1,11 @@
-package com.sopt.now.compose.container
+package com.sopt.now.compose.container.impl
 
-import com.sopt.now.compose.models.Follower
+import com.sopt.now.compose.container.repository.FollowerRepository
 import com.sopt.now.compose.network.FollowService
 import com.sopt.now.compose.network.dto.ResponseFollowListDto
 import retrofit2.Response
 
-interface FollowerRepository{
-    suspend fun getFollowers(page: Int = 2): Result<Response<ResponseFollowListDto>>
-}
-
-class NetworkFollowerRepository(
+class FollowerRepositoryImpl(
     private val followService: FollowService
 ): FollowerRepository {
     override suspend fun getFollowers(page: Int): Result<Response<ResponseFollowListDto>> = runCatching {
