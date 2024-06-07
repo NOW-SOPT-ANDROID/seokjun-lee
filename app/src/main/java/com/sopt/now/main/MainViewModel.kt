@@ -33,10 +33,6 @@ class MainViewModel(
     val liveData = MutableLiveData<MainState>()
     val followLiveData = MutableLiveData<FollowState>()
 
-    fun updateMainState() {
-        getMemberInfo()
-    }
-
     private fun putUserDataInFollow() {
         followLiveData.value?.friendList?.add(
             0,
@@ -49,6 +45,10 @@ class MainViewModel(
                 )
             )
         )
+    }
+
+    fun updateMainState() {
+        getMemberInfo()
     }
 
     private fun getMemberInfo() = viewModelScope.launch {
@@ -82,7 +82,7 @@ class MainViewModel(
         }.onFailure {
             liveData.value = MainState(
                 isSuccess = false,
-                message = "서버에러"
+                message = SERVER_ERROR_MESSAGE
             )
         }
     }
@@ -94,7 +94,6 @@ class MainViewModel(
                 val itemList = convertDataListToCommonItems(response.data)
                 followLiveData.value = FollowState(
                     isSuccess = true,
-                    message = "팔로워를 성공적으로 불러왔습니다.",
                     friendList = itemList
                 )
                 putUserDataInFollow()
@@ -102,12 +101,14 @@ class MainViewModel(
         }.onFailure {
             followLiveData.value = FollowState(
                 isSuccess = false,
-                message = "서버에러"
+                message = SERVER_ERROR_MESSAGE
             )
         }
     }
 
     companion object {
+        const val SERVER_ERROR_MESSAGE = "서버에러"
+
         val Factory: ViewModelProvider.Factory = viewModelFactory {
             initializer {
                 val application = this[APPLICATION_KEY] as SoptApplication
