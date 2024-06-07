@@ -18,8 +18,6 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-private const val TAG = "LoginViewModel"
-
 data class LoginState(
     val isSuccess: Boolean,
     val message: String
