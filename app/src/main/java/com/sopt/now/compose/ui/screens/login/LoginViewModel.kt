@@ -9,6 +9,8 @@ import androidx.lifecycle.viewmodel.viewModelFactory
 import com.sopt.now.compose.SoptApplication
 import com.sopt.now.compose.container.impl.AuthRepositoryImpl
 import com.sopt.now.compose.container.impl.UserRepositoryImpl
+import com.sopt.now.compose.container.repository.AuthRepository
+import com.sopt.now.compose.container.repository.UserRepository
 import com.sopt.now.compose.network.dto.RequestLoginDto
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -19,15 +21,15 @@ import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.jsonObject
 
 class LoginViewModel(
-    private val userRepository: UserRepositoryImpl,
-    private val authRepository: AuthRepositoryImpl
+    private val userRepository: UserRepository,
+    private val authRepository: AuthRepository
 ): ViewModel() {
     private val _uiState = MutableStateFlow(LoginUiState())
     val uiState: StateFlow<LoginUiState> = _uiState.asStateFlow()
 
     fun updateUiState(
         id: String = _uiState.value.id,
-        pw: String = _uiState.value.pw,
+        pw: String = _uiState.value.password,
         isSuccess:Boolean = _uiState.value.isSuccess,
         message: String = _uiState.value.message
 
@@ -35,7 +37,7 @@ class LoginViewModel(
         _uiState.update { currentState ->
             currentState.copy(
                 id = id,
-                pw = pw,
+                password = pw,
                 isSuccess = isSuccess,
                 message = message
             )
@@ -77,7 +79,7 @@ class LoginViewModel(
 
     private fun getRequestLoginDto(): RequestLoginDto = RequestLoginDto(
         authenticationId = _uiState.value.id,
-        password =  _uiState.value.pw
+        password =  _uiState.value.password
     )
 
     private fun setUserIdInPreference(userId: String) {

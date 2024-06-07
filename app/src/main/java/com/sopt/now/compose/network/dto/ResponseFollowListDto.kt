@@ -9,11 +9,11 @@ data class ResponseFollowListDto(
     @SerialName("page")
     val page:Int,
     @SerialName("per_page")
-    val per_page:Int,
+    val perPage:Int,
     @SerialName("total")
     val total:Int,
     @SerialName("total_pages")
-    val total_pages:Int,
+    val totalPages:Int,
     @SerialName("data")
     val data:List<Follower>,
     @SerialName("support")
