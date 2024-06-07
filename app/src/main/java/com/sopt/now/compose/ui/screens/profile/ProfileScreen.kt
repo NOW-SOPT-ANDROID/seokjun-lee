@@ -11,7 +11,6 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
@@ -25,7 +24,6 @@ import androidx.navigation.compose.rememberNavController
 import com.sopt.now.compose.MainActivity
 import com.sopt.now.compose.MainActivity.Companion.NAVIGATE_BACK_PRESSED_KEY
 import com.sopt.now.compose.R
-import com.sopt.now.compose.models.User
 import com.sopt.now.compose.ui.SoptBottomNavigation
 import com.sopt.now.compose.ui.composables.ButtonComposable
 import com.sopt.now.compose.ui.composables.ScreenWithImage

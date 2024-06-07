@@ -7,8 +7,6 @@ import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import com.sopt.now.compose.SoptApplication
-import com.sopt.now.compose.container.impl.AuthRepositoryImpl
-import com.sopt.now.compose.container.impl.UserRepositoryImpl
 import com.sopt.now.compose.container.repository.AuthRepository
 import com.sopt.now.compose.container.repository.UserRepository
 import com.sopt.now.compose.network.dto.RequestLoginDto

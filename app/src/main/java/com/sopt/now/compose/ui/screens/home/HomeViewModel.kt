@@ -7,8 +7,8 @@ import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import com.sopt.now.compose.SoptApplication
-import com.sopt.now.compose.container.repository.FollowerRepository
 import com.sopt.now.compose.container.impl.MemberRepositoryImpl
+import com.sopt.now.compose.container.repository.FollowerRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow

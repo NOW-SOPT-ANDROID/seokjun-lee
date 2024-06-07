@@ -1,6 +1,5 @@
 package com.sopt.now.compose.container.repository
 
-import com.sopt.now.compose.network.AuthService
 import com.sopt.now.compose.network.dto.RequestLoginDto
 import com.sopt.now.compose.network.dto.RequestSignUpDto
 import com.sopt.now.compose.network.dto.ResponseLoginDto
