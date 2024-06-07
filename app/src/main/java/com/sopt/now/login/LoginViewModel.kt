@@ -3,14 +3,16 @@ package com.sopt.now.login
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.Companion.APPLICATION_KEY
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
+import com.sopt.now.SoptApplication
 import com.sopt.now.network.ServicePool
 import com.sopt.now.network.dto.RequestLoginDto
 import com.sopt.now.network.dto.ResponseLoginDto
-import com.sopt.now.repository.AuthRepository
-import com.sopt.now.repository.AuthRepositoryImpl
+import com.sopt.now.container.repository.AuthRepository
+import com.sopt.now.container.repository.AuthRepositoryImpl
 import kotlinx.coroutines.launch
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.jsonObject
@@ -61,7 +63,8 @@ class LoginViewModel(
 
         val Factory: ViewModelProvider.Factory = viewModelFactory {
             initializer {
-                val authRepository = AuthRepositoryImpl(ServicePool.authService)
+                val application = this[APPLICATION_KEY] as SoptApplication
+                val authRepository = application.appContainer.authRepository
                 LoginViewModel(authRepository = authRepository)
             }
         }

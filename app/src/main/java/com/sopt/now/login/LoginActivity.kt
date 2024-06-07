@@ -1,6 +1,7 @@
 package com.sopt.now.login
 
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.os.Message
 import android.widget.Toast
@@ -10,6 +11,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.viewmodel.viewModelFactory
 import com.sopt.now.R
 import com.sopt.now.databinding.ActivityLoginBinding
+import com.sopt.now.feat.PreferenceManager
 import com.sopt.now.main.MainActivity
 import com.sopt.now.network.dto.RequestLoginDto
 import com.sopt.now.signup.SignUpActivity
@@ -76,6 +78,9 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun navigateToMainActivity(memberId: String) {
+        val sharedPreferences = this.getSharedPreferences(PREFERENCE_KEY, MODE_PRIVATE)
+        sharedPreferences.edit().putString(MEMBER_ID_KEY, memberId).apply()
+
         with(Intent(this@LoginActivity, MainActivity::class.java)) {
             putExtra(LOGIN_KEY, memberId)
             getIntentResult.launch(this)
@@ -87,6 +92,8 @@ class LoginActivity : AppCompatActivity() {
 
     companion object{
         const val LOGIN_KEY = "login"
+        const val MEMBER_ID_KEY = "memberId"
+        const val PREFERENCE_KEY = "SOPT"
         const val LOGOUT_RESULT_CODE = 100
         const val BACK_PRESSED_RESULT_CODE = 101
     }
