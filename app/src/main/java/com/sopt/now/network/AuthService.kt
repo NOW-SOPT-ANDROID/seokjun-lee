@@ -8,6 +8,7 @@ import com.sopt.now.network.dto.ResponseLoginDto
 import com.sopt.now.network.dto.ResponseMemberInfoDto
 import com.sopt.now.network.dto.ResponseSignUpDto
 import retrofit2.Call
+import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.PATCH
@@ -31,4 +32,23 @@ interface AuthService {
     fun patchPassword(
         @Body request: RequestChangePasswordDto
     ): Call<ResponseChangePasswordDto>
+
+    /********/
+    @POST("member/join")
+    suspend fun postSignUps(
+        @Body request: RequestSignUpDto,
+    ): Response<ResponseSignUpDto>
+
+    @GET("member/info")
+    suspend fun getMemberInfos(): Response<ResponseMemberInfoDto>
+
+    @POST("member/login")
+    suspend fun postLogins(
+        @Body request: RequestLoginDto
+    ): Response<ResponseLoginDto>
+
+    @PATCH("member/password")
+    suspend fun patchPasswords(
+        @Body request: RequestChangePasswordDto
+    ): Response<ResponseChangePasswordDto>
 }
