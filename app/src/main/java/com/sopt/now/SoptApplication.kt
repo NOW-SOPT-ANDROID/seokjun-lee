@@ -5,7 +5,7 @@ import com.sopt.now.container.AppContainer
 import com.sopt.now.container.SoptAppContainer
 
 class SoptApplication: Application() {
-    private lateinit var appContainer: AppContainer
+    lateinit var appContainer: AppContainer
 
     override fun onCreate() {
         super.onCreate()
