@@ -1,4 +1,4 @@
-package com.sopt.now.repository
+package com.sopt.now.container.repository
 
 import com.sopt.now.network.AuthService
 import com.sopt.now.network.dto.RequestChangePasswordDto
