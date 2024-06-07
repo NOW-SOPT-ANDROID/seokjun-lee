@@ -1,17 +1,13 @@
 package com.sopt.now.login
 
 import android.content.Intent
-import android.content.SharedPreferences
 import android.os.Bundle
-import android.os.Message
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.viewmodel.viewModelFactory
 import com.sopt.now.R
 import com.sopt.now.databinding.ActivityLoginBinding
-import com.sopt.now.feat.PreferenceManager
 import com.sopt.now.main.MainActivity
 import com.sopt.now.network.dto.RequestLoginDto
 import com.sopt.now.signup.SignUpActivity

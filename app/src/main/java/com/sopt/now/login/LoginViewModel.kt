@@ -8,17 +8,11 @@ import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import com.sopt.now.SoptApplication
-import com.sopt.now.network.ServicePool
-import com.sopt.now.network.dto.RequestLoginDto
-import com.sopt.now.network.dto.ResponseLoginDto
 import com.sopt.now.container.repository.AuthRepository
-import com.sopt.now.container.repository.AuthRepositoryImpl
+import com.sopt.now.network.dto.RequestLoginDto
 import kotlinx.coroutines.launch
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.jsonObject
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
 data class LoginState(
     val isSuccess: Boolean,
