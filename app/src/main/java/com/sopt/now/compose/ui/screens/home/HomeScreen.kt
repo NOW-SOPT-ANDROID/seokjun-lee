@@ -23,6 +23,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -65,7 +66,7 @@ fun HomeScreen(
     Scaffold(
         bottomBar = { SoptBottomNavigation(navController = navController) }
     ) { paddingValue ->
-        when (val uiState = viewModel.uiState.collectAsStateWithLifecycle().value) {
+        when (val uiState = viewModel.uiState.collectAsStateWithLifecycle(LocalLifecycleOwner.current).value) {
             is HomeUiState.Success -> {
                 HomeScreen(
                     uiState = uiState,
