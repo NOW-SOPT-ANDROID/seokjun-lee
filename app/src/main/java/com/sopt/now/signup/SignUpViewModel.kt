@@ -30,18 +30,15 @@ class SignUpViewModel(
             authRepository.postSignUp(request)
         }.onSuccess { response ->
             if (response.isSuccessful) {
-                val data: ResponseSignUpDto? = response.body()
-                val userId = response.headers()["location"]
+                val userId = response.headers()[USER_ID_HEADER]
                 liveData.value = SignUpState(
                     isSuccess = true,
                     message = "회원가입 성공 유저의 ID는 $userId 입니다"
                 )
             } else {
                 val error = response.errorBody()?.string()
-
                 if(error != null) {
                     val jsonMessage = Json.parseToJsonElement(error)
-
                     liveData.value = SignUpState(
                         isSuccess = false,
                         message = jsonMessage.jsonObject[LoginViewModel.JSON_NAME].toString()
@@ -57,6 +54,7 @@ class SignUpViewModel(
     }
 
     companion object {
+        const val USER_ID_HEADER = "location"
         val Factory: ViewModelProvider.Factory = viewModelFactory {
             initializer {
                 val authRepository = AuthRepositoryImpl(ServicePool.authService)
