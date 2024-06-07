@@ -13,12 +13,12 @@ class AuthRepositoryImpl(
     private val authService: AuthService
 ): AuthRepository {
     override suspend fun postSignUp(request: RequestSignUpDto): Response<ResponseSignUpDto> =
-        authService.postSignUps(request)
+        authService.postSignUp(request)
 
-    override suspend fun getMemberInfo(): Response<ResponseMemberInfoDto> = authService.getMemberInfos()
+    override suspend fun getMemberInfo(): Response<ResponseMemberInfoDto> = authService.getMemberInfo()
 
-    override suspend fun postLogin(request: RequestLoginDto) = authService.postLogins(request)
+    override suspend fun postLogin(request: RequestLoginDto) = authService.postLogin(request)
 
     override suspend fun patchMemberPassword(request: RequestChangePasswordDto): Response<ResponseChangePasswordDto> =
-        authService.patchPasswords(request)
+        authService.patchPassword(request)
 }

@@ -9,7 +9,9 @@ import com.sopt.now.network.dto.RequestChangePasswordDto
 
 class PasswordActivity : AppCompatActivity() {
     private lateinit var binding: ActivityPasswordBinding
-    private val viewModel by viewModels<PasswordViewModel>()
+    private val viewModel by viewModels<PasswordViewModel>(
+        factoryProducer = {PasswordViewModel.Factory}
+    )
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,7 +35,7 @@ class PasswordActivity : AppCompatActivity() {
         with(binding) {
             passwordBtnProceed.setOnClickListener {
                 val request = getRequestChangePasswordDto()
-                viewModel.patchPassword(request)
+                viewModel.updatePassword(request)
             }
             passwordBtnCancel.setOnClickListener {
                 finish()
