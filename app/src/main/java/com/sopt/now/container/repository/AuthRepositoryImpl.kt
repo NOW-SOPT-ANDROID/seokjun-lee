@@ -7,9 +7,7 @@ import com.sopt.now.network.dto.RequestSignUpDto
 import com.sopt.now.network.dto.ResponseChangePasswordDto
 import com.sopt.now.network.dto.ResponseMemberInfoDto
 import com.sopt.now.network.dto.ResponseSignUpDto
-import kotlinx.coroutines.coroutineScope
 import retrofit2.Response
-import kotlin.coroutines.coroutineContext
 
 class AuthRepositoryImpl(
     private val authService: AuthService
