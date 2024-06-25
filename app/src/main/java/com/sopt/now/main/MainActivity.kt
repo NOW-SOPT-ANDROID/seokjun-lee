@@ -8,14 +8,15 @@ import androidx.fragment.app.Fragment
 import com.sopt.now.R
 import com.sopt.now.databinding.ActivityMainBinding
 import com.sopt.now.login.LoginActivity.Companion.BACK_PRESSED_RESULT_CODE
-import com.sopt.now.login.LoginActivity.Companion.LOGIN_KEY
 import com.sopt.now.main.fragment.HomeFragment
 import com.sopt.now.main.fragment.MyPageFragment
 import com.sopt.now.main.fragment.SearchFragment
 
 class MainActivity :AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
-    private val viewModel by viewModels<MainViewModel>()
+    private val viewModel by viewModels<MainViewModel>(
+        factoryProducer = {MainViewModel.Factory}
+    )
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,10 +30,7 @@ class MainActivity :AppCompatActivity() {
     }
 
     private fun updateMainState() {
-        val memberId = intent.getStringExtra(LOGIN_KEY)
-        if(memberId != null) {
-            viewModel.updateMainState(memberId)
-        }
+        viewModel.updateMainState()
     }
 
     private fun setOnClickBottomNavigation() {

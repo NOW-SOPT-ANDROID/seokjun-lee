@@ -2,55 +2,62 @@ package com.sopt.now.password
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.viewmodel.initializer
+import androidx.lifecycle.viewmodel.viewModelFactory
+import com.sopt.now.SoptApplication
+import com.sopt.now.container.repository.AuthRepository
 import com.sopt.now.login.LoginViewModel
-import com.sopt.now.network.ServicePool
 import com.sopt.now.network.dto.RequestChangePasswordDto
 import com.sopt.now.network.dto.ResponseChangePasswordDto
+import kotlinx.coroutines.launch
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.jsonObject
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
-class PasswordViewModel: ViewModel() {
+class PasswordViewModel(
+    private val authRepository: AuthRepository
+): ViewModel() {
     val liveData = MutableLiveData<PasswordState>()
-    private val authService by lazy { ServicePool.mainService }
 
-    
+    fun updatePassword(request: RequestChangePasswordDto) = viewModelScope.launch {
+        runCatching {
+            authRepository.patchMemberPassword(request)
+        }.onSuccess {response ->
+            if (response.isSuccessful) {
+                val data: ResponseChangePasswordDto? = response.body()
+                liveData.value = PasswordState(
+                    isSuccess = true,
+                    message = data?.message.orEmpty()
+                )
+            } else {
+                val error = response.errorBody()?.string()
 
-    fun patchPassword(request: RequestChangePasswordDto) {
-        authService.patchPassword(request).enqueue(object : Callback<ResponseChangePasswordDto> {
-            override fun onResponse(
-                call: Call<ResponseChangePasswordDto>,
-                response: Response<ResponseChangePasswordDto>,
-            ) {
-                if (response.isSuccessful) {
-                    val data: ResponseChangePasswordDto? = response.body()
+                if(error != null) {
+                    val jsonMessage = Json.parseToJsonElement(error)
+
                     liveData.value = PasswordState(
-                        isSuccess = true,
-                        message = data?.message.orEmpty()
+                        isSuccess = false,
+                        message = jsonMessage.jsonObject[LoginViewModel.JSON_NAME].toString()
                     )
-                } else {
-                    val error = response.errorBody()?.string()
-
-                    if(error != null) {
-                        val jsonMessage = Json.parseToJsonElement(error)
-
-                        liveData.value = PasswordState(
-                            isSuccess = false,
-                            message = jsonMessage.jsonObject[LoginViewModel.JSON_NAME].toString()
-                        )
-                    }
                 }
             }
+        }.onFailure {
+            liveData.value = PasswordState(
+                isSuccess = false,
+                message = "서버에러"
+            )
+        }
+    }
 
-            override fun onFailure(call: Call<ResponseChangePasswordDto>, t: Throwable) {
-                liveData.value = PasswordState(
-                    isSuccess = false,
-                    message = "서버에러"
-                )
+    companion object{
+        val Factory: ViewModelProvider.Factory = viewModelFactory {
+            initializer {
+                val application = this[ViewModelProvider.AndroidViewModelFactory.APPLICATION_KEY] as SoptApplication
+                val authRepository = application.appContainer.authAfterLoinRepository
+                PasswordViewModel(authRepository = authRepository)
             }
-        })
+        }
     }
 
 }

@@ -9,7 +9,10 @@ import com.sopt.now.network.dto.RequestSignUpDto
 
 class SignUpActivity : AppCompatActivity() {
     private lateinit var binding: ActivitySignUpBinding
-    private val viewModel by viewModels<SignUpViewModel>()
+    private val viewModel by viewModels<SignUpViewModel>(
+        factoryProducer = { SignUpViewModel.Factory }
+    )
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivitySignUpBinding.inflate(layoutInflater)
@@ -21,34 +24,29 @@ class SignUpActivity : AppCompatActivity() {
 
     private fun initView() {
         binding.signupBtnSignup.setOnClickListener {
-            viewModel.signUp(getSignUpRequestDto())
+            viewModel.postSignUp(getSignUpRequestDto())
         }
     }
 
     private fun initObserver() {
         viewModel.liveData.observe(this) {
             Toast.makeText(
-                this@SignUpActivity,
-                it.message,
-                Toast.LENGTH_SHORT,
+                this@SignUpActivity, it.message, Toast.LENGTH_SHORT,
             ).show()
-            if(viewModel.liveData.value?.isSuccess!!)
+
+            if (viewModel.liveData.value?.isSuccess!!) {
                 finish()
+            }
         }
     }
 
     private fun getSignUpRequestDto(): RequestSignUpDto = with(binding) {
-            val id = signupEtId.text.toString()
-            val password = signupEtPw.text.toString()
-            val nickname = signupEtNickname.text.toString()
-            val phoneNumber = signupEtPhone.text.toString()
-
-            return@with RequestSignUpDto(
-                authenticationId = id,
-                password = password,
-                nickname = nickname,
-                phone = phoneNumber
-            )
-        }
+        return@with RequestSignUpDto(
+            authenticationId = signupEtId.text.toString(),
+            password = signupEtPw.text.toString(),
+            nickname = signupEtNickname.text.toString(),
+            phone = signupEtPhone.text.toString()
+        )
+    }
 
 }
