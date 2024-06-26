@@ -1,12 +1,7 @@
 package com.sopt.now.compose.ui.screens.login
 
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.Companion.APPLICATION_KEY
 import androidx.lifecycle.viewModelScope
-import androidx.lifecycle.viewmodel.initializer
-import androidx.lifecycle.viewmodel.viewModelFactory
-import com.sopt.now.compose.SoptApplication
 import com.sopt.now.compose.container.repository.AuthRepository
 import com.sopt.now.compose.container.repository.UserRepository
 import com.sopt.now.compose.network.dto.RequestLoginDto

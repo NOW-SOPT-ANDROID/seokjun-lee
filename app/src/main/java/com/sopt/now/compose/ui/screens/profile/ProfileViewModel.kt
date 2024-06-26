@@ -2,11 +2,7 @@ package com.sopt.now.compose.ui.screens.profile
 
 import android.util.Log
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
-import androidx.lifecycle.viewmodel.initializer
-import androidx.lifecycle.viewmodel.viewModelFactory
-import com.sopt.now.compose.SoptApplication
 import com.sopt.now.compose.container.impl.MemberRepositoryImpl
 import com.sopt.now.compose.models.User
 import dagger.hilt.android.lifecycle.HiltViewModel
