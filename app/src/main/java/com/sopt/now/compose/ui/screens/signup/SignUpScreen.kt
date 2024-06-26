@@ -29,7 +29,6 @@ import com.sopt.now.compose.ui.composables.TextFieldWithTitleComposable
 
 @Composable
 fun SignUpScreen(
-    modifier: Modifier = Modifier,
     navController: NavHostController = rememberNavController(),
     viewModel: SignUpViewModel = hiltViewModel()
 ) {

@@ -74,8 +74,6 @@ class HomeViewModel @Inject constructor(
                         follower = followers.orEmpty()
                     )
                     updateUiState()
-                } else {
-
                 }
             },
             onFailure = {

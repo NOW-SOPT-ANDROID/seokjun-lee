@@ -30,8 +30,6 @@ import com.sopt.now.compose.ui.composables.ButtonComposable
 import com.sopt.now.compose.ui.composables.ScreenWithImage
 import com.sopt.now.compose.ui.composables.TitleAndContentTextComposable
 
-private const val TAG = "ProfileScreen"
-
 @Composable
 fun ProfileScreen(
     navController: NavHostController = rememberNavController(),
