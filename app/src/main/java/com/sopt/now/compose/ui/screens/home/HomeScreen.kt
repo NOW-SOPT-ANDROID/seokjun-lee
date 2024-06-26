@@ -42,12 +42,10 @@ import com.sopt.now.compose.R
 import com.sopt.now.compose.ui.SoptBottomNavigation
 import com.sopt.now.compose.ui.composables.ScreenWithImage
 
-private const val TAG = "HomeScreen"
-
 @Composable
 fun HomeScreen(
     navController: NavHostController = rememberNavController(),
-    viewModel: HomeViewModel = viewModel(factory = HomeViewModel.Factory),
+    viewModel: HomeViewModel = viewModel(),
 ) {
     LaunchedEffect(null) {
         viewModel.fetchNetworkData()

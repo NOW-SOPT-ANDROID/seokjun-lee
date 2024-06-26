@@ -18,6 +18,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
@@ -35,7 +36,7 @@ private const val TAG = "ProfileScreen"
 @Composable
 fun ProfileScreen(
     navController: NavHostController = rememberNavController(),
-    viewModel: ProfileViewModel = viewModel(factory = ProfileViewModel.Factory),
+    viewModel: ProfileViewModel = hiltViewModel(),
 ) {
     LaunchedEffect(navController) {
         val memberId = navController.previousBackStackEntry?.savedStateHandle

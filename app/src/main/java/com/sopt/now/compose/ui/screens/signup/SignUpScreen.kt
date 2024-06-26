@@ -19,6 +19,7 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
@@ -31,7 +32,7 @@ import com.sopt.now.compose.ui.composables.TextFieldWithTitleComposable
 fun SignUpScreen(
     modifier: Modifier = Modifier,
     navController: NavHostController = rememberNavController(),
-    viewModel: SignUpViewModel = viewModel(factory = SignUpViewModel.Factory)
+    viewModel: SignUpViewModel = hiltViewModel()
 ) {
 
     val context = LocalContext.current
