@@ -10,6 +10,7 @@ import com.sopt.now.compose.SoptApplication
 import com.sopt.now.compose.container.repository.AuthRepository
 import com.sopt.now.compose.container.repository.UserRepository
 import com.sopt.now.compose.network.dto.RequestLoginDto
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -17,8 +18,10 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.jsonObject
+import javax.inject.Inject
 
-class LoginViewModel(
+@HiltViewModel
+class LoginViewModel @Inject constructor(
     private val userRepository: UserRepository,
     private val authRepository: AuthRepository
 ): ViewModel() {
@@ -87,14 +90,5 @@ class LoginViewModel(
     companion object {
         const val HEADER_NAME = "location"
         const val JSON_NAME = "message"
-
-        val Factory: ViewModelProvider.Factory = viewModelFactory {
-            initializer {
-                val application = (this[APPLICATION_KEY] as SoptApplication)
-                val userRepository = application.appContainer.userRepository
-                val authRepository = application.appContainer.authRepository
-                LoginViewModel(userRepository = userRepository, authRepository = authRepository)
-            }
-        }
     }
 }

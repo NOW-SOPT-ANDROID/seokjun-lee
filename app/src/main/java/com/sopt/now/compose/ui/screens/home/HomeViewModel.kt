@@ -9,16 +9,20 @@ import androidx.lifecycle.viewmodel.viewModelFactory
 import com.sopt.now.compose.SoptApplication
 import com.sopt.now.compose.container.impl.MemberRepositoryImpl
 import com.sopt.now.compose.container.repository.FollowerRepository
+import com.sopt.now.compose.container.repository.MemberRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 private const val TAG = "HomeViewModel"
 
-class HomeViewModel(
+@HiltViewModel
+class HomeViewModel @Inject constructor(
     private val followerRepository: FollowerRepository,
-    private val authRepository: MemberRepositoryImpl
+    private val authRepository: MemberRepository
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow<HomeUiState>(HomeUiState.Loading())
@@ -83,20 +87,5 @@ class HomeViewModel(
                 Log.d(TAG, it.message.toString())
             }
         )
-    }
-
-    companion object {
-        val Factory: ViewModelProvider.Factory = viewModelFactory {
-            initializer {
-                val application =
-                    (this[ViewModelProvider.AndroidViewModelFactory.APPLICATION_KEY] as SoptApplication)
-                val followRepository = application.appContainer.followRepository
-                val authRepository = application.appContainer.memberRepository
-                HomeViewModel(
-                    followerRepository = followRepository,
-                    authRepository = authRepository
-                )
-            }
-        }
     }
 }

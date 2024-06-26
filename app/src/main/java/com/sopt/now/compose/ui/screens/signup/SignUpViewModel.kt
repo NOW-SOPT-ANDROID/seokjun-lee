@@ -9,6 +9,7 @@ import com.sopt.now.compose.SoptApplication
 import com.sopt.now.compose.container.impl.AuthRepositoryImpl
 import com.sopt.now.compose.network.dto.RequestSignUpDto
 import com.sopt.now.compose.ui.screens.login.LoginViewModel
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -16,8 +17,10 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.jsonObject
+import javax.inject.Inject
 
-class SignUpViewModel(
+@HiltViewModel
+class SignUpViewModel @Inject constructor(
     private val authRepository: AuthRepositoryImpl
 ): ViewModel() {
     private val _uiState = MutableStateFlow(SignUpState())
@@ -80,15 +83,4 @@ class SignUpViewModel(
             phone = this.phone
         )
     }
-
-    companion object{
-        val Factory: ViewModelProvider.Factory = viewModelFactory {
-            initializer {
-                val application = (this[ViewModelProvider.AndroidViewModelFactory.APPLICATION_KEY] as SoptApplication)
-                val authRepository = application.appContainer.authRepository
-                SignUpViewModel(authRepository = authRepository)
-            }
-        }
-    }
-
 }

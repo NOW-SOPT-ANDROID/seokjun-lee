@@ -9,12 +9,15 @@ import androidx.lifecycle.viewmodel.viewModelFactory
 import com.sopt.now.compose.SoptApplication
 import com.sopt.now.compose.container.impl.MemberRepositoryImpl
 import com.sopt.now.compose.models.User
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class ProfileViewModel(
+@HiltViewModel
+class ProfileViewModel @Inject constructor(
     private val authRepository: MemberRepositoryImpl
 ): ViewModel() {
     private val _uiState = MutableStateFlow<ProfileUiState>(ProfileUiState.Loading)
@@ -50,13 +53,5 @@ class ProfileViewModel(
 
     companion object{
         private const val TAG = "ProfileViewModel"
-
-        val Factory: ViewModelProvider.Factory = viewModelFactory {
-            initializer {
-                val application = (this[ViewModelProvider.AndroidViewModelFactory.APPLICATION_KEY] as SoptApplication)
-                val authRepository = application.appContainer.memberRepository
-                ProfileViewModel(authRepository)
-            }
-        }
     }
 }
