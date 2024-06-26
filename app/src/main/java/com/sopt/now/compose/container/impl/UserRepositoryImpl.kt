@@ -3,8 +3,9 @@ package com.sopt.now.compose.container.impl
 import android.content.SharedPreferences
 import com.sopt.now.compose.container.repository.UserRepository
 import com.sopt.now.compose.models.User
+import javax.inject.Inject
 
-class UserRepositoryImpl(
+class UserRepositoryImpl @Inject constructor(
     private val sharedPreferences: SharedPreferences
 ) : UserRepository {
     override fun getUserProfile(): User {

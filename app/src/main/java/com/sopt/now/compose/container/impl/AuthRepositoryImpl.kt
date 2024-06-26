@@ -7,8 +7,9 @@ import com.sopt.now.compose.network.dto.RequestSignUpDto
 import com.sopt.now.compose.network.dto.ResponseLoginDto
 import com.sopt.now.compose.network.dto.ResponseSignUpDto
 import retrofit2.Response
+import javax.inject.Inject
 
-class AuthRepositoryImpl(
+class AuthRepositoryImpl @Inject constructor(
     private val authService: AuthService
 ) : AuthRepository {
     override suspend fun postLogin(request: RequestLoginDto): Result<Response<ResponseLoginDto>> =

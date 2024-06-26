@@ -6,8 +6,9 @@ import com.sopt.now.compose.network.AuthService
 import com.sopt.now.compose.network.dto.RequestChangePasswordDto
 import com.sopt.now.compose.network.dto.ResponseChangePasswordDto
 import retrofit2.Response
+import javax.inject.Inject
 
-class MemberRepositoryImpl(
+class MemberRepositoryImpl @Inject constructor(
     private val authService: AuthService
 ) : MemberRepository {
     override suspend fun getUserInfo(): Result<User> = runCatching {
