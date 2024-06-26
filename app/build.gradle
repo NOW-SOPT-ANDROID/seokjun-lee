@@ -101,4 +101,8 @@ dependencies {
 
 
     implementation ("androidx.lifecycle:lifecycle-runtime-compose:2.8.1")
+
+    implementation project(path: ':data')
+    implementation project(path: ':domain')
+    implementation project(path: ':presentation')
 }
