@@ -2,7 +2,6 @@ package com.sopt.now.compose.di
 
 import android.content.SharedPreferences
 import okhttp3.Interceptor
-import okhttp3.OkHttpClient
 import okhttp3.Response
 import javax.inject.Inject
 
