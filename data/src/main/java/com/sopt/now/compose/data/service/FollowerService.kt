@@ -1,11 +1,11 @@
-package com.sopt.now.compose.network
+package com.sopt.now.compose.data.service
 
-import com.sopt.now.compose.network.dto.ResponseFollowListDto
+import com.sopt.now.compose.data.dto.response.ResponseFollowListDto
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Query
 
-interface FollowService {
+interface FollowerService {
     @GET("/api/users")
     suspend fun getFollow(
         @Query("page") page:Int = 2
