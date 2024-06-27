@@ -21,6 +21,8 @@ coilCompose = '2.6.0'
 hiltCompiler = '2.51.1'
 hiltNavigation = '1.2.0'
 lifecycleRunTime = '2.8.1'
+appcompat = '1.7.0'
+androidMaterial = '1.12.0'
 
 [libraries]
 core-ktx = {group = "androidx.core", name = "core-ktx", version.ref = "coreKtx"}
@@ -43,14 +45,13 @@ retrofit2-serialization-converter = {group = "com.jakewharton.retrofit", name = 
 okhttp-bom = {group = "com.squareup.okhttp3", name = "okhttp-bom", version.ref = "okhttpBom"}
 okhttp = {group = "com.squareup.okhttp3", name = "okhttp"}
 okhttp-logging-interceptor = {group = "com.squareup.okhttp3", name = "okhttp-logging-interceptor"}
-
 coil-compose = {group = "io.coil-kt", name = "coil-compose", version.ref = "coilCompose"}
-
 hiltAndroid = {group = "com.google.dagger", name = "hilt-android", version.ref = "hiltAndroid"}
 hiltCompiler = {group = "com.google.dagger", name = "hilt-compiler", version.ref = "hiltCompiler"}
 hiltNavigation = {group = "androidx.hilt", name = "hilt-navigation-compose", version.ref = "hiltNavigation"}
-
 lifecycle-runtime-compose = {group = "androidx.lifecycle", name = "lifecycle-runtime-compose", version.ref = "lifecycleRunTime"}
+androidx-appcompat = {group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat"}
+android-material = {group = "com.google.android.material", name = "material", version.ref = "androidMaterial"}
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "android" }
