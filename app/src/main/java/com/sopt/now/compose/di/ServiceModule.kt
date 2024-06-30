@@ -1,11 +1,11 @@
 package com.sopt.now.compose.di
 
+import com.sopt.now.compose.data.service.AuthService
+import com.sopt.now.compose.data.service.FollowerService
+import com.sopt.now.compose.data.service.HomeService
 import com.sopt.now.compose.di.qualifier.AUTH
 import com.sopt.now.compose.di.qualifier.HEADER
 import com.sopt.now.compose.di.qualifier.REQRES
-import com.sopt.now.compose.network.AuthService
-import com.sopt.now.compose.network.FollowService
-import com.sopt.now.compose.network.HomeService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -29,7 +29,7 @@ object ServiceModule {
 
     @Provides
     @Singleton
-    fun provideReqresService(@REQRES retrofit: Retrofit): FollowService =
-        retrofit.create(FollowService::class.java)
+    fun provideReqresService(@REQRES retrofit: Retrofit): FollowerService =
+        retrofit.create(FollowerService::class.java)
 
 }

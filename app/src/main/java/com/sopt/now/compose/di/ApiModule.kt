@@ -21,23 +21,22 @@ import javax.inject.Singleton
 object ApiModule {
     private const val CONTENT_TYPE = "application/json"
 
-    @Singleton
     @Provides
+    @Singleton
     fun provideJsonConverter(): Converter.Factory {
         return Json.asConverterFactory(CONTENT_TYPE.toMediaType())
     }
 
-    @Singleton
     @Provides
-    @HEADER
+    @Singleton
     fun provideHeaderOkHttpClient(
         headerInterceptor: HeaderInterceptor
     ): OkHttpClient = OkHttpClient.Builder()
             .addInterceptor(headerInterceptor)
             .build()
 
-    @Singleton
     @Provides
+    @Singleton
     @AUTH
     fun provideAuthRetrofit(
         converter: Converter.Factory
@@ -48,8 +47,8 @@ object ApiModule {
             .build()
     }
 
-    @Singleton
     @Provides
+    @Singleton
     @HEADER
     fun provideHeaderRetrofit(
         client: OkHttpClient,
@@ -60,14 +59,14 @@ object ApiModule {
         .client(client)
         .build()
 
-    @Singleton
     @Provides
+    @Singleton
     @REQRES
     fun provideReqresRetrofit(
         converter: Converter.Factory
     ): Retrofit {
         return Retrofit.Builder()
-            .baseUrl(BuildConfig.AUTH_BASE_URL)
+            .baseUrl(BuildConfig.REQRES_URL)
             .addConverterFactory(converter)
             .build()
     }

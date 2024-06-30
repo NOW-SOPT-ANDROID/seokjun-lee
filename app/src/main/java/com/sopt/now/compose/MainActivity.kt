@@ -9,7 +9,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
-import com.sopt.now.compose.ui.SoptApp
+import com.sopt.now.compose.presentation.ui.theme.SoptApp
 import com.sopt.now.compose.ui.theme.NOWSOPTAndroidTheme
 import dagger.hilt.android.AndroidEntryPoint
 
