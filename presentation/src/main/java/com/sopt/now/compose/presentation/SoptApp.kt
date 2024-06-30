@@ -1,8 +1,9 @@
-package com.sopt.now.compose.presentation.ui.theme
+package com.sopt.now.compose.presentation
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Surface
@@ -20,14 +21,23 @@ import com.sopt.now.compose.presentation.navigation.HomeDestination
 import com.sopt.now.compose.presentation.navigation.NavigationDestination
 import com.sopt.now.compose.presentation.navigation.ProfileDestination
 import com.sopt.now.compose.presentation.navigation.SearchDestination
+import com.sopt.now.compose.presentation.ui.theme.NOWSOPTAndroidTheme
 
 @Composable
 fun SoptApp() {
-    Surface {
-        ApplicationNavHost(
-            navController = rememberNavController(),
-            modifier = Modifier.fillMaxSize()
-        )
+    NOWSOPTAndroidTheme {
+        // A surface container using the 'background' color from the theme
+        Surface(
+            modifier = Modifier.fillMaxSize(),
+            color = MaterialTheme.colorScheme.background
+        ) {
+            Surface {
+                ApplicationNavHost(
+                    navController = rememberNavController(),
+                    modifier = Modifier.fillMaxSize()
+                )
+            }
+        }
     }
 }
 

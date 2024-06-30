@@ -27,8 +27,7 @@ import com.sopt.now.compose.presentation.composables.ButtonComposable
 import com.sopt.now.compose.presentation.composables.ScreenWithImage
 import com.sopt.now.compose.presentation.composables.TitleAndContentTextComposable
 import com.sopt.now.compose.presentation.screens.search.SearchViewModel.Companion.NAVIGATE_BACK_PRESSED_KEY
-import com.sopt.now.compose.presentation.screens.search.SearchViewModel.Companion.NAVIGATE_LOGIN_KEY
-import com.sopt.now.compose.presentation.ui.theme.SoptBottomNavigation
+import com.sopt.now.compose.presentation.SoptBottomNavigation
 
 @Composable
 fun ProfileScreen(

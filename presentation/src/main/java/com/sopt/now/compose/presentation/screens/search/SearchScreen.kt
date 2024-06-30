@@ -9,7 +9,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import com.sopt.now.compose.presentation.screens.search.SearchViewModel.Companion.NAVIGATE_BACK_PRESSED_KEY
-import com.sopt.now.compose.presentation.ui.theme.SoptBottomNavigation
+import com.sopt.now.compose.presentation.SoptBottomNavigation
 
 
 /**
@@ -20,7 +20,7 @@ fun SearchScreen(
     navController: NavHostController
 ) {
     Scaffold(
-        bottomBar = {SoptBottomNavigation(navController = navController)}
+        bottomBar = { SoptBottomNavigation(navController = navController) }
     ) {
         Column(
             modifier = Modifier.padding(it)

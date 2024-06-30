@@ -33,7 +33,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import coil.compose.AsyncImage
@@ -41,7 +40,7 @@ import coil.request.ImageRequest
 import com.sopt.now.compose.presentation.R
 import com.sopt.now.compose.presentation.composables.ScreenWithImage
 import com.sopt.now.compose.presentation.screens.search.SearchViewModel.Companion.NAVIGATE_BACK_PRESSED_KEY
-import com.sopt.now.compose.presentation.ui.theme.SoptBottomNavigation
+import com.sopt.now.compose.presentation.SoptBottomNavigation
 
 @Composable
 fun HomeScreen(

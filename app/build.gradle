@@ -85,7 +85,6 @@ dependencies {
     implementation(libs.hiltAndroid)
     kapt(libs.hiltCompiler)
     implementation(libs.hiltNavigation)
-    implementation(libs.lifecycle.runtime.compose)
 
     implementation project(path: ':data')
     implementation project(path: ':domain')
