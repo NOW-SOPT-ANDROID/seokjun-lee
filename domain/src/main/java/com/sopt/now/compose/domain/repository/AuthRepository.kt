@@ -8,5 +8,6 @@ import com.sopt.now.compose.domain.entity.response.SignupResponseEntity
 interface AuthRepository {
     suspend fun postLogin(request: LoginRequestEntity): Result<LoginResponseEntity>
     suspend fun postSignUp(request: SignupRequestEntity): Result<SignupResponseEntity>
+    fun putUserIdInPreference(userId: String)
 }
 

@@ -1,6 +1,7 @@
 package com.sopt.now.compose.data.repositoryimpl
 
 import com.sopt.now.compose.data.datasource.AuthDataSource
+import com.sopt.now.compose.data.datasource.PreferenceDataSource
 import com.sopt.now.compose.data.dto.request.RequestLoginDto
 import com.sopt.now.compose.data.dto.request.RequestSignUpDto
 import com.sopt.now.compose.domain.entity.request.LoginRequestEntity
@@ -13,7 +14,8 @@ import org.json.JSONObject
 import javax.inject.Inject
 
 class AuthRepositoryImpl @Inject constructor(
-    private val authDataSource: AuthDataSource
+    private val authDataSource: AuthDataSource,
+    private val preferenceDataSource: PreferenceDataSource
 ) : AuthRepository {
 
     override suspend fun postLogin(request: LoginRequestEntity): Result<LoginResponseEntity> =
@@ -61,6 +63,9 @@ class AuthRepositoryImpl @Inject constructor(
                 )
             }
         }
+
+    override fun putUserIdInPreference(userId: String) = preferenceDataSource.setUserId(userId)
+
 
     companion object {
         private const val MESSAGE = "message"
