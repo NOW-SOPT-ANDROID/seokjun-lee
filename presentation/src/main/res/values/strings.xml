@@ -1,0 +1,65 @@
+<resources>
+    <string name="app_name">NOW SOPT Android</string>
+    <string name="login_title">Welcome To SOPT</string>
+    <string name="signup_title">회원가입</string>
+
+    <!--Intent Key-->
+    <string name="intent_key_login_signup">signup</string>
+    <string name="intent_key_login_main">main</string>
+
+    <!--Screen Route Resources-->
+    <string name="destination_route_login">login</string>
+    <string name="destination_route_signup">signup</string>
+    <string name="destination_route_home">home</string>
+    <string name="destination_route_search">search</string>
+    <string name="destination_route_profile">profile</string>
+
+    <!--Screen Title Resources-->
+    <string name="destination_title_login">login</string>
+    <string name="destination_title_signup">signup</string>
+    <string name="destination_title_home">home</string>
+
+    <!--TextField Titles-->
+    <string name="title_id">ID</string>
+    <string name="title_pw">비밀번호</string>
+    <string name="title_phone">전화번호</string>
+    <string name="title_nickname">닉네임</string>
+    <string name="title_mbti">MBTI</string>
+
+    <!--Button Texts-->
+    <string name="login_btn_login">로그인</string>
+    <string name="login_btn_signup">회원가입</string>
+    <string name="signup_btn_signup">회원가입하기</string>
+
+    <!--LoginActivity TextField Labels-->
+    <string name="login_label_id">사용자 ID 입력</string>
+    <string name="login_label_pw">비밀번호 입력</string>
+
+
+    <!--LoginActivity Toast Messages-->
+    <string name="login_toast_success_signup">회원가입을 완료했습니다.</string>
+    <string name="login_toast_success_login">로그인에 성공했습니다</string>
+    <string name="login_toast_blank_id">아이디를 입력해주세요</string>
+    <string name="login_toast_blank_pw">비밀번호를 입력해주세요</string>
+    <string name="login_toast_check_id">아이디를 다시 확인하세요</string>
+    <string name="login_toast_check_pw">비밀번호를 다시 확인하세요</string>
+
+    <!--SignUpActivity TextField Labels-->
+    <string name="signup_label_id">아이디를 입력해주세요</string>
+    <string name="signup_label_pw">비밀번호를 입력해주세요</string>
+    <string name="signup_label_nickname">닉네임을 입력해주세요</string>
+    <string name="signup_label_mbti">MBTI를 입력해주세요</string>
+    <string name="signup_label_phone">전화번호를 입력해주세요</string>
+
+    <!--SignUp Toast Messages-->
+    <string name="signup_toast_id">ID는 6~10 글자</string>
+    <string name="signup_toast_pw">비밀번호는 8~12 글자</string>
+    <string name="signup_toast_nickname">닉네임은 한 글자 이상, 공백 불가</string>
+    <string name="signup_toast_mbti">MBTI 공백 불가</string>
+
+    <!--MainActivity MBTI Introduction-->
+    <string name="main_mbti_introduction">제 MBTI는 %s입니다!!</string>
+
+    <!--Profile String-->
+    <string name="profile_btn_logout">로그아웃</string>
+</resources>
