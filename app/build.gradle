@@ -53,7 +53,7 @@ android {
     }
     packaging {
         resources {
-            excludes += '/META-INF/{AL2.0,LGPL2.1}'
+            it.excludes += '/META-INF/{AL2.0,LGPL2.1}'
         }
     }
 
@@ -81,7 +81,6 @@ dependencies {
     implementation(libs.retrofit2.serialization.converter)
     implementation(platform(libs.okhttp.bom))
     implementation(libs.okhttp)
-    implementation(libs.okhttp.logging.interceptor)
     implementation(libs.coil.compose)
     implementation(libs.hiltAndroid)
     kapt(libs.hiltCompiler)

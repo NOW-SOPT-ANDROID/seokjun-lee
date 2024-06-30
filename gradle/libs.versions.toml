@@ -1,6 +1,6 @@
 [versions]
-android = '8.3.2'
-androidLibrary = '8.3.2'
+android = "8.5.0"
+androidLibrary = "8.5.0"
 jetbrainsKotlinAndroid = '1.9.0'
 jetbrainsKotlinSerialization = '1.9.0'
 hiltAndroid = '2.51'
